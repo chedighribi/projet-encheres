@@ -26,7 +26,7 @@
 						class="select-box">
 						<option>Toutes</option>
 					</select>
-
+				<th:block data-th-if="${#authorization.expression('hasRole(''ROLE_USER'')')}">
 					<div class="filtres-radios">
 						<div class="filtres-radio">
 							<input type="radio" id="achats" name="type" checked> <label
@@ -45,6 +45,7 @@
 							<option>Mes ventes en cours</option>
 						</select>
 					</div>
+				</th:block>
 				</div>
 
 				<div class="btn-filtres">
