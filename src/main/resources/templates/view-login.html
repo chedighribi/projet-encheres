@@ -2,7 +2,8 @@
 	data-th-replace="~{layouts/layout :: layout-enchere( 
 					titrePage=~{:: title},
 					contenuPage=~{:: main},
-					ressourcesSupp=~{})}">
+					ressourcesSupp=~{:: #ressources-css}
+					)}">
 
 <head>
 <title data-th-text="inscription"></title>
@@ -21,6 +22,9 @@
 				<li>
 					<button type="submit">Connexion</button>
 					<a href="/tofigureout">Mot de passe oublié</a>
+				</li>
+				<li>
+					<a href="/register" class="create-account">Créer un compte</a>
 				</li>
 			</ul>
 		</form>
