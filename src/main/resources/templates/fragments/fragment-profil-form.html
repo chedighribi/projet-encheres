@@ -1,17 +1,18 @@
 <form xmlns:th="http://www.thymeleaf.org" 
-		data-th-fragment="frag-formateur-form(action, titreForm, fragListeDesCours)" 
+		data-th-fragment="frag-profil-form(action, titreForm)" 
 		data-th-action="@{${action}}"
-		data-th-object="${formateur}" method="post">
+		data-th-object="${personne}" method="post">
 		
 		<h1 data-th-text="${titreForm}" ></h1>
 		<div data-th-replace="~{fragments/errors/fragment-errors :: frag-errors}"></div>
 	
-		<ul class="flex-outer">
+		<ul class="d-flex flex-row md-3">
 		<li>
 			<label for="inputPseudo">Pseudo (*): </label> 
-			<input type="text" id="inputPseudo" required data-th-field="*{pseudo}" />
-			<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('pseudo')}"></div>
-			
+			<input type="text" id="inputPseudo" required data-th-field="*{pseudo}" data-th-readonly="${#strings.contains(action,'modifier')}" />
+			<th:block data-th-if="${#strings.contains(action,'creer')}">
+				<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('pseudo')}"></div>
+			</th:block>
 		</li>
 		<li>
 			<label for="inputNom">Nom (*): </label> 
@@ -25,25 +26,50 @@
 			
 		</li>
 		<li>
-			<label for="inputTelephone>Téléphone : </label> 
-			<input type="text" id="inputTelephone" required data-th-field="*{telephone}" />
-			<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('telephone')}"></div>
-			
-		</li>
-		<li>
 			<label for="inputEmail">Email : </label> 
-			<input type="text" id="inputEmail" required data-th-field="*{email}"  data-th-readonly="${#strings.contains(action,'detail')}"/>
+			<input type="text" id="inputEmail" data-th-field="*{email}" />
 			<th:block data-th-if="${#strings.contains(action,'creer')}">
 				<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('email')}"></div>
 			</th:block>
 			
 		</li>
-		
-		<!-- Ajout liste des cours d’un formateur -->
-		<li data-th-replace="${fragListeDesCours}"></li>
-
 		<li>
-			<button type="submit">Enregistrer</button>
+			<label for="inputTelephone">Téléphone : </label> 
+			<input type="text" id="inputTelephone" data-th-field="*{telephone}" />
+			<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('telephone')}"></div>
+			
+		</li>
+		<li>
+			<label for="inputTelephone">Adresse (*): </label> 
+			<input type="text" id="inputAdresseRue" required data-th-field="*{adresse.rue}" />
+			<input type="text" id="inputAdresseCodePostal" required data-th-field="*{adresse.codePostal}" />
+			<input type="text" id="inputAdresseVille" required data-th-field="*{adresse.ville}" />
+			<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('adresse')}"></div>
+			
+		</li>
+		<th:block data-th-if="${#strings.contains(action,'modifier')}">
+		<li>
+			<label for="input">Mon crédit : </label>
+			<input type="text" id="inputCredit" data-th-field="*{credit}" />
+		</li>
+		</th:block>
+		<th:block data-th-if="${#strings.contains(action,'creer')}">
+			<li>
+				<label for="inputMotDePasse">Mot de passe (*): </label> 
+				<input type="password" id="inputMotdDePasse" required data-th-field="*{motDePasse}"  data-th-readonly="${#strings.contains(action,'modifier')}"/>
+					<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('motDePasse')}"></div>			
+			</li>
+			<li>
+				<label for="inputTelephone">Confirmation (*) : </label> 
+				<input type="password" id="inputConfirmation" required />
+				<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('confirmation')}"></div>
+			</li>
+		</th:block>
+		<li>
+			<button type="submit">Créer</button>
+		</li>
+		<li>
+			<button type="submit">Annuler</button>
 		</li>
 		</ul>
 </form>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+	<html xmlns:th="http://www.thymeleaf.org"
+		data-th-replace="~{layouts/layout :: layout-enchere( 
+						titrePage=~{:: title},
+						contenuPage=~{:: main})}"> 
+<head>
+	<title>Nouveau profil</title>
+</head>
+<body>
+	<main>
+		<!-- Utilisation du fragment formulaire -->
+		<div data-th-replace="~{fragments/fragment-profil-form :: 
+		frag-profil-form('/profil/creer', 'Nouveau profil'})}"></div>
+	</main>
+</body>
+</html>
