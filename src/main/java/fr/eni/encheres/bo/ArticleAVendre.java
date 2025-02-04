@@ -10,18 +10,20 @@ public class ArticleAVendre {
 	private LocalDate dateFinEncheres;
 	private int statut;
 	private int prixInitial;
-	private int prixVEnte;
+	private int prixVente;
+	//A dé-commenter une fois les bo faits
+	/*
 	private Utilisateur utilisateur;
 	private Categorie categorie;
 	private Adresse adresse;
-	
+	*/
 	public ArticleAVendre() {
 		
 	}
 
 	public ArticleAVendre(long id, String nom, String description, LocalDate dateDebutEncheres,
-			LocalDate dateFinEncheres, int statut, int prixInitial, int prixVEnte, Utilisateur utilisateur,
-			Categorie categorie, Adresse adresse) {
+			LocalDate dateFinEncheres, int statut, int prixInitial, int prixVente/*, Utilisateur utilisateur,
+			Categorie categorie, Adresse adresse*/) {
 		super();
 		this.id = id;
 		this.nom = nom;
@@ -30,10 +32,12 @@ public class ArticleAVendre {
 		this.dateFinEncheres = dateFinEncheres;
 		this.statut = statut;
 		this.prixInitial = prixInitial;
-		this.prixVEnte = prixVEnte;
+		this.prixVente = prixVente;
+		/*
 		this.utilisateur = utilisateur;
 		this.categorie = categorie;
 		this.adresse = adresse;
+		*/
 	}
 
 	public long getId() {
@@ -92,14 +96,15 @@ public class ArticleAVendre {
 		this.prixInitial = prixInitial;
 	}
 
-	public int getPrixVEnte() {
-		return prixVEnte;
+	public int getPrixVente() {
+		return prixVente;
 	}
 
-	public void setPrixVEnte(int prixVEnte) {
-		this.prixVEnte = prixVEnte;
+	public void setPrixVente(int prixVente) {
+		this.prixVente = prixVente;
 	}
-
+	//A dé-commenter une fois les bo faits
+/*
 	public Utilisateur getUtilisateur() {
 		return utilisateur;
 	}
@@ -123,12 +128,13 @@ public class ArticleAVendre {
 	public void setAdresse(Adresse adresse) {
 		this.adresse = adresse;
 	}
-
+*/
 	@Override
 	public String toString() {
 		return "ArticleAVendre [id=" + id + ", nom=" + nom + ", description=" + description + ", dateDebutEncheres="
 				+ dateDebutEncheres + ", dateFinEncheres=" + dateFinEncheres + ", statut=" + statut + ", prixInitial="
-				+ prixInitial + ", prixVEnte=" + prixVEnte + ", utilisateur=" + utilisateur + ", categorie=" + categorie
-				+ ", adresse=" + adresse + "]";
+				+ prixInitial + ", prixVEnte="/* + prixVEnte + ", utilisateur=" + utilisateur + ", categorie=" + categorie
+				+ ", adresse=" + adresse + "]"*/;
 	}
+	
 }
