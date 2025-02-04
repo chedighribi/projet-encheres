@@ -1,0 +1,25 @@
+<header xmlns:th="http://www.thymeleaf.org"
+	data-th-fragment="frag-entete">
+	<section id="nav-title">
+		<h1>
+			<a href="/" class="logo-container"><img class="logo"
+				data-th-src="@{/images/logo-auction.png}"><span
+				data-th-text="Eni-Encheres"></span></a>
+
+			<th:block
+				data-th-if="${membreEnSession != null && membreEnSession.id > 0}">
+				<span data-th-text="'['+ ${membreEnSession.prenom}+']'"></span>
+			</th:block>
+
+		</h1>
+	</section>
+	<nav>
+		<ul>
+			<li><a href="/">Accueil</a></li>
+
+
+			<li><a href="/login">S'inscrire - Se connecter</a></li>
+
+		</ul>
+	</nav>
+</header>
