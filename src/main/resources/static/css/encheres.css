@@ -6,6 +6,10 @@
     margin: 0;
 }
 
+.entete-encheres{
+	margin-bottom:10px;
+}
+
 .filtres {
     display: flex;
     flex-direction: column;
@@ -58,3 +62,20 @@
     align-items: center;
     gap: 5px;
 }
+
+.entete-encheres{
+	width:100%;
+}
+
+.cards{
+	width:100%;
+	display:flex;
+	flex-direction:row;
+	flex-wrap:wrap;
+}
+
+.card{
+	width:30%;
+	margin:10px;
+}
+
