@@ -4,13 +4,15 @@
 <head>
 <meta charset="UTF-8">
 <title data-th-replace="${titrePage}"data-th-text="#{nom-application}"></title>
-
+<link rel="stylesheet" data-th-href="@{/css/bootstrap.min.css}">
 <link rel="stylesheet" data-th-href="@{/css/layout.css}">
 <link rel="stylesheet" data-th-href="@{/css/general.css}">
 
 <th:block data-th-replace="${ressourcesSupp} ?: ~{}"></th:block>
 
 <link rel="icon" data-th-href="@{/images/logoENI.png}" sizes="32x32">
+<script src="@{/js/bootstrap.min.js}"></script>
+
 </head>
 <body>
 	<div data-th-replace="~{fragments/fragment-entete :: frag-entete}"></div>
