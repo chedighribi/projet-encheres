@@ -1,0 +1,60 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 40%;
+    margin: 0;
+}
+
+.filtres {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-text {
+    width: 250px;
+    padding: 5px;
+    border: 1px solid black;
+    border-radius: 20px;
+}
+
+.select-box {
+    width: 150px;
+    padding: 5px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.btn-filtres {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.btn {
+    width: 150px;
+    padding: 8px;
+    border: 1px solid black;
+    background: white;
+    text-align: center;
+    cursor: pointer;
+}
+
+.filtres-select {
+    width: 200px;
+    padding: 5px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.filtres-radios {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.filtres-radio {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
