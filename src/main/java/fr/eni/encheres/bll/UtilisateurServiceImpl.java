@@ -83,5 +83,11 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		return true;
 	}
 
+	@Override
+	public Utilisateur findByEmail(String email) {
+		System.out.println("BLL findByEmail");
+		return utilisateurDAO.findByEmail(email);
+	}
+
 
 }

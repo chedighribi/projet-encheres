@@ -10,5 +10,5 @@ public interface UtilisateurDAO {
 	Utilisateur read(String email);
 	List<Utilisateur> findAll();
 	String findPseudo(String pseudo);
-
+	Utilisateur findByEmail(String email);
 }

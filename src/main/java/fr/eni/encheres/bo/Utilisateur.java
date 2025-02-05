@@ -12,6 +12,14 @@ public class Utilisateur {
 	private int credit;
 	private boolean admin;
 	
+	
+	
+	/**
+	 * 
+	 */
+	public Utilisateur() {
+	}
+
 	public Utilisateur(String pseudo, String nom, String prenom, String email, String telephone, String motDePasse,
 			int credit, boolean admin) {
 		this.pseudo = pseudo;

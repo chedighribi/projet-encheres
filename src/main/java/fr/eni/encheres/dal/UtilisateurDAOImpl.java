@@ -14,15 +14,15 @@ import fr.eni.encheres.bo.Utilisateur;
 
 @Repository
 public class UtilisateurDAOImpl implements UtilisateurDAO {
-	
+
 	private final String FIND_BY_ID = "SELECT id, pseudo, email, nom, prenom, admin, telephone, credit from UTILISATEUR WHERE id = :id";
-	private final String FIND_BY_EMAIL = "SELECT id, pseudo, email, nom, prenom, admin, telephone, credit from UTILISATEUR WHERE email = :email";
+	private final String FIND_BY_EMAIL = "SELECT pseudo, email, nom, prenom, administrateur, telephone, credit FROM utilisateurs WHERE email = :email";
 	private final String FIND_ALL = "SELECT id, pseudo, email, nom, prenom, admin, telephone, credit from UTILISATEUR";
 	private final String FIND_PSEUDO = "SELECT pseudo from UTILISATEUR where pseudo = :pseudo";
 	private final String INSERT = "INSERT INTO UTILISATEUR(pseudo, email, nom, prenom, admin, telephone, credit)";
+	
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
-	
 
 	@Override
 	public void create(Utilisateur utilisateur) {
@@ -35,9 +35,9 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 		namedParameters.addValue("admin", utilisateur.isAdmin());
 		namedParameters.addValue("telephone", utilisateur.getTelephone());
 		namedParameters.addValue("credit", utilisateur.getCredit());
-		
+
 		jdbcTemplate.update(INSERT, namedParameters, keyHolder);
-		
+
 	}
 
 	// need to check if we manage the id and add read with pseudo
@@ -47,13 +47,14 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 		namedParameters.addValue("id", id);
 		return jdbcTemplate.queryForObject(FIND_BY_ID, namedParameters, new BeanPropertyRowMapper<>(Utilisateur.class));
 	}
+
 	@Override
 	public Utilisateur read(String email) {
 		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 		namedParameters.addValue("email", email);
-		return jdbcTemplate.queryForObject(FIND_BY_EMAIL, namedParameters, new BeanPropertyRowMapper<>(Utilisateur.class));
+		return jdbcTemplate.queryForObject(FIND_BY_EMAIL, namedParameters,
+				new BeanPropertyRowMapper<>(Utilisateur.class));
 	}
-	
 
 	@Override
 	public List<Utilisateur> findAll() {
@@ -64,7 +65,16 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	public String findPseudo(String pseudo) {
 		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 		namedParameters.addValue("pseudo", pseudo);
-		return jdbcTemplate.queryForObject(FIND_PSEUDO, namedParameters, String.class );
+		return jdbcTemplate.queryForObject(FIND_PSEUDO, namedParameters, String.class);
+	}
+
+	@Override
+	public Utilisateur findByEmail(String email) {
+		System.out.println("DAO findByEmail");
+		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+		namedParameters.addValue("email", email);
+		return jdbcTemplate.queryForObject(FIND_BY_EMAIL, namedParameters,
+				new BeanPropertyRowMapper<>(Utilisateur.class));
 	}
 
 }
