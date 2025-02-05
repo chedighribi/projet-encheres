@@ -26,7 +26,7 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO{
 			+ "      ,id_utilisateur\r\n"
 			+ "      ,no_categorie\r\n"
 			+ "      ,no_adresse_retrait\r\n"
-			+ "  FROM ARTICLES_A_VENDRE";
+			+ "  FROM ARTICLES_A_VENDRE WHERE statut_enchere = 1";
 	
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
