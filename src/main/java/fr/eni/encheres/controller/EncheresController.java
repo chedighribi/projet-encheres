@@ -8,8 +8,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/encheres")
 public class EncheresController {
+	
 	@GetMapping
 	public String afficherEncheres(Model model) {
 		return "view-encheres";
 	}
+	
+	@GetMapping("/test")
+	public String testEncheres(Model model) {
+		return "view-profil-modifier";
+	}
+	
+	
 }

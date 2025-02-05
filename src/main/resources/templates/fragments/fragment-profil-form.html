@@ -1,68 +1,33 @@
 <form xmlns:th="http://www.thymeleaf.org" 
-		data-th-fragment="frag-profil-form(action, titreForm)" 
-		data-th-action="@{${action}}"
-		data-th-object="${personne}" method="post">
+		data-th-fragment="frag-profil-form(action, titreForm)"
+		data-th-action="@{${action}}" method="post">
 		
 		<h1 data-th-text="${titreForm}" ></h1>
-		<div data-th-replace="~{fragments/errors/fragment-errors :: frag-errors}"></div>
-	
 		<ul class="d-flex flex-row md-3">
 		<li>
-			<label for="inputPseudo">Pseudo (*): </label> 
-			<input type="text" id="inputPseudo" required data-th-field="*{pseudo}" data-th-readonly="${#strings.contains(action,'modifier')}" />
-			<th:block data-th-if="${#strings.contains(action,'creer')}">
-				<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('pseudo')}"></div>
-			</th:block>
-		</li>
-		<li>
-			<label for="inputNom">Nom (*): </label> 
-			<input type="text" id="inputNom" required data-th-field="*{nom}" />
-			<div	data-th-replace="~{fragments/errors/fragment-error :: frag-error('nom')}"></div>
-		</li>
-		<li>
-			<label for="inputPrenom">Prénom (*): </label> 
-			<input type="text" id="inputPrenom" required data-th-field="*{prenom}" />
-			<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('prenom')}"></div>
-			
-		</li>
-		<li>
-			<label for="inputEmail">Email : </label> 
-			<input type="text" id="inputEmail" data-th-field="*{email}" />
-			<th:block data-th-if="${#strings.contains(action,'creer')}">
-				<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('email')}"></div>
-			</th:block>
-			
-		</li>
-		<li>
-			<label for="inputTelephone">Téléphone : </label> 
-			<input type="text" id="inputTelephone" data-th-field="*{telephone}" />
-			<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('telephone')}"></div>
-			
-		</li>
-		<li>
-			<label for="inputTelephone">Adresse (*): </label> 
-			<input type="text" id="inputAdresseRue" required data-th-field="*{adresse.rue}" />
-			<input type="text" id="inputAdresseCodePostal" required data-th-field="*{adresse.codePostal}" />
-			<input type="text" id="inputAdresseVille" required data-th-field="*{adresse.ville}" />
+			<label for="inputAdresseRue">Adresse (*): </label> 
+			<input type="text" id="inputAdresseRue" required data-th-field="${adresse.rue}" />
+			<input type="text" id="inputAdresseCodePostal" required data-th-field="${adresse.codePostal}" />
+			<input type="text" id="inputAdresseVille" required data-th-field="${adresse.ville}" />
 			<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('adresse')}"></div>
 			
 		</li>
 		<th:block data-th-if="${#strings.contains(action,'modifier')}">
 		<li>
 			<label for="input">Mon crédit : </label>
-			<input type="text" id="inputCredit" data-th-field="*{credit}" />
+			<input type="text" id="inputCredit" />
 		</li>
 		</th:block>
 		<th:block data-th-if="${#strings.contains(action,'creer')}">
 			<li>
 				<label for="inputMotDePasse">Mot de passe (*): </label> 
-				<input type="password" id="inputMotdDePasse" required data-th-field="*{motDePasse}"  data-th-readonly="${#strings.contains(action,'modifier')}"/>
-					<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('motDePasse')}"></div>			
+				<input type="password" id="inputMotdDePasse" required data-th-readonly="${#strings.contains(action,'modifier')}"/>
+							
 			</li>
 			<li>
 				<label for="inputTelephone">Confirmation (*) : </label> 
 				<input type="password" id="inputConfirmation" required />
-				<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('confirmation')}"></div>
+				
 			</li>
 		</th:block>
 		<li>
