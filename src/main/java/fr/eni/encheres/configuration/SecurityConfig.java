@@ -35,6 +35,7 @@ public class SecurityConfig {
 			.requestMatchers("/css/*").permitAll()
 			.requestMatchers("/images/*").permitAll()
 			.requestMatchers("/encheres").permitAll()
+			.requestMatchers("/encheres/*").permitAll()
 	        .anyRequest().authenticated();
 		});
 		http.formLogin(form -> {
