@@ -8,9 +8,11 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 
 import fr.eni.encheres.bo.Utilisateur;
 
+@Repository
 public class UtilisateurDAOImpl implements UtilisateurDAO {
 	
 	private final String FIND_BY_ID = "SELECT id, pseudo, email, nom, prenom, admin, telephone, credit from UTILISATEUR WHERE id = :id";
