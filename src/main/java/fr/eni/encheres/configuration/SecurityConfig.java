@@ -33,6 +33,7 @@ public class SecurityConfig {
 			auth
 			.requestMatchers("/").permitAll()
 			.requestMatchers("/css/*").permitAll()
+			.requestMatchers("/js/*").permitAll()
 			.requestMatchers("/images/*").permitAll()
 			.requestMatchers("/encheres").permitAll()
 			.requestMatchers("/profil*").permitAll()

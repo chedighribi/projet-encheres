@@ -1,0 +1,9 @@
+.input-display {
+	font-weight: bold;
+	font-color: black;
+	font-size: 1.1em;	
+}
+
+li {
+	list-style-type: none;
+}

@@ -1,12 +1,5 @@
 @charset "UTF-8";
 
-
-header li {
-	list-style: none;
-	display: inline-block;
-	padding: 0 20px;
-}
-
 * {
 	margin: 0;
 	padding: 0;
@@ -22,10 +15,6 @@ header {
 	box-shadow: 0 1px 8px #ddd;
 }
 
-#nav-title {
-	margin-right: auto;
-	font-size: 1.1em;
-}
 
 header li {
 	list-style: none;
@@ -36,6 +25,7 @@ header li {
 header a {
 	text-decoration: none;
 	color: #555;
+	color: white;
 	transition: all 0.3s ease 0s;
 }
 
@@ -64,10 +54,10 @@ main h1 {
 	text-align: center;
 }
 
-header a {
-	color: white;
+#nav-title {
+	margin-right: auto;
+	font-size: 1.1em;
 }
-
 
 #nav-title div>a>img {width: 25px;}
 
@@ -83,5 +73,8 @@ header a {
 	&:hover {
     color: black; 
     text-decoration: none; 
-  }
+}
+
+li {
+	list-style: none;
 }

@@ -6,11 +6,14 @@
 		<h1 data-th-text="${titreForm}" ></h1>
 		<div data-th-replace="~{fragments/errors/fragment-errors :: frag-errors}"></div>
 	
-		<ul class="d-flex flex-row md-3">
+		<ul class="flex-outer list-group">
 		<li>
 			<label for="inputPseudo">Pseudo (*): </label> 
-			<input type="text" id="inputPseudo" required data-th-field="*{pseudo}" data-th-readonly="${#strings.contains(action,'modifier')}" />
+			<th:block data-th-if="${#strings.contains(action,'modifier')}">
+				<span class="input-display" data-th-text="*{pseudo}"></span>
+			</th:block>
 			<th:block data-th-if="${#strings.contains(action,'creer')}">
+				<input type="text" id="inputPseudo" required data-th-field="*{pseudo}" />
 				<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('pseudo')}"></div>
 			</th:block>
 		</li>
@@ -43,7 +46,7 @@
 		<th:block data-th-if="${#strings.contains(action,'modifier')}">
 		<li>
 			<label for="input">Mon crédit : </label>
-			<input type="text" id="inputCredit" data-th-field="*{credit}" />
+			<span class="input-display" data-th-text="*{credit}"></span>
 		</li>
 		</th:block>
 		<th:block data-th-if="${#strings.contains(action,'creer')}">
@@ -52,11 +55,7 @@
 				<input type="password" id="inputMotdDePasse" required data-th-field="*{motDePasse}"  data-th-readonly="${#strings.contains(action,'modifier')}"/>
 					<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('motDePasse')}"></div>			
 			</li>
-			<li>
-				<label for="inputTelephone">Confirmation (*) : </label> 
-				<input type="password" id="inputConfirmation" required />
-				<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('confirmation')}"></div>
-			</li>
+			
 		</th:block>
 		<li>
 			<button type="submit">Créer</button>

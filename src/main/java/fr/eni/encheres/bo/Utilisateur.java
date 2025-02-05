@@ -122,7 +122,7 @@ public class Utilisateur {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(credit, pseudo);
+		return Objects.hash(pseudo);
 	}
 
 	@Override
@@ -134,10 +134,10 @@ public class Utilisateur {
 		if (getClass() != obj.getClass())
 			return false;
 		Utilisateur other = (Utilisateur) obj;
-		return credit == other.credit && Objects.equals(pseudo, other.pseudo);
+		return Objects.equals(pseudo, other.pseudo);
 	}
 
-	
+		
 	
 
 }

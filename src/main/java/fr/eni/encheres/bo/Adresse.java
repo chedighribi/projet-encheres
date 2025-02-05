@@ -116,7 +116,5 @@ public class Adresse implements Serializable {
 		builder.append("]");
 		return builder.toString();
 	}
-	
-	
-	
+		
 }
