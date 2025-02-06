@@ -3,6 +3,7 @@ package fr.eni.encheres.dal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -52,11 +53,16 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	}
 
 	@Override
-	public List<Utilisateur> read(String email) {
+	public Utilisateur read (String email) {
 		System.out.println("DAO utilisateur read ");
 		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 		namedParameters.addValue("email", email);
-		return jdbcTemplate.query(FIND_BY_EMAIL, namedParameters, new BeanPropertyRowMapper<>(Utilisateur.class));
+		try {
+			return jdbcTemplate.queryForObject(FIND_BY_EMAIL, namedParameters, new BeanPropertyRowMapper<>(Utilisateur.class));
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		return null;
 
 	}
 

@@ -7,8 +7,8 @@
 				data-th-text="Eni-Encheres"></span></a>
 
 			<th:block
-				data-th-if="${membreEnSession != null && membreEnSession.id > 0}">
-				<span data-th-text="'['+ ${membreEnSession.prenom}+']'"></span>
+				data-th-if="${#authorization.expression('isAuthenticated()')}">
+				<span data-th-text="'['+ ${membreEnSession.pseudo}+']'"></span>
 			</th:block>
 
 		</h1>
