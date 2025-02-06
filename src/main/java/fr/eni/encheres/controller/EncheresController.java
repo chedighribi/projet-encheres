@@ -32,5 +32,7 @@ public class EncheresController {
 	public String creerArticle() {
 		return"view-article-creer";
 	}
+	
+
 
 }

@@ -6,9 +6,7 @@ import fr.eni.encheres.bo.Utilisateur;
 
 public interface UtilisateurService {
 	void creerUtilisateur(Utilisateur utilisateur);
-	
 	Utilisateur consulterUtilisateurParPseudo(String pseudo);
-	
 	List<Utilisateur> consulterUtilisateurs();
 	
 	List<Utilisateur> findByEmail(String email);

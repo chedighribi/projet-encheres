@@ -39,7 +39,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
 	@Override
 	public Utilisateur consulterUtilisateurParPseudo(String pseudo) {
-		return utilisateurDAO.readByPseudo(pseudo);
+		return utilisateurDAO.findByPseudo(pseudo);
 	}
 
 	@Override

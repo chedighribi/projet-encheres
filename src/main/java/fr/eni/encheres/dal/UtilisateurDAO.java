@@ -6,12 +6,8 @@ import fr.eni.encheres.bo.Utilisateur;
 
 public interface UtilisateurDAO {
 	void create(Utilisateur utilisateur);
-
-	Utilisateur readByPseudo(String pseudo);
-
 	List<Utilisateur> read(String email);
-
+	Utilisateur findByPseudo(String pseudo);
 	List<Utilisateur> findAll();
-
 	int findPseudo(String pseudo);
 }
