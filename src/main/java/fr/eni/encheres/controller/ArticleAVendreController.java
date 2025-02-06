@@ -18,7 +18,6 @@ public class ArticleAVendreController {
 		this.articleAVendreService = articleAVendreService;
 	}
 
-
 	@GetMapping("/detail")
 	public String detailVente(@RequestParam(name = "id", required = true) long id, Model model) {
 		if (id > 0) {

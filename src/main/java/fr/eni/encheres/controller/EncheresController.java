@@ -30,7 +30,7 @@ public class EncheresController {
 	
 	@GetMapping("/creer")
 	public String creerArticle() {
-		return"view-article-creer";
+		return "view-article-creer";
 	}
 	
 
