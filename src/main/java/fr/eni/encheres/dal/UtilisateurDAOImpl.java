@@ -15,24 +15,26 @@ import fr.eni.encheres.bo.Utilisateur;
 @Repository
 public class UtilisateurDAOImpl implements UtilisateurDAO {
 
-	private final String FIND_BY_ID = "SELECT id, pseudo, email, nom, prenom, admin, telephone, credit from UTILISATEUR WHERE id = :id";
+	private final String FIND_BY_PSEUDO = "SELECT pseudo, email, nom, prenom, administrateur, telephone, credit FROM utilisateurs WHERE pseudo = :pseudo";
 	private final String FIND_BY_EMAIL = "SELECT pseudo, email, nom, prenom, administrateur, telephone, credit FROM utilisateurs WHERE email = :email";
-	private final String FIND_ALL = "SELECT id, pseudo, email, nom, prenom, admin, telephone, credit from UTILISATEUR";
-	private final String FIND_PSEUDO = "SELECT pseudo from UTILISATEUR where pseudo = :pseudo";
-	private final String INSERT = "INSERT INTO UTILISATEUR(pseudo, email, nom, prenom, admin, telephone, credit)";
-	
+	private final String FIND_ALL = "SELECT pseudo, email, nom, prenom, administrateur, telephone, credit FROM utilisateurs";
+	private final String INSERT = "INSERT INTO utilisateurs (pseudo, email, nom, prenom, administrateur, telephone, credit, mot_de_passe)";
+	private final String COUNT_PSEUDO = "SELECT COUNT(pseudo) FROM utilisateurs WHERE pseudo = :pseudo";
+
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
 
 	@Override
 	public void create(Utilisateur utilisateur) {
+		System.out.println(" DAO utilisateur create");
+		System.out.println(utilisateur);
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 		namedParameters.addValue("pseudo", utilisateur.getPseudo());
 		namedParameters.addValue("email", utilisateur.getEmail());
 		namedParameters.addValue("nom", utilisateur.getNom());
 		namedParameters.addValue("prenom", utilisateur.getPrenom());
-		namedParameters.addValue("admin", utilisateur.isAdmin());
+		namedParameters.addValue("administrateur", utilisateur.isAdministrateur());
 		namedParameters.addValue("telephone", utilisateur.getTelephone());
 		namedParameters.addValue("credit", utilisateur.getCredit());
 
@@ -41,19 +43,21 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	}
 
 	// need to check if we manage the id and add read with pseudo
-	@Override
-	public Utilisateur read(long id) {
+
+	public Utilisateur findByPseudo(String pseudo) {
 		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-		namedParameters.addValue("id", id);
-		return jdbcTemplate.queryForObject(FIND_BY_ID, namedParameters, new BeanPropertyRowMapper<>(Utilisateur.class));
+		namedParameters.addValue("pseudo", pseudo);
+		return jdbcTemplate.queryForObject(FIND_BY_PSEUDO, namedParameters,
+				new BeanPropertyRowMapper<>(Utilisateur.class));
 	}
 
 	@Override
-	public Utilisateur read(String email) {
+	public List<Utilisateur> read(String email) {
+		System.out.println("DAO utilisateur read ");
 		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 		namedParameters.addValue("email", email);
-		return jdbcTemplate.queryForObject(FIND_BY_EMAIL, namedParameters,
-				new BeanPropertyRowMapper<>(Utilisateur.class));
+		return jdbcTemplate.query(FIND_BY_EMAIL, namedParameters, new BeanPropertyRowMapper<>(Utilisateur.class));
+
 	}
 
 	@Override
@@ -62,19 +66,10 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	}
 
 	@Override
-	public String findPseudo(String pseudo) {
+	public int findPseudo(String pseudo) {
+		System.out.println("DAO utilisateur findpseudo");
 		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 		namedParameters.addValue("pseudo", pseudo);
-		return jdbcTemplate.queryForObject(FIND_PSEUDO, namedParameters, String.class);
+		return jdbcTemplate.queryForObject(COUNT_PSEUDO, namedParameters, Integer.class);
 	}
-
-	@Override
-	public Utilisateur findByEmail(String email) {
-		System.out.println("DAO findByEmail");
-		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-		namedParameters.addValue("email", email);
-		return jdbcTemplate.queryForObject(FIND_BY_EMAIL, namedParameters,
-				new BeanPropertyRowMapper<>(Utilisateur.class));
-	}
-
 }

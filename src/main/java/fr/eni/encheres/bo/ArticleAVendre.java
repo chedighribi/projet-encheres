@@ -19,13 +19,15 @@ public class ArticleAVendre implements Serializable{
 	private Utilisateur utilisateur;
 	private Categorie categorie;
 	private Adresse adresse;
+	private Utilisateur vendeur;
 
 	public ArticleAVendre() {
 		
 	}
 
 	public ArticleAVendre(long id, String nom, String description, LocalDate dateDebutEncheres,
-			LocalDate dateFinEncheres, int statut, int prixInitial, int prixVente, Utilisateur utilisateur, Adresse adresse) {
+			LocalDate dateFinEncheres, int statut, int prixInitial, int prixVente, Utilisateur utilisateur,
+			Categorie categorie, Adresse adresse, Utilisateur vendeur) {
 		super();
 		this.id = id;
 		this.nom = nom;
@@ -36,7 +38,9 @@ public class ArticleAVendre implements Serializable{
 		this.prixInitial = prixInitial;
 		this.prixVente = prixVente;
 		this.utilisateur = utilisateur;
+		this.categorie=categorie;
 		this.adresse = adresse;
+		this.vendeur = vendeur;
 	}
 
 	public long getId() {
@@ -125,6 +129,15 @@ public class ArticleAVendre implements Serializable{
 
 	public void setAdresse(Adresse adresse) {
 		this.adresse = adresse;
+	}
+
+	
+	public Utilisateur getVendeur() {
+		return vendeur;
+	}
+
+	public void setVendeur(Utilisateur vendeur) {
+		this.vendeur = vendeur;
 	}
 
 	@Override

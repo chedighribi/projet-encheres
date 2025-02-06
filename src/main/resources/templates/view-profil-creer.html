@@ -8,15 +8,15 @@
 
 <head>
 <!-- Accueil comme titre de page -->
-<title>Nouveau Profil</title>
+<title data-th-text="#{profile.new.title}"></title>
 
 <th:block id="ressources-css">
-	<link rel="stylesheet" href="/css/encheres.css">
+	<link rel="stylesheet" data-th-href="@{/css/profil.css}">
 </th:block>
 </head>
 <body>
 	<main>
-		<div data-th-replace="~{fragments/fragment-profil-form :: frag-profil-form('/profil/creer', 'Nouveau Profil')}"></div>	
+		<div data-th-replace="~{fragments/fragment-profil-form :: frag-profil-form('/profil/creer', #{profile.new.title})}"></div>	
 	</main>
 </body>
 </html>

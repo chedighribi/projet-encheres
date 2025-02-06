@@ -13,4 +13,5 @@ public interface ArticleAVendreService {
 	Categorie consulterCategorieParId(long id);
 	List<Adresse> consulterAdresse();
 	Adresse consulterAdresseParId(long id);
+	ArticleAVendre consulerArticleParId(long id);
 }
