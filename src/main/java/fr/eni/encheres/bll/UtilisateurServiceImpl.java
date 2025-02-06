@@ -23,7 +23,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	public void creerUtilisateur(Utilisateur utilisateur) {
 		BusinessException be = new BusinessException();
 		boolean isValid = true;
-		isValid &= validerPseudo(utilisateur.getPseudo(), be);
+		isValid &= isPseudoDisponible(utilisateur.getPseudo(), be);
 		isValid &= validerNom(utilisateur, be);
 		isValid &= validerPrenom(utilisateur, be);
 		isValid &= validerEmail(utilisateur, be);
@@ -38,8 +38,8 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	}
 
 	@Override
-	public Utilisateur consulterUtilisateurParId(long id) {
-		return utilisateurDAO.read(id);
+	public Utilisateur consulterUtilisateurParPseudo(String pseudo) {
+		return utilisateurDAO.readByPseudo(pseudo);
 	}
 
 	@Override
@@ -73,21 +73,41 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		return false;
 	}
 
-	private boolean validerPseudo(String pseudo, BusinessException be) {
+	private boolean isPseudoDisponible(String pseudo, BusinessException be) {
+		System.out.println("isPseudoDisponible");
+		int pseudoExist = 1;
 		try {
-			String pseudoExist = utilisateurDAO.findPseudo(pseudo);
-			
-		} catch (DataAccessException e) {
+			pseudoExist = utilisateurDAO.findPseudo(pseudo);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+//				throw be;
+			e.printStackTrace();
 			
 		}
-		return true;
+		return (pseudoExist == 0)?true:false;
 	}
 
 	@Override
-	public Utilisateur findByEmail(String email) {
+	public List<Utilisateur> findByEmail(String email) {
 		System.out.println("BLL findByEmail");
-		return utilisateurDAO.findByEmail(email);
+		return utilisateurDAO.read(email);
 	}
 
+	@Override
+	public void add(Utilisateur utilisateur) {
+		System.out.println("BLL add utilisateurs");
+		System.out.println(utilisateur);
+		System.out.println(utilisateur.getEmail());
+		BusinessException be = new BusinessException();
+		if (this.isPseudoDisponible(utilisateur.getPseudo(), be)) {
+			System.out.println("Pseudo disponible !");
+			List<Utilisateur> utilisateurAvecEmailIdentique = utilisateurDAO.read(utilisateur.getEmail());
+			System.out.println(utilisateurAvecEmailIdentique);
+			if (utilisateurAvecEmailIdentique == null) {
+				utilisateurDAO.create(utilisateur);
+			}
+		};
+	}
+	
 
 }

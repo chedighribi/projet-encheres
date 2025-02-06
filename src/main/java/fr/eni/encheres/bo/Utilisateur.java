@@ -10,7 +10,7 @@ public class Utilisateur {
 	private String telephone;
 	private String motDePasse;
 	private int credit;
-	private boolean admin;
+	private boolean administrateur;
 	
 	
 	
@@ -21,7 +21,7 @@ public class Utilisateur {
 	}
 
 	public Utilisateur(String pseudo, String nom, String prenom, String email, String telephone, String motDePasse,
-			int credit, boolean admin) {
+			int credit, boolean administrateur) {
 		this.pseudo = pseudo;
 		this.nom = nom;
 		this.prenom = prenom;
@@ -29,7 +29,7 @@ public class Utilisateur {
 		this.telephone = telephone;
 		this.motDePasse = motDePasse;
 		this.credit = credit;
-		this.admin = admin;
+		this.administrateur = administrateur;
 	}
 
 	public String getPseudo() {
@@ -88,22 +88,19 @@ public class Utilisateur {
 		this.credit = credit;
 	}
 
-	public boolean isAdmin() {
-		return admin;
+	public int isAdministrateur() {
+		return (administrateur)?1:0;
 	}
 
-	public void setAdmin(boolean admin) {
-		this.admin = admin;
+	public void setAdministrateur(boolean administrateur) {
+		this.administrateur = administrateur;
 	}
 	
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append(super.toString());
-		builder.append(" - Utilisateur (pseudo=");
+		builder.append("Utilisateur [pseudo=");
 		builder.append(pseudo);
-		builder.append(", admin=");
-		builder.append(admin);
 		builder.append(", nom=");
 		builder.append(nom);
 		builder.append(", prenom=");
@@ -112,11 +109,13 @@ public class Utilisateur {
 		builder.append(email);
 		builder.append(", telephone=");
 		builder.append(telephone);
+		builder.append(", motDePasse=");
+		builder.append(motDePasse);
 		builder.append(", credit=");
 		builder.append(credit);
-		builder.append(", admin=");
-		builder.append(admin);
-		builder.append(") ");
+		builder.append(", administrateur=");
+		builder.append(isAdministrateur());
+		builder.append("]");
 		return builder.toString();
 	}
 
