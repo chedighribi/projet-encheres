@@ -6,10 +6,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import fr.eni.encheres.bo.ArticleAVendre;
+import fr.eni.encheres.bo.Categorie;
 
 @Repository
 public class ArticleAVendreDAOImpl implements ArticleAVendreDAO{
@@ -28,6 +30,12 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO{
 			+ "      ,no_adresse_retrait\r\n"
 			+ "  FROM ARTICLES_A_VENDRE WHERE statut_enchere = 1";
 	
+	private String REQ_INSERT_ARTICLE="INSERT INTO ARTICLES_A_VENDRE "
+			+ "(no_article,nom_article,description,photo,date_debut_encheres,date_fin_encheres,statut_enchere,prix_initial,"
+			+ "prix_vente,id_utilisateur,no_categorie,no_adresse_retrait)"
+			+ "VALUES (:idArticle, :nomArticle, :description, :dateDebutEncheres, :dateFinEncheres, :statut, :prixInit, :prixVente, :idUtilisateur,"
+			+ ":idCategorie, :idAdresse)";
+	
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
 	
@@ -35,6 +43,26 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO{
 	public List<ArticleAVendre> findAll() {
 		
 		return jdbcTemplate.query(REQ_ARTICLES, new ArticleAVendreRowMapper());
+	}
+	
+	@Override
+	public void insertArticle(ArticleAVendre articleAVendre) {
+		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+		namedParameters.addValue(":idArticle", articleAVendre.getId());
+		namedParameters.addValue(":nomArticle", articleAVendre.getNom());
+		namedParameters.addValue(":description", articleAVendre.getDescription());
+		//a changer une fois la partie photo mis en place
+		//namedParameters.addValue(":photo", articleAVendre.getId());
+		namedParameters.addValue(":dateDebutEncheres", articleAVendre.getDateDebutEncheres());
+		namedParameters.addValue(":dateFinEncheres", articleAVendre.getDateFinEncheres());
+		namedParameters.addValue(":statut", articleAVendre.getStatut());
+		namedParameters.addValue(":prixInit", articleAVendre.getPrixInitial());
+		namedParameters.addValue(":prixVente", articleAVendre.getPrixVente());
+		namedParameters.addValue(":idUtilisateur", articleAVendre.getUtilisateur().getPseudo());
+		namedParameters.addValue(":idCategorie", articleAVendre.getCategorie().getId());
+		namedParameters.addValue(":idAdresse", articleAVendre.getAdresse().getId());
+		
+		
 	}
 	
 	class ArticleAVendreRowMapper implements RowMapper<ArticleAVendre> {
@@ -54,6 +82,7 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO{
 			/*
 			a.setUtilisateur(null);
 			a.setAdresse(null);
+			
 			a.setCategorie(null);
 			// Association pour le réalisateur
 			Participant realisateur = new Participant();
@@ -70,5 +99,7 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO{
 			return a;
 		}
 	}
+
+	
 
 }
