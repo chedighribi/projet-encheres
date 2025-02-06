@@ -44,7 +44,7 @@ public class SecurityConfig {
 		});
 		http.formLogin(form -> {
 			form.loginPage("/login").permitAll()
-			.defaultSuccessUrl("/profil/session");
+			.defaultSuccessUrl("/profil/session").permitAll();
 			});
 		http.logout(logout -> logout
 				.invalidateHttpSession(true)
