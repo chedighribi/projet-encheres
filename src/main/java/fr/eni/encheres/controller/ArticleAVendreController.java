@@ -11,10 +11,10 @@ import fr.eni.encheres.bo.ArticleAVendre;
 
 @Controller
 @RequestMapping("/articles")
-public class ArticleController {
+public class ArticleAVendreController {
 	private ArticleAVendreService articleAVendreService;
 
-	public ArticleController(ArticleAVendreService articleAVendreService) {
+	public ArticleAVendreController(ArticleAVendreService articleAVendreService) {
 		this.articleAVendreService = articleAVendreService;
 	}
 
