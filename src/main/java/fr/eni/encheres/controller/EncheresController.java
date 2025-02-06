@@ -13,7 +13,6 @@ import fr.eni.encheres.bo.ArticleAVendre;
 @Controller
 @RequestMapping("/encheres")
 public class EncheresController {
-	
 
 	private ArticleAVendreService articleAVendreService;
 
@@ -33,6 +32,4 @@ public class EncheresController {
 		return "view-article-creer";
 	}
 	
-
-
 }

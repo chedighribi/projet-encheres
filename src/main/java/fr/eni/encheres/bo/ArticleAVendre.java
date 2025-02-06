@@ -1,8 +1,13 @@
 package fr.eni.encheres.bo;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class ArticleAVendre {
+public class ArticleAVendre implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private long id;
 	private String nom;
 	private String description;
@@ -33,7 +38,7 @@ public class ArticleAVendre {
 		this.prixInitial = prixInitial;
 		this.prixVente = prixVente;
 		this.utilisateur = utilisateur;
-		this.categorie = categorie;
+		this.categorie=categorie;
 		this.adresse = adresse;
 		this.vendeur = vendeur;
 	}
