@@ -20,7 +20,7 @@ import fr.eni.encheres.exceptions.BusinessException;
 
 @Controller
 @RequestMapping("/articles")
-@SessionAttributes({"CategoriesEnSession"})
+@SessionAttributes({"CategoriesEnSession", "membreEnSession"})
 public class ArticleAVendreController {
 	private ArticleAVendreService articleAVendreService;
 
@@ -41,7 +41,7 @@ public class ArticleAVendreController {
 			ArticleAVendre article = articleAVendreService.consulerArticleParId(id);
 			if (article != null) {
 				model.addAttribute("article", article);
-				return "view-detail-vente";
+				return "view-article-detail";
 			} else
 				System.out.println("id invalide");
 		} else {

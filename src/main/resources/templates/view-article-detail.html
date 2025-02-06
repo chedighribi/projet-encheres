@@ -1,0 +1,81 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	data-th-replace="~{layouts/layout :: layout-enchere( 
+					titrePage=~{:: title},
+					contenuPage=~{:: main},
+					ressourcesSupp=~{:: #ressources-css}
+					)}">
+
+<head>
+<title data-th-text="Detail"></title>
+<th:block id="ressources-css">
+	<link rel="stylesheet" data-th-href="@{/css/Encheres.css}" />
+</th:block>
+</head>
+<body>
+	<main class="center-main">
+		<div class="centred " data-th-object="${article}">
+			<h1>Détail d'une vente</h1>
+			<div class="container-info">
+				<div>
+					<p>
+						<span class="label">Article :</span> <span data-th-text="*{nom}"></span>
+					</p>
+
+					<p>
+						<span class="label">Catégorie :</span> <span>à faire</span>
+					</p>
+
+					<p>
+						<span class="label">Description :</span> <span
+							data-th-text="*{description}"></span>
+					</p>
+
+				</div>
+				<div>
+					<p>
+						<span class="label">Mise à prix :</span> <span
+							data-th-text="*{prixInitial}"></span>
+					</p>
+
+					<p>
+						<span class="label">Meilleure offre :</span> <span
+							data-th-text="*{statut}"></span>
+					</p>
+
+					<p>
+						<span class="label">Fin de l'enchère :</span> <span
+							data-th-text="*{dateFinEncheres}">01/06/202X</span>
+					</p>
+				</div>
+				<div>
+					<p>
+						<span class="label">Retrait :</span> <span>à faire</span>
+					</p>
+
+					<p>
+						<span class="label">Vendeur :</span> <span
+							data-th-text="*{vendeur.nom}"></span>
+					</p>
+					<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
+						<span data-th-text="'['+ ${membreEnSession.pseudo}+']'"></span>
+						<form data-th-action="@{/enchaire}" method="post">
+							<label for="inputEnchere"> <span class="label">Mon
+									enchère: </span></label> <input type="number" id="inputEnchere" min="1" />
+							<!-- add enchaire to model -->
+							<!-- data-th-field="*{montant}"  -->
+						</form>
+
+					</th:block>
+
+
+				</div>
+
+
+			</div>
+			<a href="/" class="validation-button">Retour</a>
+
+		</div>
+
+	</main>
+</body>
+</html>

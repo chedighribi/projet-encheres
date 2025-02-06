@@ -88,7 +88,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	}
 
 	@Override
-	public List<Utilisateur> findByEmail(String email) {
+	public Utilisateur findByEmail(String email) {
 		System.out.println("BLL findByEmail");
 		return utilisateurDAO.read(email);
 	}
@@ -101,9 +101,9 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		BusinessException be = new BusinessException();
 		if (this.isPseudoDisponible(utilisateur.getPseudo(), be)) {
 			System.out.println("Pseudo disponible !");
-			List<Utilisateur> utilisateurAvecEmailIdentique = utilisateurDAO.read(utilisateur.getEmail());
+			Utilisateur utilisateurAvecEmailIdentique = utilisateurDAO.read(utilisateur.getEmail());
 			System.out.println(utilisateurAvecEmailIdentique);
-			if (utilisateurAvecEmailIdentique == null || utilisateurAvecEmailIdentique.isEmpty()) {
+			if (utilisateurAvecEmailIdentique == null) {
 				System.out.println("utilisateurAvecEmailIdentique est vide");
 				utilisateurDAO.create(utilisateur);
 			}

@@ -9,7 +9,7 @@ public interface UtilisateurService {
 	Utilisateur consulterUtilisateurParPseudo(String pseudo);
 	List<Utilisateur> consulterUtilisateurs();
 	
-	List<Utilisateur> findByEmail(String email);
+	Utilisateur findByEmail(String email);
 	
 	public void add(Utilisateur utilisateur);
 }
