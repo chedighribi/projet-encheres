@@ -39,12 +39,13 @@ public class SecurityConfig {
 			.requestMatchers("/profil*").permitAll()
 			.requestMatchers("/profil/modifier").permitAll()
 			.requestMatchers("/profil/creer").permitAll()
+			.requestMatchers("/profil/session").permitAll()
 			.requestMatchers("/encheres/*").permitAll()
 	        .anyRequest().authenticated();
 		});
 		http.formLogin(form -> {
 			form.loginPage("/login").permitAll()
-			.defaultSuccessUrl("/profil/session");
+			.defaultSuccessUrl("/profil/session").permitAll();
 			});
 		http.logout(logout -> logout
 				.invalidateHttpSession(true)
