@@ -18,8 +18,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	private final String FIND_BY_PSEUDO = "SELECT pseudo, email, nom, prenom, administrateur, telephone, credit FROM utilisateurs WHERE pseudo = :pseudo";
 	private final String FIND_BY_EMAIL = "SELECT pseudo, email, nom, prenom, administrateur, telephone, credit FROM utilisateurs WHERE email = :email";
 	private final String FIND_ALL = "SELECT pseudo, email, nom, prenom, administrateur, telephone, credit FROM utilisateurs";
-	private final String FIND_PSEUDO = "SELECT pseudo FROM utilisateurs WHERE pseudo = :pseudo";
-	private final String INSERT = "INSERT INTO utilisateurs (pseudo, email, nom, prenom, administrateur, telephone, credit)";
+	private final String INSERT = "INSERT INTO utilisateurs (pseudo, email, nom, prenom, administrateur, telephone, credit, mot_de_passe)";
 	private final String COUNT_PSEUDO = "SELECT COUNT(pseudo) FROM utilisateurs WHERE pseudo = :pseudo";
 	
 	
@@ -28,6 +27,8 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 
 	@Override
 	public void create(Utilisateur utilisateur) {
+		System.out.println(" DAO utilisateur create");
+		System.out.println(utilisateur);
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 		namedParameters.addValue("pseudo", utilisateur.getPseudo());

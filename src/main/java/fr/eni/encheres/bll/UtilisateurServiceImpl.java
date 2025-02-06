@@ -103,7 +103,8 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 			System.out.println("Pseudo disponible !");
 			List<Utilisateur> utilisateurAvecEmailIdentique = utilisateurDAO.read(utilisateur.getEmail());
 			System.out.println(utilisateurAvecEmailIdentique);
-			if (utilisateurAvecEmailIdentique == null) {
+			if (utilisateurAvecEmailIdentique == null || utilisateurAvecEmailIdentique.isEmpty()) {
+				System.out.println("utilisateurAvecEmailIdentique est vide");
 				utilisateurDAO.create(utilisateur);
 			}
 		};
