@@ -6,4 +6,5 @@ import fr.eni.encheres.bo.ArticleAVendre;
 
 public interface ArticleAVendreDAO {
 	List<ArticleAVendre> findAll();
+	ArticleAVendre find(long id);
 }

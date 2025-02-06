@@ -42,14 +42,14 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 
 	// need to check if we manage the id and add read with pseudo
 	@Override
-	public Utilisateur read(long id) {
+	public Utilisateur findByPseudo(String pseudo) {
 		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-		namedParameters.addValue("id", id);
-		return jdbcTemplate.queryForObject(FIND_BY_ID, namedParameters, new BeanPropertyRowMapper<>(Utilisateur.class));
+		namedParameters.addValue("pseudo", pseudo);
+		return jdbcTemplate.queryForObject(FIND_PSEUDO, namedParameters, new BeanPropertyRowMapper<>(Utilisateur.class));
 	}
 
 	@Override
-	public Utilisateur read(String email) {
+	public Utilisateur findByEmail(String email) {
 		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 		namedParameters.addValue("email", email);
 		return jdbcTemplate.queryForObject(FIND_BY_EMAIL, namedParameters,
@@ -66,15 +66,6 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 		namedParameters.addValue("pseudo", pseudo);
 		return jdbcTemplate.queryForObject(FIND_PSEUDO, namedParameters, String.class);
-	}
-
-	@Override
-	public Utilisateur findByEmail(String email) {
-		System.out.println("DAO findByEmail");
-		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-		namedParameters.addValue("email", email);
-		return jdbcTemplate.queryForObject(FIND_BY_EMAIL, namedParameters,
-				new BeanPropertyRowMapper<>(Utilisateur.class));
 	}
 
 }
