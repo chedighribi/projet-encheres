@@ -76,7 +76,7 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO{
 		namedParameters.addValue(":prixVente", articleAVendre.getPrixVente());
 		namedParameters.addValue(":idUtilisateur", articleAVendre.getUtilisateur().getPseudo());
 		namedParameters.addValue(":idCategorie", articleAVendre.getCategorie().getId());
-		namedParameters.addValue(":idAdresse", articleAVendre.getAdresse().getId());
+		namedParameters.addValue(":idAdresse", articleAVendre.getAdresse().getNoAdresse());
 		
 		
 	}

@@ -8,7 +8,7 @@
 
 <head>
 <!-- Accueil comme titre de page -->
-<title data-th-text="#{profile.new.title}"></title>
+<title data-th-text="#{Profile.titreForm.creer}"></title>
 
 <th:block id="ressources-css">
 	<link rel="stylesheet" data-th-href="@{/css/profil.css}">
@@ -16,7 +16,7 @@
 </head>
 <body>
 	<main>
-		<div data-th-replace="~{fragments/fragment-profil-form :: frag-profil-form('/profil/creer', #{profile.new.title})}"></div>	
+		<div data-th-replace="~{fragments/fragment-profil-form :: frag-profil-form('creer')}"></div>	
 	</main>
 </body>
 </html>

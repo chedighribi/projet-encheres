@@ -1,9 +1,9 @@
 <form xmlns:th="http://www.thymeleaf.org" 
-		data-th-fragment="frag-profil-form(action, titreForm)"
-		data-th-action="@{${action}}" 
+		data-th-fragment="frag-profil-form(action)"
+		data-th-action="@{/profil/__${action}__}" 
 		data-th-object="${personne}" method="post">
 		
-		<h1 data-th-text="${titreForm}" ></h1>
+		<h1 data-th-text="#{Profile.titreForm.__${action}__}"></h1>
 		<div data-th-replace="~{fragments/errors/fragment-errors :: frag-errors}"></div>
 	
 		<ul class="flex-outer list-group">
