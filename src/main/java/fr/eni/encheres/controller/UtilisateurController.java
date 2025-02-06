@@ -15,7 +15,7 @@ import fr.eni.encheres.bll.UtilisateurService;
 import fr.eni.encheres.bo.Utilisateur;
 
 @Controller
-@RequestMapping("/profil")
+@RequestMapping({"/","/profil"})
 @SessionAttributes("membreEnSession")
 public class UtilisateurController {
 
