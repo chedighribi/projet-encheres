@@ -1,8 +1,13 @@
 package fr.eni.encheres.bo;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class ArticleAVendre {
+public class ArticleAVendre implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private long id;
 	private String nom;
 	private String description;
@@ -20,8 +25,7 @@ public class ArticleAVendre {
 	}
 
 	public ArticleAVendre(long id, String nom, String description, LocalDate dateDebutEncheres,
-			LocalDate dateFinEncheres, int statut, int prixInitial, int prixVente, Utilisateur utilisateur,
-			Categorie categorie, Adresse adresse) {
+			LocalDate dateFinEncheres, int statut, int prixInitial, int prixVente, Utilisateur utilisateur, Adresse adresse) {
 		super();
 		this.id = id;
 		this.nom = nom;
@@ -32,7 +36,6 @@ public class ArticleAVendre {
 		this.prixInitial = prixInitial;
 		this.prixVente = prixVente;
 		this.utilisateur = utilisateur;
-		this.categorie = categorie;
 		this.adresse = adresse;
 	}
 
