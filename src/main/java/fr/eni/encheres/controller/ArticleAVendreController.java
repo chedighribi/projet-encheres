@@ -72,7 +72,6 @@ public class ArticleAVendreController {
 		System.out.println("Article créer: " + articleAVendre);
 		System.out.println(bindingResult);
 		if (!bindingResult.hasErrors()) {
-			System.out.println("BindingResult: ok");
 			try {
 				articleAVendreService.creerArticle(articleAVendre);
 				return "redirect:/articles";
@@ -84,7 +83,7 @@ public class ArticleAVendreController {
 				});
 			}
 	}
-		return "view-articles";
+		return "redirect:/articles";
 	}
 	
 	@ModelAttribute("CategoriesEnSession")
