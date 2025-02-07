@@ -84,6 +84,7 @@ public class UtilisateurController {
 		System.out.println(aCharger);
 		if (aCharger != null) {
 			membreEnSession.setPseudo(aCharger.getPseudo());
+			membreEnSession.setCredit(aCharger.getCredit());
 
 		}
 		System.out.println("___________________");

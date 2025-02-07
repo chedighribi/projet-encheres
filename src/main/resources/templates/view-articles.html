@@ -26,7 +26,8 @@
 						class="select-box">
 						<option>Toutes</option>
 					</select>
-					<th:block data-th-if="${#authorization.expression('hasRole(''USER'')')}">
+					<th:block
+						data-th-if="${#authorization.expression('hasRole(''USER'')')}">
 						<div class="filtres-radios">
 							<div class="filtres-radio">
 								<input type="radio" id="achats" name="type" checked> <label
@@ -57,26 +58,33 @@
 		<section class="cards">
 			<div class="card mb-8" style="max-width: 540px;"
 				data-th-each="article : ${articles}">
-				<div class="row g-0">
-					<div class="col-md-4">
-						<img src="" class="img-fluid rounded-start" alt="Image de l'article">
-					</div>
-					<div class="col-md-8">
-						<div class="card-body">
-							<h5 class="card-title" data-th-text="${article.nom}">Titre
-								Article</h5>
-							<th:block th:if="${article.prixVente == 0}">
-								<p class="card-text" data-th-text="${article.prixInitial} + ' point(s)'">Prix</p>
-							</th:block>
-							<th:block th:unless="${article.prixVente == 0}">
-								<p class="card-text" data-th-text="${article.prixVente} + ' point(s)'">Prix</p>
-							</th:block>
+				<a data-th-href="@{/articles/detail(id=${article.id})}"
+					style="text-decoration: none; color: inherit;">
+					<div class="row g-0">
+						<div class="col-md-4">
+							<img src="" class="img-fluid rounded-start"
+								alt="Image de l'article">
+						</div>
+						<div class="col-md-8">
+							<div class="card-body">
+								<h5 class="card-title" data-th-text="${article.nom}">Titre
+									Article</h5>
+								<th:block th:if="${article.prixVente == 0}">
+									<p class="card-text"
+										data-th-text="${article.prixInitial} + ' point(s)'">Prix</p>
+								</th:block>
+								<th:block th:unless="${article.prixVente == 0}">
+									<p class="card-text"
+										data-th-text="${article.prixVente} + ' point(s)'">Prix</p>
+								</th:block>
 
-							<p class="card-text" data-th-text="${article.dateFinEncheres}">Fin de l'enchère</p>
-							<p class="card-text">Vendeur</p>
+								<p class="card-text" data-th-text="${article.dateFinEncheres}">Fin
+									de l'enchère</p>
+								<p class="card-text">Vendeur</p>
+							</div>
 						</div>
 					</div>
-				</div>
+				</a>
 			</div>
 		</section>
 	</main>
