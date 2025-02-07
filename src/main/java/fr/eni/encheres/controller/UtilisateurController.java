@@ -28,7 +28,7 @@ public class UtilisateurController {
 		this.utilisateurService = utilisateurService;
 	}
 
-	@GetMapping
+	@GetMapping("/profil")
 	String afficherProfil(@ModelAttribute("membreEnSession") Utilisateur membreEnSession, Model model) {
 		System.out.println("afficherProfil");
 		Utilisateur utilisateur = utilisateurService.consulterUtilisateurParPseudo(membreEnSession.getPseudo());
