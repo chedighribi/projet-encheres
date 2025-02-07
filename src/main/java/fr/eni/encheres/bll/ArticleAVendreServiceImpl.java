@@ -1,5 +1,6 @@
 package fr.eni.encheres.bll;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -13,16 +14,23 @@ import fr.eni.encheres.dal.CategorieDAO;
 import fr.eni.encheres.bo.Utilisateur;
 import fr.eni.encheres.dal.UtilisateurDAO;
 
+import fr.eni.encheres.dal.AdresseDAO;
+
+import fr.eni.encheres.exceptions.BusinessException;
+import fr.eni.encheres.exceptions.BusinessCode;
+
 @Service
 public class ArticleAVendreServiceImpl implements ArticleAVendreService{
 	private ArticleAVendreDAO ArticleAVendreDAO;
 	private UtilisateurDAO utilisateurDAO;
 	private CategorieDAO CategorieDAO;
+	private AdresseDAO AdresseDAO;
 
-	public ArticleAVendreServiceImpl(ArticleAVendreDAO ArticleAVendreDAO, UtilisateurDAO utilisateurDAO, CategorieDAO CategorieDAO) {
+	public ArticleAVendreServiceImpl(ArticleAVendreDAO ArticleAVendreDAO, UtilisateurDAO utilisateurDAO, CategorieDAO CategorieDAO,AdresseDAO AdresseDAO) {
 		this.ArticleAVendreDAO = ArticleAVendreDAO;
 		this.CategorieDAO=CategorieDAO;
 		this.utilisateurDAO = utilisateurDAO;
+		this.AdresseDAO=AdresseDAO;
 	}
 	
 	@Override
@@ -61,13 +69,49 @@ public class ArticleAVendreServiceImpl implements ArticleAVendreService{
 	}
 
 	@Override
-	public List<Adresse> consulterAdresse() {
-		return null;
+	public List<Adresse> consulterAdresses() {
+		return AdresseDAO.findAll();
 	}
 
 	@Override
 	public Adresse consulterAdresseParId(long id) {
-		return null;
+		return AdresseDAO.read(id);
+	}
+	
+	public boolean validerArticle(ArticleAVendre article, BusinessException be) {
+		if(article == null) {
+			be.add(BusinessCode.VALIDATION_ARTICLE_NULL);
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean validerCategorie(Categorie categorie, BusinessException be) {
+		return false;
+	}
+	
+	public boolean validerDescription(String decription, BusinessException be) {
+		return false;
+	}
+	
+	public boolean validerAdresse(Adresse adresse, BusinessException be) {
+		return false;
+	}
+	
+	public boolean validerPrixInitial(int prix, BusinessException be) {
+		return false;
+	}
+	
+	public boolean validerDateDebutEnchere(LocalDate dateDebut, BusinessException be) {
+		return false;
+	}
+	
+	public boolean validerDateFinEnchere(LocalDate dateFin, BusinessException be) {
+		return false;
+	}
+	
+	public boolean validerDates() {
+		return false;
 	}
 
 	
