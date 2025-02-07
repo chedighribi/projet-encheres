@@ -39,12 +39,9 @@ public class SecurityConfig {
 			.requestMatchers("/profil*").permitAll()
 			.requestMatchers("/profil/modifier").permitAll()
 			.requestMatchers("/profil/creer").permitAll()
-<<<<<<< HEAD
 			.requestMatchers("/articles/*").permitAll()
-=======
 			.requestMatchers("/profil/session").permitAll()
 			.requestMatchers("/encheres/*").permitAll()
->>>>>>> 280e9dc4668818f19c4beadef74cdc98ae618f0d
 	        .anyRequest().authenticated();
 		});
 		http.formLogin(form -> {
