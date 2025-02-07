@@ -29,10 +29,13 @@ public class UtilisateurController {
 	}
 
 	@GetMapping
-	String afficherProfil(Model model) {
-		System.out.println("passe");
-		
-		return "view-encheres";
+	String afficherProfil(@ModelAttribute("membreEnSession") Utilisateur membreEnSession, Model model) {
+		System.out.println("afficherProfil");
+		Utilisateur utilisateur = utilisateurService.consulterUtilisateurParPseudo(membreEnSession.getPseudo());
+		System.out.println("---------------------");
+		System.out.println(utilisateur);
+		model.addAttribute(utilisateur);
+		return "view-profil";
 	}
 	
 	@GetMapping("/creer")

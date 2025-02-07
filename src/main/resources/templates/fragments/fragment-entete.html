@@ -14,13 +14,20 @@
 	</section>
 	<nav>
 		<ul>
-			<li><a href="/articles">Accueil</a></li>
-
-
-			<li><a href="/login">S'inscrire - Se connecter</a></li>
-
-			<li><a href="/profil/modifier">test</a></li>
-
+			<li><a href="/articles" data-th-text="#{Menu.accueil}"></a></li>
+			
+			<th:block data-th-if="${!#authorization.expression('isAuthenticated()')}">
+				<li><a href="/login" data-th-text="#{Menu.login}"></a></li>
+			</th:block>
+			
+			<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
+				<li><a href="/articles" data-th-text="#{Menu.vendreArticle}"></a></li>
+				
+				<li><a href="/profil" data-th-text="#{Menu.profil}"></a></li>
+				
+				<li><a href="/logout" data-th-text="#{Menu.logout}"></a></li>
+			</th:block>
+			
 			<li><a href="/profil/creer">test2</a></li>
 		</ul>
 	</nav>
