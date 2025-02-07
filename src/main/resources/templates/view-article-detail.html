@@ -44,7 +44,7 @@
 
 					<p>
 						<span class="label">Fin de l'enchère :</span> <span
-							data-th-text="*{dateFinEncheres}">01/06/202X</span>
+							data-th-text="*{dateFinEncheres}"></span>
 					</p>
 				</div>
 				<div>
@@ -54,13 +54,15 @@
 
 					<p>
 						<span class="label">Vendeur :</span> <span
-							data-th-text="*{vendeur.nom}"></span>
+							data-th-text="*{vendeur.pseudo}"></span>
 					</p>
-					<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
-						<span data-th-text="'['+ ${membreEnSession.pseudo}+']'"></span>
+					<th:block
+						data-th-if="${membreEnSession.pseudo} != *{vendeur.pseudo}">
 						<form data-th-action="@{/enchaire}" method="post">
 							<label for="inputEnchere"> <span class="label">Mon
-									enchère: </span></label> <input type="number" id="inputEnchere" min="1" />
+									enchère: </span></label> <input type="number" id="inputEnchere" onkeydown="return false;" data-th-min="*{statut + 1}" data-th-max="${membreEnSession.credit}" data-th-value="*{statut + 1}"/> <a
+								href="/" class="validation-button-sm">Encherir</a>
+
 							<!-- add enchaire to model -->
 							<!-- data-th-field="*{montant}"  -->
 						</form>

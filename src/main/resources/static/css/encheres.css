@@ -115,3 +115,15 @@
 	color: black;
 	margin: 0 auto;
 }
+.validation-button-sm {
+	padding: 7px 20px;
+	border: 2px solid black;
+	background-color: white;
+	cursor: pointer;
+	text-align: center;
+	text-transform: uppercase;
+	letter-spacing: .09em;
+	text-decoration: none;
+	color: black;
+	margin: 0 auto;
+}

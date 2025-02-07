@@ -6,7 +6,8 @@
 				data-th-src="@{/images/logo-auction.png}"><span
 				data-th-text="Eni-Encheres"></span></a>
 
-			<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
+			<th:block
+				data-th-if="${#authorization.expression('isAuthenticated()')}">
 				<span data-th-text="'['+ ${membreEnSession.pseudo}+']'"></span>
 			</th:block>
 
@@ -16,8 +17,15 @@
 		<ul>
 			<li><a href="/articles">Accueil</a></li>
 
+			<th:block
+				data-th-if="${!#authorization.expression('isAuthenticated()')}">
+				<li><a href="/login">S'inscrire - Se connecter</a></li>
+			</th:block>
+			<th:block
+				data-th-if="${#authorization.expression('isAuthenticated()')}">
+				<li><a href="logout">Se déconnecter</a></li>
+			</th:block>
 
-			<li><a href="/login">S'inscrire - Se connecter</a></li>
 
 			<li><a href="/profil/modifier">test</a></li>
 
