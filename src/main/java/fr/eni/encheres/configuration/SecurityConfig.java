@@ -35,11 +35,11 @@ public class SecurityConfig {
 			.requestMatchers("/css/*").permitAll()
 			.requestMatchers("/js/*").permitAll()
 			.requestMatchers("/images/*").permitAll()
-			.requestMatchers("/encheres").permitAll()
+			.requestMatchers("/articles").permitAll()
 			.requestMatchers("/profil*").permitAll()
 			.requestMatchers("/profil/modifier").permitAll()
 			.requestMatchers("/profil/creer").permitAll()
-			.requestMatchers("/encheres/*").permitAll()
+			.requestMatchers("/articles/*").permitAll()
 	        .anyRequest().authenticated();
 		});
 		http.formLogin(form -> {
