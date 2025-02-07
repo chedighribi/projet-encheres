@@ -42,7 +42,7 @@ public class AdresseDAOImpl implements AdresseDAO {
 		System.out.println("DAO utilisateur findpseudo");
 		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 		namedParameters.addValue("no_adresse", noAdresse);
-		return jdbcTemplate.queryForObject(FIND_BY_ID, namedParameters, Adresse.class);
+		return jdbcTemplate.queryForObject(FIND_BY_ID, namedParameters, new BeanPropertyRowMapper<>(Adresse.class));
 	}
 
 	@Override
