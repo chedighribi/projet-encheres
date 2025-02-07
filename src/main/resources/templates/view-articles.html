@@ -27,7 +27,7 @@
 						<option>Toutes</option>
 					</select>
 					<th:block
-						data-th-if="${#authorization.expression('hasRole(''USER'')')}">
+						data-th-if="${#authorization.expression('isAuthenticated()')}">
 						<div class="filtres-radios">
 							<div class="filtres-radio">
 								<input type="radio" id="achats" name="type" checked> <label
