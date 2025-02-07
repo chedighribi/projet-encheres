@@ -3,22 +3,43 @@ package fr.eni.encheres.bo;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 public class ArticleAVendre implements Serializable{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	@NotNull
 	private long id;
+	@NotBlank
+	@Size(min=3, max=100)
 	private String nom;
+	@NotBlank
+	@Size(max=250)
 	private String description;
+	@NotNull
+	@FutureOrPresent
 	private LocalDate dateDebutEncheres;
+	@NotNull
+	@Future
 	private LocalDate dateFinEncheres;
+	@NotNull
 	private int statut;
+	@NotNull
+	@Min(value=1)
 	private int prixInitial;
 	private int prixVente;
-	private Utilisateur utilisateur;
+	@NotNull
 	private Categorie categorie;
+	@NotNull
 	private Adresse adresse;
+	//@NotNull
 	private Utilisateur vendeur;
 
 	public ArticleAVendre() {
@@ -26,7 +47,7 @@ public class ArticleAVendre implements Serializable{
 	}
 
 	public ArticleAVendre(long id, String nom, String description, LocalDate dateDebutEncheres,
-			LocalDate dateFinEncheres, int statut, int prixInitial, int prixVente, Utilisateur utilisateur,
+			LocalDate dateFinEncheres, int statut, int prixInitial, int prixVente, 
 			Categorie categorie, Adresse adresse, Utilisateur vendeur) {
 		super();
 		this.id = id;
@@ -37,7 +58,6 @@ public class ArticleAVendre implements Serializable{
 		this.statut = statut;
 		this.prixInitial = prixInitial;
 		this.prixVente = prixVente;
-		this.utilisateur = utilisateur;
 		this.categorie=categorie;
 		this.adresse = adresse;
 		this.vendeur = vendeur;
@@ -107,14 +127,6 @@ public class ArticleAVendre implements Serializable{
 		this.prixVente = prixVente;
 	}
 
-	public Utilisateur getUtilisateur() {
-		return utilisateur;
-	}
-
-	public void setUtilisateur(Utilisateur utilisateur) {
-		this.utilisateur = utilisateur;
-	}
-
 	public Categorie getCategorie() {
 		return categorie;
 	}
@@ -144,7 +156,7 @@ public class ArticleAVendre implements Serializable{
 	public String toString() {
 		return "ArticleAVendre [id=" + id + ", nom=" + nom + ", description=" + description + ", dateDebutEncheres="
 				+ dateDebutEncheres + ", dateFinEncheres=" + dateFinEncheres + ", statut=" + statut + ", prixInitial="
-				+ prixInitial + ", prixVEnte=" + prixVente + ", utilisateur=" + utilisateur + ", categorie=" + categorie
+				+ prixInitial + ", prixVEnte=" + prixVente + ", categorie=" + categorie
 				+ ", adresse=" + adresse + "]";
 	}
 	

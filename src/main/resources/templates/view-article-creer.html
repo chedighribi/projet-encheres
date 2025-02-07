@@ -18,13 +18,13 @@
 	    <h2>Nouvelle vente</h2>
 	        <form data-th-action="@{/articles/creer}" method="POST" data-th-object="${article}">
 		        <div class="form-groups">
-		        	<div class="groupe">
-			            <div class="form-group">
+		        	<div class="form-group">
+			            <div class="form-group-label">
 			                <label for="article">Article (*) :</label>
 			                <input type="text" id="article" name="article" data-th-field="*{nom}" required>
 			            </div>
 			
-			            <div class="form-group">
+			            <div class="form-group-label">
 			                <label for="categorie">Catégorie (*) :</label>
 			                <select id="categorie" name="categorie" data-th-field="*{categorie}" required>
 								<option data-th-each="categorie : ${CategoriesEnSession}"
@@ -34,30 +34,31 @@
 							</select>
 			            </div>
 			
-			            <div class="form-group">
+			            <div class="form-group-label">
 			                <label for="description">Description (*) :</label>
 			                <textarea id="description" name="description" data-th-field="*{description}" required></textarea>
 			            </div>
 			            
-			            <div class="form-group">
+			            <div class="form-group-label">
 			                <label for="retrait">Retrait (*) :</label>
 			                <select id="retrait" name="retrait" class="retrait" data-th-field="*{adresse}" required>
-			                	<option value="1"></option>
+			                	<option data-th-each="adresse : ${AdresseEnSession}" data-th-text="${adresse.rue}" data-th-value="${adresse.noAdresse}">
+			                	</option>
 			                </select>
 			            </div>
 		           	</div>
-		           	<div class="groupe">
-			            <div class="form-group">
+		           	<div class="form-group">
+			            <div class="form-group-label">
 			                <label for="prix">Mise à prix (*) :</label>
-			                <input type="number" id="prix" name="prix" min=1 data-th-field="*{prixVente}" required>
+			                <input type="number" id="prix" name="prix" min=1 data-th-field="*{prixInitial}" required>
 			            </div>
 			
-			            <div class="form-group">
+			            <div class="form-group-label">
 			                <label for="debut">Début de l'enchère (*) :</label>
-			                <input type="date" id="debut" name="debut" data-th-field="*{dateDebutEncheres}" required>
+			                <input type="date" id="debut" name="debut" data-th-min="*{dateDebutEncheres}" data-th-field="*{dateDebutEncheres}"  required>
 			            </div>
 			
-			            <div class="form-group">
+			            <div class="form-group-label">
 			                <label for="fin">Fin de l'enchère (*) :</label>
 			                <input type="date" id="fin" name="fin" data-th-field="*{dateFinEncheres}" required>
 			            </div>

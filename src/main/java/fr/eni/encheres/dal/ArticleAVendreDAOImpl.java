@@ -8,9 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import fr.eni.encheres.bo.Adresse;
 import fr.eni.encheres.bo.ArticleAVendre;
+import fr.eni.encheres.bo.Categorie;
 import fr.eni.encheres.bo.Utilisateur;
 
 @Repository
@@ -32,9 +36,9 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO{
 	
 
 	private String REQ_INSERT_ARTICLE="INSERT INTO ARTICLES_A_VENDRE "
-			+ "(no_article,nom_article,description,photo,date_debut_encheres,date_fin_encheres,statut_enchere,prix_initial,"
+			+ "(nom_article,description,date_debut_encheres,date_fin_encheres,statut_enchere,prix_initial,"
 			+ "prix_vente,id_utilisateur,no_categorie,no_adresse_retrait)"
-			+ "VALUES (:idArticle, :nomArticle, :description, :dateDebutEncheres, :dateFinEncheres, :statut, :prixInit, :prixVente, :idUtilisateur,"
+			+ "VALUES (:nomArticle, :description, :dateDebutEncheres, :dateFinEncheres, :statut, :prixInit, :prixVente, :idUtilisateur,"
 			+ ":idCategorie, :idAdresse)";
 
 	private String FIND_ONE =  "SELECT no_article\r\n"
@@ -63,22 +67,30 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO{
 	}
 	
 	@Override
-
 	public void insertArticle(ArticleAVendre articleAVendre) {
+		System.out.println("=========================ARTICLE A VENDRE=====================" + articleAVendre);
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+		
+		
 		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-		namedParameters.addValue(":idArticle", articleAVendre.getId());
-		namedParameters.addValue(":nomArticle", articleAVendre.getNom());
-		namedParameters.addValue(":description", articleAVendre.getDescription());
-		namedParameters.addValue(":dateDebutEncheres", articleAVendre.getDateDebutEncheres());
-		namedParameters.addValue(":dateFinEncheres", articleAVendre.getDateFinEncheres());
-		namedParameters.addValue(":statut", articleAVendre.getStatut());
-		namedParameters.addValue(":prixInit", articleAVendre.getPrixInitial());
-		namedParameters.addValue(":prixVente", articleAVendre.getPrixVente());
-		namedParameters.addValue(":idUtilisateur", articleAVendre.getUtilisateur().getPseudo());
-		namedParameters.addValue(":idCategorie", articleAVendre.getCategorie().getId());
-		namedParameters.addValue(":idAdresse", articleAVendre.getAdresse().getNoAdresse());
+		namedParameters.addValue("nomArticle", articleAVendre.getNom());
+		namedParameters.addValue("description", articleAVendre.getDescription());
+		namedParameters.addValue("dateDebutEncheres", articleAVendre.getDateDebutEncheres());
+		namedParameters.addValue("dateFinEncheres", articleAVendre.getDateFinEncheres());
+		namedParameters.addValue("statut", 1);
+		namedParameters.addValue("prixInit", articleAVendre.getPrixInitial());
+		namedParameters.addValue("prixVente", articleAVendre.getPrixVente());
+		namedParameters.addValue("idUtilisateur", articleAVendre.getVendeur().getPseudo());
+		namedParameters.addValue("idCategorie", articleAVendre.getCategorie().getId());
+		namedParameters.addValue("idAdresse", articleAVendre.getAdresse().getNoAdresse());
+
 		
 		
+		jdbcTemplate.update(REQ_INSERT_ARTICLE, namedParameters, keyHolder);
+		
+		if (keyHolder != null && keyHolder.getKey() != null) {
+			articleAVendre.setId(keyHolder.getKey().longValue());
+		}
 	}
 	
 
@@ -102,26 +114,20 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO{
 			a.setPrixInitial(rs.getInt("prix_initial"));
 			a.setPrixVente(rs.getInt("prix_vente"));
 			a.setStatut(rs.getInt("statut_enchere"));
+			
 		    Utilisateur vendeur = new Utilisateur();
 		    vendeur.setPseudo(rs.getString("id_utilisateur")); 
 		    a.setVendeur(vendeur);
-			/*
-			a.setUtilisateur(null);
-			a.setAdresse(null);
+		    
+		    Categorie categorie = new Categorie();
+		    categorie.setId(rs.getLong("no_categorie"));
+		    
+		    Adresse adresse = new Adresse();
+		    adresse.setNoAdresse(rs.getLong("no_adresse_retrait"));
+		    
+		    a.setCategorie(categorie);
+		    a.setAdresse(adresse);
 			
-			a.setCategorie(null);
-			// Association pour le réalisateur
-			Participant realisateur = new Participant();
-			realisateur.setId(rs.getLong("ID_REALISATEUR"));
-			f.setRealisateur(realisateur);
-
-			// Association pour le genre
-			Genre genre = new Genre();
-			genre.setId(rs.getLong("ID_GENRE"));
-			f.setGenre(genre);
-
-			return f;
-			*/
 			return a;
 		}
 	}

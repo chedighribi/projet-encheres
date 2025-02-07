@@ -39,6 +39,7 @@ public class SecurityConfig {
 			.requestMatchers("/encheres").permitAll()
 			.requestMatchers("/profil/modifier").permitAll()
 			.requestMatchers("/profil/creer").permitAll()
+			.requestMatchers("/articles/*").permitAll()
 			.requestMatchers("/profil/session").permitAll()
 			.requestMatchers("/encheres/*").permitAll()
 			
