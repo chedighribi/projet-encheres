@@ -1,7 +1,6 @@
 package fr.eni.encheres.controller;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -65,25 +64,31 @@ public class ArticleAVendreController {
 	}
 	
 	@PostMapping("/creer")
-	public String creerArticle(@Valid @ModelAttribute("article") ArticleAVendre articleAVendre, BindingResult bindingResult) {
-		Utilisateur user = new Utilisateur();
-		user.setPseudo("coach_admin");
-		articleAVendre.setVendeur(user);
-		System.out.println("Article créer: " + articleAVendre);
-		System.out.println(bindingResult);
-		if (!bindingResult.hasErrors()) {
-			try {
-				articleAVendreService.creerArticle(articleAVendre);
-				return "redirect:/articles";
-			} catch (BusinessException e) {
-				System.err.println(e.getClefsExternalisations());
-				e.getClefsExternalisations().forEach(key -> {
-					ObjectError error = new ObjectError("globalError", key);
-					bindingResult.addError(error);
-				});
+	public String creerArticle(@Valid @ModelAttribute("article") ArticleAVendre articleAVendre, BindingResult bindingResult, @ModelAttribute("membreEnSession") Utilisateur user) {
+		if (user != null && user.getPseudo().length() >= 1) {
+			articleAVendre.setVendeur(user);
+			System.out.println("Article créer: " + articleAVendre);
+			System.out.println(bindingResult);
+			if (!bindingResult.hasErrors()) {
+				try {
+					articleAVendreService.creerArticle(articleAVendre);
+					return "redirect:/articles";
+				} catch (BusinessException e) {
+					System.err.println(e.getClefsExternalisations());
+					e.getClefsExternalisations().forEach(key -> {
+						ObjectError error = new ObjectError("globalError", key);
+						bindingResult.addError(error);
+					});
+				}
 			}
-	}
-		return "redirect:/articles";
+		}/*else {
+			
+			System.out.println("Aucun administrateur en session");
+			ObjectError error = new ObjectError("globalError", BusinessCode.VALIDATION_MEMBRE_ADMIN);
+			bindingResult.addError(error);
+			
+		}*/
+		return "view-article-creer";
 	}
 	
 	@ModelAttribute("CategoriesEnSession")
