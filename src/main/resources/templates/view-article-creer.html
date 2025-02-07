@@ -9,6 +9,7 @@
 	<title data-th-text="Encheres"></title>
 	<th:block id="ressources-css">
 		<link rel="stylesheet" href="/css/creerArticle.css">
+		<link rel="stylesheet" href="/css/tp-error.css">
 	</th:block>
 </head>
 <body>
@@ -21,7 +22,10 @@
 		        	<div class="form-group">
 			            <div class="form-group-label">
 			                <label for="article">Article (*) :</label>
-			                <input type="text" id="article" name="article" data-th-field="*{nom}" required>
+			                <input type="text" id="article" name="article" data-th-field="*{nom}" >
+			                <th:block data-th-if="${!#strings.isEmpty('/articles/creer')}">
+								<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('nom')}"></div>
+							</th:block>	
 			            </div>
 			
 			            <div class="form-group-label">
@@ -32,11 +36,17 @@
 									        data-th-value="${categorie.id}">
 									</option>
 							</select>
+							<th:block data-th-if="${!#strings.isEmpty('/articles/creer')}">
+								<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('categorie')}"></div>
+							</th:block>	
 			            </div>
 			
 			            <div class="form-group-label">
 			                <label for="description">Description (*) :</label>
 			                <textarea id="description" name="description" data-th-field="*{description}" required></textarea>
+			                <th:block data-th-if="${!#strings.isEmpty('/articles/creer')}">
+								<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('description')}"></div>
+							</th:block>	
 			            </div>
 			            
 			            <div class="form-group-label">
@@ -45,23 +55,35 @@
 			                	<option data-th-each="adresse : ${AdresseEnSession}" data-th-text="${adresse.rue}" data-th-value="${adresse.noAdresse}">
 			                	</option>
 			                </select>
+			                <th:block data-th-if="${!#strings.isEmpty('/articles/creer')}">
+								<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('adresse')}"></div>
+							</th:block>	
 			            </div>
 		           	</div>
 		           	<div class="form-group">
 			            <div class="form-group-label">
 			                <label for="prix">Mise à prix (*) :</label>
 			                <input type="number" id="prix" name="prix" min=1 data-th-field="*{prixInitial}" required>
+			                <th:block data-th-if="${!#strings.isEmpty('/articles/creer')}">
+								<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('prixInitial')}"></div>
+							</th:block>	
 			            </div>
 			
 			            <div class="form-group-label">
 			                <label for="debut">Début de l'enchère (*) :</label>
 			                <input type="date" id="debut" name="debut" data-th-min="*{dateDebutEncheres}" data-th-field="*{dateDebutEncheres}"  required>
+			                <th:block data-th-if="${!#strings.isEmpty('/articles/creer')}">
+								<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('dateDebutEncheres')}"></div>
+							</th:block>	
 			            </div>
 			
 			            <div class="form-group-label">
 			                <label for="fin">Fin de l'enchère (*) :</label>
 			                <input type="date" id="fin" name="fin" data-th-field="*{dateFinEncheres}" required>
 			            </div>
+			            <th:block data-th-if="${!#strings.isEmpty('/articles/creer')}">
+							<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('dateFinEncheres')}"></div>
+						</th:block>	
 		            </div>
 				</div>
 		            <div class="button-group">
