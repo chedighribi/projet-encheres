@@ -6,7 +6,8 @@
 				data-th-src="@{/images/logo-auction.png}"><span
 				data-th-text="Eni-Encheres"></span></a>
 
-			<th:block data-th-if="${membreEnSession != null}">
+			<th:block
+				data-th-if="${#authorization.expression('isAuthenticated()')}">
 				<span data-th-text="'['+ ${membreEnSession.pseudo}+']'"></span>
 			</th:block>
 
