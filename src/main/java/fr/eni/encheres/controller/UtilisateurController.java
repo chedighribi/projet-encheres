@@ -36,14 +36,19 @@ public class UtilisateurController {
 		return "redirect:/articles";
 	}
 	
+	private Utilisateur getMembreEnSessionDetails(String pseudo) {
+		System.out.println("getMembreEnSessionDetails : " + pseudo);
+		Utilisateur utilisateur = utilisateurService.consulterUtilisateurParPseudo(pseudo);
+		System.out.println("---------------------");
+		System.out.println(utilisateur);
+		return utilisateur;
+	}
+	
 	@GetMapping("/profil")
 	String afficherProfil(@ModelAttribute("membreEnSession") Utilisateur membreEnSession, Model model) {
 		System.out.println("afficherProfil");
-		System.out.println(model);
-		Utilisateur utilisateur = utilisateurService.consulterUtilisateurParPseudo(membreEnSession.getPseudo());
-		System.out.println("---------------------");
-		System.out.println(utilisateur);
-		model.addAttribute(utilisateur);
+		System.out.println(membreEnSession.getPseudo());
+		model.addAttribute(getMembreEnSessionDetails(membreEnSession.getPseudo()));
 		return "view-profil";
 	}
 	
@@ -65,13 +70,10 @@ public class UtilisateurController {
 	@GetMapping("/modifier")
 	public String modifierProfil(Model model) {
 		System.out.println("view-profil-modifier");
-		Utilisateur personne;
-		//TODO : changer la valeur en dur 
-		personne = utilisateurService.findByEmail("coach@campus-eni.fr");
-		
-		System.out.println(personne);
-		// Ajout de l'instance dans le modèle
-		model.addAttribute("personne", personne);
+		System.out.println(model);
+		System.out.println("---------------------");
+		Utilisateur membreEnSession = (Utilisateur) model.getAttribute("membreEnSession");
+		model.addAttribute("personne", getMembreEnSessionDetails(membreEnSession.getPseudo()));
 		return "view-profil-modifier";
 	}
 	
