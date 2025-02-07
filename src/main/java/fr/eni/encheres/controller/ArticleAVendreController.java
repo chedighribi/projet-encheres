@@ -1,5 +1,7 @@
 package fr.eni.encheres.controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -14,13 +16,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import fr.eni.encheres.bll.ArticleAVendreService;
+import fr.eni.encheres.bo.Adresse;
 import fr.eni.encheres.bo.ArticleAVendre;
 import fr.eni.encheres.bo.Categorie;
+import fr.eni.encheres.bo.Utilisateur;
 import fr.eni.encheres.exceptions.BusinessException;
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/articles")
-@SessionAttributes({"CategoriesEnSession"})
+@SessionAttributes({"CategoriesEnSession", "AdresseEnSession"})
 public class ArticleAVendreController {
 	private ArticleAVendreService articleAVendreService;
 
@@ -32,7 +37,7 @@ public class ArticleAVendreController {
 	public String afficherArticles(Model model) {
 		List<ArticleAVendre> articles = articleAVendreService.consulterArticles();
 		model.addAttribute("articles",articles);
-		return "view-encheres";
+		return "view-articles";
 	}
 
 	@GetMapping("/detail")
@@ -52,14 +57,22 @@ public class ArticleAVendreController {
 	
 	@GetMapping("/creer")
 	public String creerArticle(Model model) {
-		model.addAttribute("article", new ArticleAVendre());
+		 ArticleAVendre article = new ArticleAVendre();
+		 article.setDateDebutEncheres(LocalDate.now());
+		 article.setDateFinEncheres(LocalDate.now().plusWeeks(1));
+		 model.addAttribute("article", article);
 		return"view-article-creer";
 	}
 	
 	@PostMapping("/creer")
-	public String creerArticle( @ModelAttribute("article") ArticleAVendre articleAVendre, BindingResult bindingResult) {
+	public String creerArticle(@Valid @ModelAttribute("article") ArticleAVendre articleAVendre, BindingResult bindingResult) {
+		Utilisateur user = new Utilisateur();
+		user.setPseudo("coach_admin");
+		articleAVendre.setVendeur(user);
 		System.out.println("Article créer: " + articleAVendre);
+		System.out.println(bindingResult);
 		if (!bindingResult.hasErrors()) {
+			System.out.println("BindingResult: ok");
 			try {
 				articleAVendreService.creerArticle(articleAVendre);
 				return "redirect:/articles";
@@ -71,11 +84,16 @@ public class ArticleAVendreController {
 				});
 			}
 	}
-		return "view-article-creer";
+		return "view-articles";
 	}
 	
 	@ModelAttribute("CategoriesEnSession")
 	public List<Categorie> chargerCategories() {
 		return articleAVendreService.consulterCategories();
+	}
+	
+	@ModelAttribute("AdresseEnSession")
+	public List<Adresse> chargerAdresses() {
+		return articleAVendreService.consulterAdresses();
 	}
 }
