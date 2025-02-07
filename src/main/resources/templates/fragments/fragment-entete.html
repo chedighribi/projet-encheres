@@ -6,7 +6,7 @@
 				data-th-src="@{/images/logo-auction.png}"><span
 				data-th-text="Eni-Encheres"></span></a>
 
-			<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
+			<th:block data-th-if="${membreEnSession != null}">
 				<span data-th-text="'['+ ${membreEnSession.pseudo}+']'"></span>
 			</th:block>
 
@@ -21,7 +21,7 @@
 			</th:block>
 			
 			<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
-				<li><a href="/articles" data-th-text="#{Menu.vendreArticle}"></a></li>
+				<li><a href="/articles/creer" data-th-text="#{Menu.vendreArticle}"></a></li>
 				
 				<li><a href="/profil" data-th-text="#{Menu.profil}"></a></li>
 				
