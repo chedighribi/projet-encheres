@@ -32,15 +32,17 @@ public class SecurityConfig {
 		http.authorizeHttpRequests(auth -> {
 			auth
 			.requestMatchers("/").permitAll()
+			.requestMatchers("/articles").permitAll()
 			.requestMatchers("/css/*").permitAll()
 			.requestMatchers("/js/*").permitAll()
 			.requestMatchers("/images/*").permitAll()
 			.requestMatchers("/encheres").permitAll()
-			.requestMatchers("/profil*").permitAll()
 			.requestMatchers("/profil/modifier").permitAll()
 			.requestMatchers("/profil/creer").permitAll()
 			.requestMatchers("/profil/session").permitAll()
 			.requestMatchers("/encheres/*").permitAll()
+			
+			.requestMatchers("/profil").authenticated()
 	        .anyRequest().authenticated();
 		});
 		http.formLogin(form -> {

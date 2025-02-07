@@ -46,19 +46,27 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	// need to check if we manage the id and add read with pseudo
 
 	public Utilisateur findByPseudo(String pseudo) {
+		System.out.println("DAO utilisateur findByPseudo : " + pseudo);
+		Utilisateur utilisateur = null;
 		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 		namedParameters.addValue("pseudo", pseudo);
-		return jdbcTemplate.queryForObject(FIND_BY_PSEUDO, namedParameters,
-				new BeanPropertyRowMapper<>(Utilisateur.class));
+		try {
+			utilisateur = jdbcTemplate.queryForObject(FIND_BY_PSEUDO, namedParameters,
+					new BeanPropertyRowMapper<>(Utilisateur.class));
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		return utilisateur;
 	}
 
 	@Override
-	public Utilisateur read (String email) {
-		System.out.println("DAO utilisateur read ");
+	public Utilisateur read(String email) {
+		System.out.println("DAO utilisateur read " + email);
 		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 		namedParameters.addValue("email", email);
 		try {
-			return jdbcTemplate.queryForObject(FIND_BY_EMAIL, namedParameters, new BeanPropertyRowMapper<>(Utilisateur.class));
+			return jdbcTemplate.queryForObject(FIND_BY_EMAIL, namedParameters,
+					new BeanPropertyRowMapper<>(Utilisateur.class));
 		} catch (DataAccessException e) {
 			e.printStackTrace();
 		}

@@ -28,9 +28,18 @@ public class UtilisateurController {
 		this.utilisateurService = utilisateurService;
 	}
 
+	@GetMapping("/")
+	public String index(Model model) {
+		System.out.println("lancement index");
+		System.out.println("---------------------");
+		System.out.println(model);
+		return "redirect:/articles";
+	}
+	
 	@GetMapping("/profil")
 	String afficherProfil(@ModelAttribute("membreEnSession") Utilisateur membreEnSession, Model model) {
 		System.out.println("afficherProfil");
+		System.out.println(model);
 		Utilisateur utilisateur = utilisateurService.consulterUtilisateurParPseudo(membreEnSession.getPseudo());
 		System.out.println("---------------------");
 		System.out.println(utilisateur);
@@ -75,6 +84,7 @@ public class UtilisateurController {
 			membreEnSession.setPseudo(aCharger.getPseudo());
 
 		}
+		System.out.println("___________________");
 		System.out.println(membreEnSession);
 		return "redirect:/";
 	}
