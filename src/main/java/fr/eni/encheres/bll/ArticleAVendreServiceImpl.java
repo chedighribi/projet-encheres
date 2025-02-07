@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import fr.eni.encheres.bo.Adresse;
 import fr.eni.encheres.bo.ArticleAVendre;
@@ -38,7 +39,6 @@ public class ArticleAVendreServiceImpl implements ArticleAVendreService{
 		return ArticleAVendreDAO.findAll();
 	}
 
-	//not clear ( ajoutez vendeur / acquereur ) 
 	@Override
 	public ArticleAVendre consulerArticleParId(long id) {
 		ArticleAVendre a =  ArticleAVendreDAO.find(id);
@@ -53,10 +53,7 @@ public class ArticleAVendreServiceImpl implements ArticleAVendreService{
 			a.setVendeur(vendeur);
 	}
 
-	@Override
-	public void creerArticle(ArticleAVendre articleAVendre) {
-		ArticleAVendreDAO.insertArticle(articleAVendre);
-	}
+	
 
 	@Override
 	public List<Categorie> consulterCategories() {
@@ -78,6 +75,26 @@ public class ArticleAVendreServiceImpl implements ArticleAVendreService{
 		return AdresseDAO.read(id);
 	}
 	
+	@Override
+	@Transactional
+	public void creerArticle(ArticleAVendre article) {
+		BusinessException be = new BusinessException();
+		boolean isValid = true;
+		isValid &= validerArticle(article, be);
+		isValid &= validerCategorie(article.getCategorie(), be);
+		isValid &= validerDescription(article.getDescription(), be);
+		isValid &= validerAdresse(article.getAdresse(), be);
+		isValid &= validerPrixInitial(article.getPrixInitial(), be);
+		isValid &= validerDateDebutEnchere(article.getDateDebutEncheres(), be);
+		isValid &= validerDateFinEnchere(article.getDateFinEncheres(), be);
+		isValid &= validerDates(article.getDateDebutEncheres(), article.getDateFinEncheres(), be);
+		if(isValid) {
+			ArticleAVendreDAO.insertArticle(article);
+		}else {
+			throw be;
+		}
+	}
+	
 	public boolean validerArticle(ArticleAVendre article, BusinessException be) {
 		if(article == null) {
 			be.add(BusinessCode.VALIDATION_ARTICLE_NULL);
@@ -87,31 +104,63 @@ public class ArticleAVendreServiceImpl implements ArticleAVendreService{
 	}
 	
 	public boolean validerCategorie(Categorie categorie, BusinessException be) {
-		return false;
+		if(categorie == null) {
+			be.add(BusinessCode.VALIDATION_ARTICLE_CATEGORIE_NULL);
+			return false;
+		}
+		return true;
 	}
 	
-	public boolean validerDescription(String decription, BusinessException be) {
-		return false;
+	public boolean validerDescription(String description, BusinessException be) {
+		if(description == null) {
+			be.add(BusinessCode.VALIDATION_ARTICLE_DESCRIPTION_BLANK);
+			return false;
+		}
+		if(description.length() > 250) {
+			be.add(BusinessCode.VALIDATION_ARTICLE_DESCRIPTION_LENGTH);
+			return false;
+		}
+		return true;
 	}
 	
 	public boolean validerAdresse(Adresse adresse, BusinessException be) {
-		return false;
+		if(adresse == null) {
+			be.add(BusinessCode.VALIDATION_ARTICLE_ADRESSE_NULL);
+			return false;
+		}
+		return true;
 	}
 	
 	public boolean validerPrixInitial(int prix, BusinessException be) {
-		return false;
+		if(prix < 1) {
+			be.add(BusinessCode.VALIDATION_ARTICLE_PRIX_MIN);
+			return false;
+		}
+		return true;
 	}
 	
 	public boolean validerDateDebutEnchere(LocalDate dateDebut, BusinessException be) {
-		return false;
+		if(dateDebut.isBefore(LocalDate.now())) {
+			be.add(BusinessCode.VALIDATION_ARTICLE_DATEDEBUT_MIN);
+			return false;
+		}
+		return true;
 	}
 	
 	public boolean validerDateFinEnchere(LocalDate dateFin, BusinessException be) {
-		return false;
+		if(dateFin.isBefore(LocalDate.now())) {
+			be.add(BusinessCode.VALIDATION_ARTICLE_DATEFIN_MIN);
+			return false;
+		}
+		return true;
 	}
 	
-	public boolean validerDates() {
-		return false;
+	public boolean validerDates(LocalDate dateDebut, LocalDate dateFin, BusinessException be) {
+		if(dateFin.isBefore(dateDebut)) {
+			be.add(BusinessCode.VALIDATION_ARTICLE_DATES);
+			return false;
+		}
+		return true;
 	}
 
 	
