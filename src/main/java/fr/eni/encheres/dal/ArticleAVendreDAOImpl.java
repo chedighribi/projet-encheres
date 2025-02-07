@@ -82,7 +82,7 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO{
 		namedParameters.addValue("prixVente", articleAVendre.getPrixVente());
 		namedParameters.addValue("idUtilisateur", articleAVendre.getVendeur().getPseudo());
 		namedParameters.addValue("idCategorie", articleAVendre.getCategorie().getId());
-		namedParameters.addValue("idAdresse", articleAVendre.getAdresse().getId());
+		namedParameters.addValue("idAdresse", articleAVendre.getAdresse().getNoAdresse());
 
 		
 		
@@ -123,7 +123,7 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO{
 		    categorie.setId(rs.getLong("no_categorie"));
 		    
 		    Adresse adresse = new Adresse();
-		    adresse.setId(rs.getLong("no_adresse_retrait"));
+		    adresse.setNoAdresse(rs.getLong("no_adresse_retrait"));
 		    
 		    a.setCategorie(categorie);
 		    a.setAdresse(adresse);
