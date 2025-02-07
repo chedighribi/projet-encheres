@@ -1,5 +1,6 @@
 package fr.eni.encheres.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -8,12 +9,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import fr.eni.encheres.bll.UtilisateurService;
 import fr.eni.encheres.bo.Utilisateur;
 
 @Controller
-@RequestMapping("/profil")
+@RequestMapping({"/","/profil"})
+@SessionAttributes("membreEnSession")
 public class UtilisateurController {
 
 	private UtilisateurService utilisateurService;
@@ -26,10 +29,13 @@ public class UtilisateurController {
 	}
 
 	@GetMapping
-	String afficherProfil(Model model) {
-		System.out.println("passe");
-		
-		return "view-encheres";
+	String afficherProfil(@ModelAttribute("membreEnSession") Utilisateur membreEnSession, Model model) {
+		System.out.println("afficherProfil");
+		Utilisateur utilisateur = utilisateurService.consulterUtilisateurParPseudo(membreEnSession.getPseudo());
+		System.out.println("---------------------");
+		System.out.println(utilisateur);
+		model.addAttribute(utilisateur);
+		return "view-profil";
 	}
 	
 	@GetMapping("/creer")
@@ -50,12 +56,33 @@ public class UtilisateurController {
 	@GetMapping("/modifier")
 	public String modifierProfil(Model model) {
 		System.out.println("view-profil-modifier");
-		List<Utilisateur> personne;
+		Utilisateur personne;
+		//TODO : changer la valeur en dur 
 		personne = utilisateurService.findByEmail("coach@campus-eni.fr");
 		
 		System.out.println(personne);
 		// Ajout de l'instance dans le modèle
-		model.addAttribute("personne", personne.get(0));
+		model.addAttribute("personne", personne);
 		return "view-profil-modifier";
 	}
+	
+	@GetMapping("/session")
+	public String connexion(@ModelAttribute("membreEnSession") Utilisateur membreEnSession, Principal principal) {
+		Utilisateur aCharger = utilisateurService.findByEmail(principal.getName());
+		System.out.println("---------------------");
+		System.out.println(aCharger);
+		if (aCharger != null) {
+			membreEnSession.setPseudo(aCharger.getPseudo());
+
+		}
+		System.out.println(membreEnSession);
+		return "redirect:/";
+	}
+	
+	@ModelAttribute("membreEnSession")
+	public Utilisateur getUser() {
+		return new Utilisateur();
+	}
+	
+
 }

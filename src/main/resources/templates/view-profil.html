@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	data-th-replace="~{layouts/layout :: layout-enchere( 
+					titrePage=~{:: title},
+					contenuPage=~{:: main},
+					ressourcesSupp=~{:: #ressources-css}
+					)}">
+
+<head>
+<!-- Accueil comme titre de page -->
+<title data-th-text="${utilisateur.pseudo}"></title>
+
+<th:block id="ressources-css">
+	<link rel="stylesheet" data-th-href="@{/css/profil.css}">
+</th:block>
+</head>
+<body>
+	<main>
+		<section class="entete-profil">
+			<h3 style="text-align: center;" data-th-text="${utilisateur.pseudo}"></h3>
+			<div class="container">
+				<ul>
+					<li>
+						<label data-th-text="#{Profil.prenom}"></label> 
+						<span data-th-text="${utilisateur.prenom}"></span>
+					</li>
+					<li>
+						<label data-th-text="#{Profil.nom}"></label> 
+						<span data-th-text="${utilisateur.nom}"></span>
+					</li>
+					<li>
+						<label data-th-text="#{Profil.email}"></label> 
+						<span data-th-text="${utilisateur.email}"></span>
+					</li>
+					<li>
+						<label data-th-text="#{Profil.telephone}"></label> 
+						<span data-th-text="${utilisateur.telephone}"></span>
+					</li>
+				</ul>
+			</div>
+			<div class="btn">
+				<a class="btn" data-th-text="#{Profil.btn.modifier}" data-th-href="@{/profil/modifier}"></a>
+			</div>
+			</div>
+		</section>	
+	</main>
+</body>
+</html>

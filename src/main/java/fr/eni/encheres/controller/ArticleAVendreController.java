@@ -25,7 +25,7 @@ import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/articles")
-@SessionAttributes({"CategoriesEnSession", "AdresseEnSession"})
+@SessionAttributes({"CategoriesEnSession", "AdresseEnSession", "membreEnSession"})
 public class ArticleAVendreController {
 	private ArticleAVendreService articleAVendreService;
 
@@ -46,7 +46,7 @@ public class ArticleAVendreController {
 			ArticleAVendre article = articleAVendreService.consulerArticleParId(id);
 			if (article != null) {
 				model.addAttribute("article", article);
-				return "view-detail-vente";
+				return "view-article-detail";
 			} else
 				System.out.println("id invalide");
 		} else {
@@ -96,4 +96,5 @@ public class ArticleAVendreController {
 	public List<Adresse> chargerAdresses() {
 		return articleAVendreService.consulterAdresses();
 	}
+
 }

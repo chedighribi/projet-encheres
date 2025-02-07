@@ -1,14 +1,14 @@
 <form xmlns:th="http://www.thymeleaf.org" 
-		data-th-fragment="frag-profil-form(action, titreForm)"
-		data-th-action="@{${action}}" 
+		data-th-fragment="frag-profil-form(action)"
+		data-th-action="@{/profil/__${action}__}" 
 		data-th-object="${personne}" method="post">
 		
-		<h1 data-th-text="${titreForm}" ></h1>
+		<h1 data-th-text="#{Profil.titreForm.__${action}__}"></h1>
 		<div data-th-replace="~{fragments/errors/fragment-errors :: frag-errors}"></div>
 	
 		<ul class="flex-outer list-group">
 		<li>
-			<label for="inputPseudo">Pseudo (*): </label> 
+			<label for="inputPseudo" data-th-text="#{Profil.pseudo.req}"></label> 
 			<th:block data-th-if="${#strings.contains(action,'modifier')}">
 				<span class="input-display" data-th-text="*{pseudo}"></span>
 			</th:block>
@@ -18,18 +18,18 @@
 			</th:block>
 		</li>
 		<li>
-			<label for="inputNom">Nom (*): </label> 
+			<label for="inputNom" data-th-text="#{Profil.nom.req}"></label> 
 			<input type="text" id="inputNom" required data-th-field="*{nom}" />
 			<div	data-th-replace="~{fragments/errors/fragment-error :: frag-error('nom')}"></div>
 		</li>
 		<li>
-			<label for="inputPrenom">Prénom (*): </label> 
+			<label for="inputPrenom" data-th-text="#{Profil.prenom.req}"></label> 
 			<input type="text" id="inputPrenom" required data-th-field="*{prenom}" />
 			<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('prenom')}"></div>
 			
 		</li>
 		<li>
-			<label for="inputEmail">Email : </label> 
+			<label for="inputEmail" data-th-text="#{Profil.email.req}">Email : </label> 
 			<input type="text" id="inputEmail" data-th-field="*{email}" />
 			<th:block data-th-if="${#strings.contains(action,'creer')}">
 				<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('email')}"></div>
@@ -37,7 +37,7 @@
 			
 		</li>
 		<li>
-			<label for="inputTelephone">Téléphone : </label> 
+			<label for="inputTelephone" data-th-text="#{Profil.telephone.req}"></label> 
 			<input type="text" id="inputTelephone" data-th-field="*{telephone}" />
 			<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('telephone')}"></div>
 			
@@ -45,23 +45,23 @@
 		
 		<th:block data-th-if="${#strings.contains(action,'modifier')}">
 		<li>
-			<label for="input">Mon crédit : </label>
+			<label for="input" data-th-text="#{Profil.credit}"></label>
 			<span class="input-display" data-th-text="*{credit}"></span>
 		</li>
 		</th:block>
 		<th:block data-th-if="${#strings.contains(action,'creer')}">
 			<li>
-				<label for="inputMotDePasse">Mot de passe (*): </label> 
+				<label for="inputMotDePasse" data-th-text="#{Profil.motDePasse.req}"></label> 
 				<input type="password" id="inputMotdDePasse" required data-th-field="*{motDePasse}"  data-th-readonly="${#strings.contains(action,'modifier')}"/>
 					<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('motDePasse')}"></div>			
 			</li>
 			
 		</th:block>
 		<li>
-			<button type="submit">Créer</button>
+			<button type="submit" data-th-text="#{Profil.btn.creer}"></button>
 		</li>
 		<li>
-			<button type="submit">Annuler</button>
+			<button type="submit" data-th-text="#{Profil.btn.annuler}"></button>
 		</li>
 		</ul>
 </form>

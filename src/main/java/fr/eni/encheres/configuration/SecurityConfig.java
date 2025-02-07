@@ -21,9 +21,9 @@ public class SecurityConfig {
 	@Bean
 	UserDetailsManager userDetailsManager(DataSource dataSource) {
 		JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
-		jdbcUserDetailsManager.setUsersByUsernameQuery("select email, mot_de_passe, 1 from UTILISATEURS where email=?");
+		jdbcUserDetailsManager.setUsersByUsernameQuery("SELECT email, mot_de_passe, 1 FROM utilisateurs WHERE email=?");
 		jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
-				"select u.email, r.IS_ADMIN from UTILISATEURS u INNER JOIN roles r ON r.IS_ADMIN = u.administrateur where u.email=?");
+				"SELECT u.email, r.IS_ADMIN FROM utilisateurs u INNER JOIN roles r ON r.IS_ADMIN = u.administrateur WHERE u.email=?");
 		return jdbcUserDetailsManager;
 	}
 
@@ -39,12 +39,17 @@ public class SecurityConfig {
 			.requestMatchers("/profil*").permitAll()
 			.requestMatchers("/profil/modifier").permitAll()
 			.requestMatchers("/profil/creer").permitAll()
+<<<<<<< HEAD
 			.requestMatchers("/articles/*").permitAll()
+=======
+			.requestMatchers("/profil/session").permitAll()
+			.requestMatchers("/encheres/*").permitAll()
+>>>>>>> 280e9dc4668818f19c4beadef74cdc98ae618f0d
 	        .anyRequest().authenticated();
 		});
 		http.formLogin(form -> {
 			form.loginPage("/login").permitAll()
-			.defaultSuccessUrl("/");
+			.defaultSuccessUrl("/profil/session").permitAll();
 			});
 		http.logout(logout -> logout
 				.invalidateHttpSession(true)

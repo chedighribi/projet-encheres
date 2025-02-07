@@ -14,43 +14,43 @@ public class Adresse implements Serializable {
 	 * Identifiant de l'interface Serializable
 	 */
 	private static final long serialVersionUID = 1L;
-	private long id;
+	private long noAdresse;
 	private String rue;
 	private String codePostal;
 	private String ville;
-	
+	private boolean adresseEni;
 	
 	public Adresse() {
 	}
 	
-	
 	/**
-	 * @param id
+	 * @param noAdresse
 	 * @param rue
 	 * @param codePostal
 	 * @param ville
+	 * @param adresseEni
 	 */
-	public Adresse(long id, String rue, String codePostal, String ville) {
-		this.id = id;
+	public Adresse(long noAdresse, String rue, String codePostal, String ville, boolean adresseEni) {
+		this.noAdresse = noAdresse;
 		this.rue = rue;
 		this.codePostal = codePostal;
 		this.ville = ville;
+		this.adresseEni = adresseEni;
 	}
-
 
 	/**
 	 * @return the id
 	 */
-	public long getId() {
-		return id;
+	public long getNoAdresse() {
+		return noAdresse;
 	}
 
 
 	/**
-	 * @param id the id to set
+	 * @param noAdresse the noAdresse to set
 	 */
-	public void setId(long id) {
-		this.id = id;
+	public void setNoAdresse(long noAdresse) {
+		this.noAdresse = noAdresse;
 	}
 
 
@@ -101,12 +101,25 @@ public class Adresse implements Serializable {
 		this.ville = ville;
 	}
 
+	/**
+	 * @return the adresseEni
+	 */
+	public boolean isAdresseEni() {
+		return adresseEni;
+	}
+
+	/**
+	 * @param adresseEni the adresseEni to set
+	 */
+	public void setAdresseEni(boolean adresseEni) {
+		this.adresseEni = adresseEni;
+	}
 
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Adresse [id=");
-		builder.append(id);
+		builder.append("Adresse [noAdresse=");
+		builder.append(noAdresse);
 		builder.append(", rue=");
 		builder.append(rue);
 		builder.append(", codePostal=");

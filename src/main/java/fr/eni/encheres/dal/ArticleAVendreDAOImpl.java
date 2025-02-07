@@ -83,6 +83,7 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO{
 		namedParameters.addValue("idUtilisateur", articleAVendre.getVendeur().getPseudo());
 		namedParameters.addValue("idCategorie", articleAVendre.getCategorie().getId());
 		namedParameters.addValue("idAdresse", articleAVendre.getAdresse().getId());
+
 		
 		
 		jdbcTemplate.update(REQ_INSERT_ARTICLE, namedParameters, keyHolder);
