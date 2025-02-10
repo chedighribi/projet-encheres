@@ -57,6 +57,12 @@ public class AdresseDAOImpl implements AdresseDAO {
 		return jdbcTemplate.query(FIND_ALL, new BeanPropertyRowMapper<>(Adresse.class));
 	}
 	
+	/**
+	 * Renvoi une liste d'adresse contenant les adresses liées à l'ENI plus l'adresse de l utilisateur
+	 * 
+	 * @param noAdresse id de l adresse de l utilisateur cible
+	 * @return une liste d adresse
+	 */
 	@Override
 	public List<Adresse> findEniPlusUtilisateur(long noAdresse) {
 		System.out.println("DAO adresse findEniPlusUtilisateur");
@@ -64,6 +70,5 @@ public class AdresseDAOImpl implements AdresseDAO {
 		namedParameters.addValue("no_adresse", noAdresse);
 		return jdbcTemplate.query(FIND_ENI_PLUS_UTILISATEUR, namedParameters, new BeanPropertyRowMapper<>(Adresse.class));
 	}
-	
 	
 }

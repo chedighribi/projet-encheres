@@ -28,6 +28,7 @@ public class Utilisateur {
 	private String email;
 	@Size(max=15)
 	private String telephone;
+	@NotBlank
 	@Size(min=8, max=20)
 	private String motDePasse;
 	private int credit;

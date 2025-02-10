@@ -5,10 +5,12 @@ import java.util.List;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import ch.qos.logback.classic.Logger;
 import fr.eni.encheres.bo.Utilisateur;
 import fr.eni.encheres.dal.UtilisateurDAO;
+import fr.eni.encheres.exceptions.BusinessCode;
 import fr.eni.encheres.exceptions.BusinessException;
 
 @Service
@@ -24,6 +26,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	}
 
 	@Override
+	@Transactional
 	public void creerUtilisateur(Utilisateur utilisateur) {
 		BusinessException be = new BusinessException();
 		boolean isValid = true;
@@ -51,12 +54,14 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		return utilisateurDAO.findAll();
 	}
 	
-	
-	private boolean validerCredit(Utilisateur utilisateur, BusinessException be) {
-		// TODO Auto-generated method stub
-		return false;
+	private boolean validerUtilisateur(Utilisateur utilisateur, BusinessException be) {
+		if (utilisateur == null) {
+			be.add(BusinessCode.VALIDATION_UTILISATEUR_NULL);
+			return false;
+		}
+		return true;
 	}
-
+	
 	private boolean validerEmail(Utilisateur utilisateur, BusinessException be) {
 		// TODO Auto-generated method stub
 		return false;
@@ -68,15 +73,34 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	}
 
 	private boolean validerPrenom(Utilisateur utilisateur, BusinessException be) {
-		// TODO Auto-generated method stub
-		return false;
+		if (utilisateur.getPrenom() == null || utilisateur.getPrenom().isBlank()) {
+			be.add(BusinessCode.VALIDATION_UTILISATEUR_PRENOM_BLANK);
+			return false;
+		}
+		if (utilisateur.getPrenom().length() > 50) {
+			be.add(BusinessCode.VALIDATION_UTILISATEUR_PRENOM_SIZE);
+			return false;
+		}
+		return true;
 	}
 
 	private boolean validerNom(Utilisateur utilisateur, BusinessException be) {
+		if (utilisateur.getNom() == null || utilisateur.getNom().isBlank()) {
+			be.add(BusinessCode.VALIDATION_UTILISATEUR_NOM_BLANK);
+			return false;
+		}
+		if (utilisateur.getNom().length() > 40) {
+			be.add(BusinessCode.VALIDATION_UTILISATEUR_NOM_SIZE);
+			return false;
+		}
+		return true;
+	}
+
+	private boolean validerCredit(Utilisateur utilisateur, BusinessException be) {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	
 	private boolean isPseudoDisponible(String pseudo, BusinessException be) {
 		System.out.println("isPseudoDisponible");
 		int pseudoExist = 1;
