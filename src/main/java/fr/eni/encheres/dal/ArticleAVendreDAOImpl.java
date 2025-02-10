@@ -18,60 +18,65 @@ import fr.eni.encheres.bo.Categorie;
 import fr.eni.encheres.bo.Utilisateur;
 
 @Repository
-public class ArticleAVendreDAOImpl implements ArticleAVendreDAO{
+public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
 
-	private String REQ_ARTICLES = "SELECT no_article\r\n"
-			+ "      ,nom_article\r\n"
-			+ "      ,description\r\n"
-			+ "      ,photo\r\n"
-			+ "      ,date_debut_encheres\r\n"
-			+ "      ,date_fin_encheres\r\n"
-			+ "      ,statut_enchere\r\n"
-			+ "      ,prix_initial\r\n"
-			+ "      ,prix_vente\r\n"
-			+ "      ,id_utilisateur\r\n"
-			+ "      ,no_categorie\r\n"
-			+ "      ,no_adresse_retrait\r\n"
-			+ "  FROM ARTICLES_A_VENDRE WHERE statut_enchere = 1";
-	
+//	private String REQ_ARTICLES = "SELECT no_article\r\n" + "      ,nom_article\r\n" + "      ,description\r\n"
+//			+ "      ,photo\r\n" + "      ,date_debut_encheres\r\n" + "      ,date_fin_encheres\r\n"
+//			+ "      ,statut_enchere\r\n" + "      ,prix_initial\r\n" + "      ,prix_vente\r\n"
+//			+ "      ,id_utilisateur AS vendeur_id\r\n" + "      ,no_categorie\r\n" + "      ,no_adresse_retrait\r\n"
+//			+ "  FROM ARTICLES_A_VENDRE WHERE statut_enchere = 1";
 
-	private String REQ_INSERT_ARTICLE="INSERT INTO ARTICLES_A_VENDRE "
+	private String REQ_ARTICLES = "SELECT a.no_article, a.nom_article, a.description, a.photo, "
+	        + "  a.date_debut_encheres, a.date_fin_encheres, a.statut_enchere, "
+	        + "  a.prix_initial, a.prix_vente, a.id_utilisateur AS vendeur_id, "
+	        + "  a.no_categorie, a.no_adresse_retrait, "
+	        + "  (SELECT TOP 1 e.id_utilisateur FROM ENCHERES e "
+	        + "   WHERE e.no_article = a.no_article "
+	        + "   ORDER BY e.montant_enchere DESC) AS acquereur_id "
+	        + "  FROM ARTICLES_A_VENDRE a "
+	        + "  WHERE a.statut_enchere = 1";
+
+	private String REQ_INSERT_ARTICLE = "INSERT INTO ARTICLES_A_VENDRE "
 			+ "(nom_article,description,date_debut_encheres,date_fin_encheres,statut_enchere,prix_initial,"
 			+ "prix_vente,id_utilisateur,no_categorie,no_adresse_retrait)"
 			+ "VALUES (:nomArticle, :description, :dateDebutEncheres, :dateFinEncheres, :statut, :prixInit, :prixVente, :idUtilisateur,"
 			+ ":idCategorie, :idAdresse)";
 
-	private String FIND_ONE =  "SELECT no_article\r\n"
-			+ "      ,nom_article\r\n"
-			+ "      ,description\r\n"
-			+ "      ,photo\r\n"
-			+ "      ,date_debut_encheres\r\n"
-			+ "      ,date_fin_encheres\r\n"
-			+ "      ,statut_enchere\r\n"
-			+ "      ,prix_initial\r\n"
-			+ "      ,prix_vente\r\n"
-			+ "      ,id_utilisateur\r\n"
-			+ "      ,no_categorie\r\n"
-			+ "      ,no_adresse_retrait\r\n"
-			+ "  FROM ARTICLES_A_VENDRE WHERE no_article= :id";
-	
+//	private String FIND_ONE =  "SELECT no_article\r\n"
+//			+ "      ,nom_article\r\n"
+//			+ "      ,description\r\n"
+//			+ "      ,photo\r\n"
+//			+ "      ,date_debut_encheres\r\n"
+//			+ "      ,date_fin_encheres\r\n"
+//			+ "      ,statut_enchere\r\n"
+//			+ "      ,prix_initial\r\n"
+//			+ "      ,prix_vente\r\n"
+//			+ "      ,id_utilisateur\r\n"
+//			+ "      ,no_categorie\r\n"
+//			+ "      ,no_adresse_retrait\r\n"
+//			+ "  FROM ARTICLES_A_VENDRE WHERE no_article= :id";
 
-	
+	private String FIND_ONE = "SELECT a.no_article, a.nom_article, a.description, a.photo, a.date_debut_encheres"
+			+ ", a.date_fin_encheres, a.statut_enchere, a.prix_initial, a.prix_vente "
+			+ ", a.id_utilisateur AS vendeur_id, a.no_categorie, a.no_adresse_retrait"
+			+ ", e.id_utilisateur AS acquereur_id " + "FROM ARTICLES_A_VENDRE a "
+			+ "LEFT JOIN ENCHERES e ON a.no_article = e.no_article AND e.montant_enchere = (SELECT MAX(montant_enchere) FROM ENCHERES WHERE no_article = a.no_article)"
+			+ " WHERE a.no_article= :id";
+
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
-	
+
 	@Override
 	public List<ArticleAVendre> findAll() {
-		
+
 		return jdbcTemplate.query(REQ_ARTICLES, new ArticleAVendreRowMapper());
 	}
-	
+
 	@Override
 	public void insertArticle(ArticleAVendre articleAVendre) {
 		System.out.println("=========================ARTICLE A VENDRE=====================" + articleAVendre);
 		KeyHolder keyHolder = new GeneratedKeyHolder();
-		
-		
+
 		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 		namedParameters.addValue("nomArticle", articleAVendre.getNom());
 		namedParameters.addValue("description", articleAVendre.getDescription());
@@ -84,22 +89,18 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO{
 		namedParameters.addValue("idCategorie", articleAVendre.getCategorie().getId());
 		namedParameters.addValue("idAdresse", articleAVendre.getAdresse().getNoAdresse());
 
-		
-		
 		jdbcTemplate.update(REQ_INSERT_ARTICLE, namedParameters, keyHolder);
-		
+
 		if (keyHolder != null && keyHolder.getKey() != null) {
 			articleAVendre.setId(keyHolder.getKey().longValue());
 		}
 	}
-	
 
 	public ArticleAVendre find(long id) {
 		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 		namedParameters.addValue("id", id);
 		return jdbcTemplate.queryForObject(FIND_ONE, namedParameters, new ArticleAVendreRowMapper());
 	}
-
 
 	class ArticleAVendreRowMapper implements RowMapper<ArticleAVendre> {
 		@Override
@@ -114,20 +115,27 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO{
 			a.setPrixInitial(rs.getInt("prix_initial"));
 			a.setPrixVente(rs.getInt("prix_vente"));
 			a.setStatut(rs.getInt("statut_enchere"));
-			
-		    Utilisateur vendeur = new Utilisateur();
-		    vendeur.setPseudo(rs.getString("id_utilisateur")); 
-		    a.setVendeur(vendeur);
-		    
-		    Categorie categorie = new Categorie();
-		    categorie.setId(rs.getLong("no_categorie"));
-		    
-		    Adresse adresse = new Adresse();
-		    adresse.setNoAdresse(rs.getLong("no_adresse_retrait"));
-		    
-		    a.setCategorie(categorie);
-		    a.setAdresse(adresse);
-			
+
+			Utilisateur vendeur = new Utilisateur();
+			vendeur.setPseudo(rs.getString("vendeur_id"));
+			a.setVendeur(vendeur);
+
+			String acquereurPseudo = rs.getString("acquereur_id");
+			if (acquereurPseudo != null) {
+				Utilisateur acquereur = new Utilisateur();
+				acquereur.setPseudo(acquereurPseudo);
+				a.setAcquereur(acquereur);
+			}
+
+			Categorie categorie = new Categorie();
+			categorie.setId(rs.getLong("no_categorie"));
+
+			Adresse adresse = new Adresse();
+			adresse.setNoAdresse(rs.getLong("no_adresse_retrait"));
+
+			a.setCategorie(categorie);
+			a.setAdresse(adresse);
+
 			return a;
 		}
 	}
