@@ -64,16 +64,6 @@ public class ArticleAVendreServiceImpl implements ArticleAVendreService{
 	public Categorie consulterCategorieParId(long id) {
 		return CategorieDAO.findById(id);
 	}
-
-	@Override
-	public List<Adresse> consulterAdresses() {
-		return AdresseDAO.findAll();
-	}
-
-	@Override
-	public Adresse consulterAdresseParId(long id) {
-		return AdresseDAO.read(id);
-	}
 	
 	@Override
 	@Transactional

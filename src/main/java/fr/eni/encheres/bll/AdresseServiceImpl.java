@@ -70,5 +70,10 @@ public class AdresseServiceImpl implements AdresseService {
 		System.out.println(adresse);
 		adresseDAO.create(adresse);		
 	}
+
+	@Override
+	public List<Adresse> consulterAdressesEni() {
+		return adresseDAO.findAllEni();
+	}
 	
 }

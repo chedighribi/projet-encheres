@@ -11,7 +11,5 @@ public interface ArticleAVendreService {
 	void creerArticle(ArticleAVendre articleAVendre);
 	List<Categorie> consulterCategories();
 	Categorie consulterCategorieParId(long id);
-	List<Adresse> consulterAdresses();
-	Adresse consulterAdresseParId(long noAdresse);
 	ArticleAVendre consulerArticleParId(long id);
 }

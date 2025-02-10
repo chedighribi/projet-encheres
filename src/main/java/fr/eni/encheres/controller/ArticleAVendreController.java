@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import fr.eni.encheres.bll.AdresseService;
 import fr.eni.encheres.bll.ArticleAVendreService;
 import fr.eni.encheres.bo.Adresse;
 import fr.eni.encheres.bo.ArticleAVendre;
@@ -27,9 +28,11 @@ import jakarta.validation.Valid;
 @SessionAttributes({"CategoriesEnSession", "AdresseEnSession", "membreEnSession"})
 public class ArticleAVendreController {
 	private ArticleAVendreService articleAVendreService;
+	private AdresseService adresseService;
 
-	public ArticleAVendreController(ArticleAVendreService articleAVendreService) {
+	public ArticleAVendreController(ArticleAVendreService articleAVendreService, AdresseService adresseService) {
 		this.articleAVendreService = articleAVendreService;
+		this.adresseService=adresseService;
 	}
 
 	@GetMapping
@@ -98,7 +101,7 @@ public class ArticleAVendreController {
 	
 	@ModelAttribute("AdresseEnSession")
 	public List<Adresse> chargerAdresses() {
-		return articleAVendreService.consulterAdresses();
+		return adresseService.consulterAdressesEni();
 	}
 
 }

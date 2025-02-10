@@ -8,6 +8,6 @@ public interface AdresseService {
 	void creerAdresse(Adresse adresse);
 	Adresse consulterAdresseParNoAdresse(long noAdresse);
 	List<Adresse> consulterAdresses();
-	
+	List<Adresse> consulterAdressesEni();
 	public void add(Adresse adresse);
 }
