@@ -12,4 +12,5 @@ public interface UtilisateurService {
 	Utilisateur findByEmail(String email);
 	
 	public void add(Utilisateur utilisateur);
+	boolean canAdd(Utilisateur utilisateur);
 }

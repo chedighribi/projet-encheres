@@ -2,15 +2,19 @@ package fr.eni.encheres.bll;
 
 import java.util.List;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import ch.qos.logback.classic.Logger;
 import fr.eni.encheres.bo.Utilisateur;
 import fr.eni.encheres.dal.UtilisateurDAO;
 import fr.eni.encheres.exceptions.BusinessException;
 
 @Service
 public class UtilisateurServiceImpl implements UtilisateurService {
+	
+	private Logger logger = (Logger) LoggerFactory.getLogger("fr.eni.encheres.dev");
 	
 	private UtilisateurDAO utilisateurDAO;
 	
@@ -95,19 +99,28 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
 	@Override
 	public void add(Utilisateur utilisateur) {
-		System.out.println("BLL add utilisateurs");
-		System.out.println(utilisateur);
-		System.out.println(utilisateur.getEmail());
+		logger.trace("BLL add utilisateurs");
+		logger.trace(utilisateur.toString());
+		logger.trace(utilisateur.getEmail());
+		utilisateurDAO.create(utilisateur);
+	}
+	
+	@Override
+	public boolean canAdd(Utilisateur utilisateur) {
+		logger.trace("BLL add utilisateurs");
+		logger.trace(utilisateur.toString());
+		logger.trace(utilisateur.getEmail());
 		BusinessException be = new BusinessException();
 		if (this.isPseudoDisponible(utilisateur.getPseudo(), be)) {
-			System.out.println("Pseudo disponible !");
+			logger.trace("Pseudo disponible !");
 			Utilisateur utilisateurAvecEmailIdentique = utilisateurDAO.read(utilisateur.getEmail());
-			System.out.println(utilisateurAvecEmailIdentique);
+			logger.trace(" " + utilisateurAvecEmailIdentique);
 			if (utilisateurAvecEmailIdentique == null) {
-				System.out.println("utilisateurAvecEmailIdentique est vide");
-				utilisateurDAO.create(utilisateur);
+				logger.trace("utilisateurAvecEmailIdentique est vide");
+				return true;
 			}
-		};
+		}
+		return false;
 	}
 	
 

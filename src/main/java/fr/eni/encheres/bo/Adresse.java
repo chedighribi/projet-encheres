@@ -6,6 +6,7 @@ import java.util.List;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
@@ -15,9 +16,16 @@ public class Adresse implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private long noAdresse;
+	@NotBlank
+	@Size(max=100)
 	private String rue;
+	@NotBlank
+	@Size(max=10)
 	private String codePostal;
+	@NotBlank
+	@Size(max=50)
 	private String ville;
+	@NotNull
 	private boolean adresseEni;
 	
 	public Adresse() {
@@ -30,12 +38,11 @@ public class Adresse implements Serializable {
 	 * @param ville
 	 * @param adresseEni
 	 */
-	public Adresse(long noAdresse, String rue, String codePostal, String ville, boolean adresseEni) {
-		this.noAdresse = noAdresse;
+	public Adresse(String rue, String codePostal, String ville) {
 		this.rue = rue;
 		this.codePostal = codePostal;
 		this.ville = ville;
-		this.adresseEni = adresseEni;
+		this.adresseEni = false;
 	}
 
 	/**

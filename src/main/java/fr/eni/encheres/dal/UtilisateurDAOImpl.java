@@ -19,7 +19,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	private final String FIND_BY_PSEUDO = "SELECT pseudo, email, nom, prenom, administrateur, telephone, credit FROM utilisateurs WHERE pseudo = :pseudo";
 	private final String FIND_BY_EMAIL = "SELECT pseudo, email, nom, prenom, administrateur, telephone, credit FROM utilisateurs WHERE email = :email";
 	private final String FIND_ALL = "SELECT pseudo, email, nom, prenom, administrateur, telephone, credit FROM utilisateurs";
-	private final String INSERT = "INSERT INTO utilisateurs (pseudo, email, nom, prenom, administrateur, telephone, credit, mot_de_passe)";
+	private final String INSERT = "INSERT INTO utilisateurs (pseudo, email, nom, prenom, administrateur, telephone, credit, mot_de_passe) VALUES (:pseudo, :email, :nom, :prenom, :administrateur, :telephone, :credit, :mot_de_passe)";
 	private final String COUNT_PSEUDO = "SELECT COUNT(pseudo) FROM utilisateurs WHERE pseudo = :pseudo";
 
 	@Autowired
@@ -38,6 +38,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 		namedParameters.addValue("administrateur", utilisateur.isAdministrateur());
 		namedParameters.addValue("telephone", utilisateur.getTelephone());
 		namedParameters.addValue("credit", utilisateur.getCredit());
+		namedParameters.addValue("mot_de_passe", utilisateur.getMotDePasse());
 
 		jdbcTemplate.update(INSERT, namedParameters, keyHolder);
 

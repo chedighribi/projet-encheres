@@ -1,18 +1,39 @@
 package fr.eni.encheres.bo;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 public class Utilisateur {
+	@NotBlank
+	@Size(max=30)
 	private String pseudo;
+	@NotBlank
+	@Size(max=40)
 	private String nom;
+	@NotBlank
+	@Size(max=50)
 	private String prenom;
+	@NotBlank
+	@Size(max=100)
+	@Email
 	private String email;
+	@Size(max=15)
 	private String telephone;
+	@Size(min=8, max=20)
 	private String motDePasse;
 	private int credit;
 	private boolean administrateur;
-	
-	
+	@NotNull
+	private Adresse adresse;	
 	
 	/**
 	 * 
@@ -94,6 +115,14 @@ public class Utilisateur {
 
 	public void setAdministrateur(boolean administrateur) {
 		this.administrateur = administrateur;
+	}
+	
+	public Adresse getAdresse() {
+		return adresse;
+	}
+
+	public void setAdresse(Adresse adresse) {
+		this.adresse = adresse;
 	}
 	
 	@Override

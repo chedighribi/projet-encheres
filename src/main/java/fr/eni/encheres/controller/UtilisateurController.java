@@ -3,22 +3,28 @@ package fr.eni.encheres.controller;
 import java.security.Principal;
 import java.util.List;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import ch.qos.logback.classic.Logger;
 import fr.eni.encheres.bll.UtilisateurService;
 import fr.eni.encheres.bo.Utilisateur;
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping({"/","/profil"})
 @SessionAttributes("membreEnSession")
 public class UtilisateurController {
 
+	private Logger logger = (Logger) LoggerFactory.getLogger("fr.eni.encheres.dev");
+	
 	private UtilisateurService utilisateurService;
 	
 	/**
@@ -46,8 +52,8 @@ public class UtilisateurController {
 	
 	@GetMapping("/profil")
 	String afficherProfil(@ModelAttribute("membreEnSession") Utilisateur membreEnSession, Model model) {
-		System.out.println("afficherProfil");
-		System.out.println(membreEnSession.getPseudo());
+		logger.trace("Controller utilisateur afficherProfil");
+		logger.trace(membreEnSession.getPseudo());
 		model.addAttribute(getMembreEnSessionDetails(membreEnSession.getPseudo()));
 		return "view-profil";
 	}
@@ -61,10 +67,17 @@ public class UtilisateurController {
 	}
 	
 	@PostMapping("/creer")
-	public String creerProfil(@ModelAttribute("personne") Utilisateur utilisateur) {
-		System.out.println("Post utilisateur");
-		utilisateurService.add(utilisateur);
-		return "redirect:/profil";
+	public String creerProfil(@Valid @ModelAttribute("personne") Utilisateur utilisateur, BindingResult bindingResult) {
+		logger.trace("Post utilisateur creerProfil");
+		if (bindingResult.hasErrors()) {
+			logger.warn("Erreur de saisie ");
+			logger.warn(" " + bindingResult);
+			return "view-profil-creer";
+		} else {
+			logger.trace("Add utilisateur");
+			utilisateurService.add(utilisateur);
+			return "redirect:/profil";
+		}
 	}
 	
 	@GetMapping("/modifier")

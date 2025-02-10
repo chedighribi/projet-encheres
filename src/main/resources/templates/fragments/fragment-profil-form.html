@@ -42,7 +42,14 @@
 			<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('telephone')}"></div>
 			
 		</li>
-		
+		<li>
+			<label for="inputAdresseRue">Adresse (*): </label> 
+			<input type="text" id="inputAdresseRue" required data-th-field="*{personne.adresse.rue}" />
+			<input type="text" id="inputAdresseCodePostal" required data-th-field="*{personne.adresse.codePostal}" />
+			<input type="text" id="inputAdresseVille" required data-th-field="*{personne.adresse.ville}" />
+			<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('personne.adresse')}"></div>
+			
+		</li>
 		<th:block data-th-if="${#strings.contains(action,'modifier')}">
 		<li>
 			<label for="input" data-th-text="#{Profil.credit}"></label>
