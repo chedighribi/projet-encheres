@@ -45,6 +45,7 @@ public class ArticleAVendreController {
 		if (id > 0) {
 			ArticleAVendre article = articleAVendreService.consulerArticleParId(id);
 			if (article != null) {
+				System.out.println("Type of dateFinEncheres: " + article.getDateFinEncheres().getClass().getName());
 				model.addAttribute("article", article);
 				return "view-article-detail";
 			} else

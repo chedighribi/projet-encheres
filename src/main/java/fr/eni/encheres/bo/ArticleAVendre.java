@@ -41,6 +41,7 @@ public class ArticleAVendre implements Serializable{
 	private Adresse adresse;
 	//@NotNull
 	private Utilisateur vendeur;
+	private Utilisateur acquereur;
 
 	public ArticleAVendre() {
 		
@@ -150,6 +151,15 @@ public class ArticleAVendre implements Serializable{
 
 	public void setVendeur(Utilisateur vendeur) {
 		this.vendeur = vendeur;
+	}
+
+	
+	public Utilisateur getAcquereur() {
+		return acquereur;
+	}
+
+	public void setAcquereur(Utilisateur acquereur) {
+		this.acquereur = acquereur;
 	}
 
 	@Override
