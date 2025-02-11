@@ -18,9 +18,9 @@ import fr.eni.encheres.bo.Utilisateur;
 @Repository
 public class UtilisateurDAOImpl implements UtilisateurDAO {
 
-	private final String FIND_BY_PSEUDO = "SELECT pseudo, email, nom, prenom, administrateur, telephone, credit FROM utilisateurs WHERE pseudo = :pseudo";
-	private final String FIND_BY_EMAIL = "SELECT pseudo, email, nom, prenom, administrateur, telephone, credit FROM utilisateurs WHERE email = :email";
-	private final String FIND_ALL = "SELECT pseudo, email, nom, prenom, administrateur, telephone, credit FROM utilisateurs";
+	private final String FIND_BY_PSEUDO = "SELECT pseudo, email, nom, prenom, administrateur, telephone, credit, no_adresse FROM utilisateurs WHERE pseudo = :pseudo";
+	private final String FIND_BY_EMAIL = "SELECT pseudo, email, nom, prenom, administrateur, telephone, credit, no_adresse FROM utilisateurs WHERE email = :email";
+	private final String FIND_ALL = "SELECT pseudo, email, nom, prenom, administrateur, telephone, credit, no_adresse FROM utilisateurs";
 	private final String INSERT = "INSERT INTO utilisateurs (pseudo, email, nom, prenom, administrateur, telephone, credit, mot_de_passe, no_adresse) VALUES (:pseudo, :email, :nom, :prenom, :administrateur, :telephone, :credit, :mot_de_passe, :no_adresse)";
 	private final String COUNT_PSEUDO = "SELECT COUNT(pseudo) FROM utilisateurs WHERE pseudo = :pseudo";
 	private final String COUNT_EMAIL = "SELECT COUNT(email) FROM utilisateurs WHERE email = :email";

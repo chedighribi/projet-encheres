@@ -107,7 +107,7 @@ public class UtilisateurController {
 			
 			securityContext.setAuthentication(authentication);
 			System.out.println("##############################");
-			System.out.println(securityContext.getAuthentication().getPrincipal());
+			System.out.println(securityContext.getAuthentication().getName());
 			// Create a new session and add the security  
 			SecurityContextHolder.setContext(securityContext);
 			model.addAttribute("SPRING_SECURITY_CONTEXT", securityContext);
@@ -126,7 +126,6 @@ public class UtilisateurController {
 		System.out.println("---------------------");
 		Utilisateur membreEnSession = (Utilisateur) model.getAttribute("membreEnSession");
 		model.addAttribute("personne", getMembreEnSessionDetails(membreEnSession.getPseudo()));
-		model.addAttribute("adresse", membreEnSession.getAdresse());
 		return "view-profil-modifier";
 	}
 

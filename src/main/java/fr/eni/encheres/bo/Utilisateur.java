@@ -149,6 +149,8 @@ public class Utilisateur {
 		builder.append(", administrateur=");
 		builder.append(isAdministrateur());
 		builder.append("]");
+		builder.append("Adresse => ");
+		builder.append(adresse);
 		return builder.toString();
 	}
 
