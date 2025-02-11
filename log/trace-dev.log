@@ -1,0 +1,5 @@
+2025-02-10 11:45:51,853 TRACE [http-nio-8080-exec-5] f.e.e.dev [UtilisateurController.java:53] Controller utilisateur afficherProfil
+2025-02-10 11:45:51,854 DEBUG [http-nio-8080-exec-5] f.e.e.dev [UtilisateurController.java:54] test ici
+2025-02-10 11:45:51,854 WARN [http-nio-8080-exec-5] f.e.e.dev [UtilisateurController.java:55] attention
+2025-02-10 11:45:51,854 ERROR [http-nio-8080-exec-5] f.e.e.dev [UtilisateurController.java:56] error error
+2025-02-10 11:45:51,854 INFO [http-nio-8080-exec-5] f.e.e.dev [UtilisateurController.java:57] FYI on test

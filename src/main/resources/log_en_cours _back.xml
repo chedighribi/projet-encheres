@@ -1,0 +1,36 @@
+<configuration>
+	<appender name="FILE_LOG_ERR"
+		class="ch.qos.logback.core.FileAppender">
+		<file>log/error-prod.log</file>
+		<encoder>
+			<pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	<appender name="FILE_TRACE"
+		class="ch.qos.logback.core.FileAppender">
+		<file>log/trace-dev.log</file>
+		<encoder>
+			<pattern>%date %level [%thread] %logger{5} [%file:%line] %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	<appender name="STDOUT"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<filter class="fr.eni.encheres.configuration.LogbackFilter" />
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %kvp -
+				%msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	<logger name="fr.eni.encheres.prod" level="error">
+		<appender-ref ref="FILE_LOG_ERR"></appender-ref>
+	</logger>
+	<logger name="fr.eni.encheres.dev" level="trace">
+		<appender-ref ref="FILE_TRACE"></appender-ref>
+	</logger>
+	<root level="trace">
+		<appender-ref ref="STDOUT"></appender-ref>
+	</root>
+</configuration>

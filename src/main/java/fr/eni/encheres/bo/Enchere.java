@@ -2,7 +2,7 @@ package fr.eni.encheres.bo;
 
 import java.time.LocalDateTime;
 
-public class Enchere {
+public class Enchere implements Comparable<Enchere> {
 	private LocalDateTime date;
 	private int montant;
 	private Utilisateur utilisateur;
@@ -50,11 +50,17 @@ public class Enchere {
 	public void setArticleAVendre(ArticleAVendre articleAVendre) {
 		this.articleAVendre = articleAVendre;
 	}
+	
 
 	@Override
 	public String toString() {
 		return "Enchere [date=" + date + ", montant=" + montant + ", utilisateur=" + utilisateur + ", articleAVendre="
 				+ articleAVendre + "]";
+	}
+
+	@Override
+	public int compareTo(Enchere o) {
+		return ( o.getMontant() - this.getMontant());
 	}
 	
 	

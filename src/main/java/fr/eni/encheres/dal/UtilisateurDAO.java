@@ -9,5 +9,6 @@ public interface UtilisateurDAO {
 	Utilisateur read(String email);
 	Utilisateur findByPseudo(String pseudo);
 	List<Utilisateur> findAll();
-	int findPseudo(String pseudo);
+	int uniqueEmail(String email);
+	int uniquePseudo(String pseudo);
 }

@@ -10,8 +10,12 @@
 				data-th-if="${#authorization.expression('isAuthenticated()')}">
 				<span data-th-text="'['+ ${membreEnSession.pseudo}+']'"></span>
 			</th:block>
-
 		</h1>
+		<div>
+			<a href="/?language=fr"><img alt="Français" src="/images/French.webp"></a>
+			<a href="/?language=en"><img alt="English" src="/images/English.webp"></a>
+		</div>
+		
 	</section>
 	<nav>
 		<ul>
