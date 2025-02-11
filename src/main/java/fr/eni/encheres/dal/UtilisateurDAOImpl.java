@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import fr.eni.encheres.bo.Utilisateur;
@@ -19,9 +20,12 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	private final String FIND_BY_PSEUDO = "SELECT pseudo, email, nom, prenom, administrateur, telephone, credit FROM utilisateurs WHERE pseudo = :pseudo";
 	private final String FIND_BY_EMAIL = "SELECT pseudo, email, nom, prenom, administrateur, telephone, credit FROM utilisateurs WHERE email = :email";
 	private final String FIND_ALL = "SELECT pseudo, email, nom, prenom, administrateur, telephone, credit FROM utilisateurs";
-	private final String INSERT = "INSERT INTO utilisateurs (pseudo, email, nom, prenom, administrateur, telephone, credit, mot_de_passe) VALUES (:pseudo, :email, :nom, :prenom, :administrateur, :telephone, :credit, :mot_de_passe)";
+	private final String INSERT = "INSERT INTO utilisateurs (pseudo, email, nom, prenom, administrateur, telephone, credit, mot_de_passe, no_adresse) VALUES (:pseudo, :email, :nom, :prenom, :administrateur, :telephone, :credit, :mot_de_passe, :no_adresse)";
 	private final String COUNT_PSEUDO = "SELECT COUNT(pseudo) FROM utilisateurs WHERE pseudo = :pseudo";
+	private final String COUNT_EMAIL = "SELECT COUNT(email) FROM utilisateurs WHERE email = :email";
 
+	BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+	
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
 
@@ -37,8 +41,9 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 		namedParameters.addValue("prenom", utilisateur.getPrenom());
 		namedParameters.addValue("administrateur", utilisateur.isAdministrateur());
 		namedParameters.addValue("telephone", utilisateur.getTelephone());
-		namedParameters.addValue("credit", utilisateur.getCredit());
-		namedParameters.addValue("mot_de_passe", utilisateur.getMotDePasse());
+		namedParameters.addValue("credit", 10);
+		namedParameters.addValue("mot_de_passe", "{bcrypt}" + encoder.encode(utilisateur.getMotDePasse()));
+		namedParameters.addValue("no_adresse", utilisateur.getAdresse().getNoAdresse());
 
 		jdbcTemplate.update(INSERT, namedParameters, keyHolder);
 
@@ -81,10 +86,18 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	}
 
 	@Override
-	public int findPseudo(String pseudo) {
+	public int uniquePseudo(String pseudo) {
 		System.out.println("DAO utilisateur findpseudo");
 		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 		namedParameters.addValue("pseudo", pseudo);
 		return jdbcTemplate.queryForObject(COUNT_PSEUDO, namedParameters, Integer.class);
+	}
+
+	@Override
+	public int uniqueEmail(String email) {
+		System.out.println("DAO utilisateur uniqueEmail");
+		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+		namedParameters.addValue("email", email);
+		return jdbcTemplate.queryForObject(COUNT_EMAIL, namedParameters, Integer.class);
 	}
 }

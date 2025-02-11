@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import ch.qos.logback.classic.Logger;
+import fr.eni.encheres.bll.AdresseService;
 import fr.eni.encheres.bll.UtilisateurService;
+import fr.eni.encheres.bo.Adresse;
 import fr.eni.encheres.bo.Utilisateur;
 import jakarta.validation.Valid;
 
@@ -26,12 +28,14 @@ public class UtilisateurController {
 	private Logger logger = (Logger) LoggerFactory.getLogger("fr.eni.encheres.dev");
 	
 	private UtilisateurService utilisateurService;
+	private AdresseService adresseService;
 	
 	/**
 	 * @param utilisateurService
 	 */
-	public UtilisateurController(UtilisateurService utilisateurService) {
+	public UtilisateurController(UtilisateurService utilisateurService, AdresseService adresseService) {
 		this.utilisateurService = utilisateurService;
+		this.adresseService = adresseService;
 	}
 
 	@GetMapping("/")
@@ -62,20 +66,26 @@ public class UtilisateurController {
 	public String creerProfil(Model model) {
 		System.out.println("view-profil-creer");
 		Utilisateur personne = new Utilisateur();
+		Adresse adresse = new Adresse();
 		model.addAttribute("personne", personne);
+		model.addAttribute("adresse", adresse);
 		return "view-profil-creer";
 	}
 	
 	@PostMapping("/creer")
-	public String creerProfil(@Valid @ModelAttribute("personne") Utilisateur utilisateur, BindingResult bindingResult) {
+	public String creerProfil(@Valid @ModelAttribute("personne") Utilisateur utilisateur, @Valid @ModelAttribute("adresse") Adresse adresse, BindingResult bindingResult) {
 		logger.trace("Post utilisateur creerProfil");
 		if (bindingResult.hasErrors()) {
 			logger.warn("Erreur de saisie ");
 			logger.warn(" " + bindingResult);
 			return "view-profil-creer";
 		} else {
+//			logger.trace("Add adresse");
+			System.out.println("creer adresse");
+			adresseService.creerAdresse(adresse);
 			logger.trace("Add utilisateur");
-			utilisateurService.add(utilisateur);
+			utilisateur.setAdresse(adresse);
+			utilisateurService.creerUtilisateur(utilisateur);
 			return "redirect:/profil";
 		}
 	}

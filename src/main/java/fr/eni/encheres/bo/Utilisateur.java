@@ -28,12 +28,13 @@ public class Utilisateur {
 	private String email;
 	@Size(max=15)
 	private String telephone;
+	@Pattern(regexp = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{8,20})")
 	@NotBlank
 	@Size(min=8, max=20)
 	private String motDePasse;
 	private int credit;
 	private boolean administrateur;
-	@NotNull
+	
 	private Adresse adresse;	
 	
 	/**

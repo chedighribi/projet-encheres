@@ -41,6 +41,9 @@ public class AdresseDAOImpl implements AdresseDAO {
 		namedParameters.addValue("adresse_eni", 0);
 		
 		jdbcTemplate.update(INSERT, namedParameters, keyHolder);
+		
+		System.out.println("------INSERT ADRESSE ID " + keyHolder.getKey() + " -----------");
+		adresse.setNoAdresse(keyHolder.getKey().longValue());
 	}
 
 	@Override
