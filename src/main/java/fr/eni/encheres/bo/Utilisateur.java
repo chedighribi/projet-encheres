@@ -3,6 +3,7 @@ package fr.eni.encheres.bo;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.FutureOrPresent;
@@ -35,6 +36,7 @@ public class Utilisateur {
 	private int credit;
 	private boolean administrateur;
 	
+	@Valid
 	private Adresse adresse;	
 	
 	/**

@@ -20,7 +20,6 @@ public class AdresseServiceImpl implements AdresseService {
 	}
 
 	@Override
-	@Transactional
 	public void creerAdresse(Adresse adresse) {
 		BusinessException be = new BusinessException();
 		boolean isValid = true;

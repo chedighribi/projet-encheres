@@ -44,9 +44,9 @@
 		</li>
 		<li>
 			<label for="inputAdresseRue">Adresse (*): </label> 
-			<input type="text" id="inputAdresseRue" required data-th-field="${adresse.rue}" />
-			<input type="text" id="inputAdresseCodePostal" required data-th-field="${adresse.codePostal}" />
-			<input type="text" id="inputAdresseVille" required data-th-field="${adresse.ville}" />
+			<input type="text" id="inputAdresseRue" required data-th-field="*{adresse.rue}" />
+			<input type="text" id="inputAdresseCodePostal" required data-th-field="*{adresse.codePostal}" />
+			<input type="text" id="inputAdresseVille" required data-th-field="*{adresse.ville}" />
 			<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('adresse')}"></div>
 			
 		</li>

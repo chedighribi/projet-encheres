@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ch.qos.logback.classic.Logger;
 import fr.eni.encheres.bo.Adresse;
 import fr.eni.encheres.bo.Utilisateur;
+import fr.eni.encheres.dal.AdresseDAO;
 import fr.eni.encheres.dal.UtilisateurDAO;
 import fr.eni.encheres.exceptions.BusinessCode;
 import fr.eni.encheres.exceptions.BusinessException;
@@ -20,9 +21,11 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	private Logger logger = (Logger) LoggerFactory.getLogger("fr.eni.encheres.dev");
 
 	private UtilisateurDAO utilisateurDAO;
+	private AdresseDAO adresseDAO;
 	
-	public UtilisateurServiceImpl(UtilisateurDAO utilisateurDAO) {
+	public UtilisateurServiceImpl(UtilisateurDAO utilisateurDAO, AdresseDAO adresseDAO) {
 		this.utilisateurDAO = utilisateurDAO;
+		this.adresseDAO = adresseDAO;
 	}
 
 	@Override
@@ -31,29 +34,20 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		BusinessException be = new BusinessException();
 		boolean isValid = true;
 //		isValid &= isPseudoDisponible(utilisateur.getPseudo(), be);
-		System.out.println("BLL utilisateur creerUtilisateur");
 		isValid &= validerUtilisateur(utilisateur, be);
-		System.out.println("BLL utilisateur creerUtilisateur 1");
 		isValid &= validerPseudo(utilisateur, be);
-		System.out.println("BLL utilisateur creerUtilisateur 2");
 		isValid &= validerNom(utilisateur, be);
-		System.out.println("BLL utilisateur creerUtilisateur 3");
 		isValid &= validerPrenom(utilisateur, be);
-		System.out.println("BLL utilisateur creerUtilisateur 4");
 		isValid &= validerEmail(utilisateur, be);
-		System.out.println("BLL utilisateur creerUtilisateur 5");
 		isValid &= validerTelephone(utilisateur, be);
-		System.out.println("BLL utilisateur creerUtilisateur 6");
 		isValid &= validerMotDePasse(utilisateur, be);
-		System.out.println("BLL utilisateur creerUtilisateur 7");
 		isValid &= validerUniquePseudo(utilisateur, be);
-		System.out.println("BLL utilisateur creerUtilisateur 8");
 		isValid &= validerUniqueEmail(utilisateur, be);
 		if (isValid) {
 			System.out.println("BLL utilisateur creerUtilisateur valid");
 //			adresseService.creerAdresse(utilisateur.getAdresse());
 //			System.out.println("BLL utilisateur creerUtilisateur valid after adresse");
-			
+			adresseDAO.create(utilisateur.getAdresse());
 			utilisateurDAO.create(utilisateur);
 		} else {
 			throw be;
@@ -147,13 +141,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		if (utilisateur.getMotDePasse() == null || utilisateur	.getMotDePasse()
 																.isBlank()) {
 			be.add(BusinessCode.VALIDATION_UTILISATEUR_MDP_BLANK);
-			return false;
-		}
-		if (utilisateur	.getMotDePasse()
-						.length() < 8
-				|| utilisateur	.getMotDePasse()
-								.length() > 20) {
-			be.add(BusinessCode.VALIDATION_UTILISATEUR_MDP_SIZE);
 			return false;
 		}
 		return true;
