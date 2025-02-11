@@ -41,6 +41,20 @@ public class ArticleAVendreController {
 		model.addAttribute("articles",articles);
 		return "view-articles";
 	}
+	
+	//Premier test pour les filtres
+	@GetMapping("/filtrer")
+	public String afficherArticlesByCategorie(@RequestParam(name = "filtre", required = false) String idCategorie, Model model){
+		List<ArticleAVendre> articles;
+		System.out.println("filtre: " + idCategorie);
+		if(idCategorie == "-1" || idCategorie.isBlank()) {
+			articles = articleAVendreService.consulterArticles();
+		}else {
+			articles = articleAVendreService.consulterArticlesParCategorie(idCategorie);
+		}
+		model.addAttribute("articles",articles);
+		return "view-articles";
+	}
 
 	@GetMapping("/detail")
 	public String detailVente(@RequestParam(name = "id", required = true) long id, Model model) {
@@ -70,8 +84,6 @@ public class ArticleAVendreController {
 	public String creerArticle(@Valid @ModelAttribute("article") ArticleAVendre articleAVendre, BindingResult bindingResult, @ModelAttribute("membreEnSession") Utilisateur user) {
 		if (user != null && user.getPseudo().length() >= 1) {
 			articleAVendre.setVendeur(user);
-			System.out.println("Article créer: " + articleAVendre);
-			System.out.println(bindingResult);
 			if (!bindingResult.hasErrors()) {
 				try {
 					articleAVendreService.creerArticle(articleAVendre);
@@ -84,14 +96,27 @@ public class ArticleAVendreController {
 					});
 				}
 			}
-		}/*else {
-			
-			System.out.println("Aucun administrateur en session");
-			ObjectError error = new ObjectError("globalError", BusinessCode.VALIDATION_MEMBRE_ADMIN);
-			bindingResult.addError(error);
-			
-		}*/
+		}
 		return "view-article-creer";
+	}
+	
+	@GetMapping("/modifier")
+	public String modifierArticle(@RequestParam(name="idArticle", required=true)long id, Model model) {
+		 ArticleAVendre article = articleAVendreService.consulerArticleParId(id);
+		 model.addAttribute("article", article);
+		 System.out.println("le model: " + model);
+		return"view-article-modifier";
+	}
+	
+	@PostMapping("/modifier")
+	public String modifierArticle(@ModelAttribute("article") ArticleAVendre articleAVendre) {
+		try {
+			articleAVendreService.supprimerArticle(articleAVendre);
+			return "redirect:/articles";
+		} catch (BusinessException e) {
+			System.err.println(e.getClefsExternalisations());
+		}
+		return "view-article-modifier";
 	}
 	
 	@ModelAttribute("CategoriesEnSession")
@@ -104,4 +129,6 @@ public class ArticleAVendreController {
 		return adresseService.consulterAdressesEni();
 	}
 
+	
+	
 }
