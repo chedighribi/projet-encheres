@@ -12,4 +12,7 @@ public interface ArticleAVendreService {
 	List<Categorie> consulterCategories();
 	Categorie consulterCategorieParId(long id);
 	ArticleAVendre consulerArticleParId(long id);
+	List<ArticleAVendre> consulterArticlesParCategorie(String idCategorie);
+	void modifierArticle(ArticleAVendre articleAVendre);
+	void supprimerArticle(ArticleAVendre articleAVendre);
 }
