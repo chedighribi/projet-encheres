@@ -1,6 +1,7 @@
 package fr.eni.encheres.bll;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -9,16 +10,15 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.eni.encheres.bo.Adresse;
 import fr.eni.encheres.bo.ArticleAVendre;
 import fr.eni.encheres.bo.Categorie;
+import fr.eni.encheres.bo.Enchere;
+import fr.eni.encheres.bo.Utilisateur;
+import fr.eni.encheres.dal.AdresseDAO;
 import fr.eni.encheres.dal.ArticleAVendreDAO;
 import fr.eni.encheres.dal.CategorieDAO;
-
-import fr.eni.encheres.bo.Utilisateur;
+import fr.eni.encheres.dal.EnchereDAO;
 import fr.eni.encheres.dal.UtilisateurDAO;
-
-import fr.eni.encheres.dal.AdresseDAO;
-
-import fr.eni.encheres.exceptions.BusinessException;
 import fr.eni.encheres.exceptions.BusinessCode;
+import fr.eni.encheres.exceptions.BusinessException; 
 
 @Service
 public class ArticleAVendreServiceImpl implements ArticleAVendreService{
@@ -26,12 +26,14 @@ public class ArticleAVendreServiceImpl implements ArticleAVendreService{
 	private UtilisateurDAO utilisateurDAO;
 	private CategorieDAO CategorieDAO;
 	private AdresseDAO AdresseDAO;
+	private EnchereDAO enchereDAO;
 
-	public ArticleAVendreServiceImpl(ArticleAVendreDAO ArticleAVendreDAO, UtilisateurDAO utilisateurDAO, CategorieDAO CategorieDAO,AdresseDAO AdresseDAO) {
+	public ArticleAVendreServiceImpl(ArticleAVendreDAO ArticleAVendreDAO, UtilisateurDAO utilisateurDAO, CategorieDAO CategorieDAO,AdresseDAO AdresseDAO, EnchereDAO enchereDAO) {
 		this.ArticleAVendreDAO = ArticleAVendreDAO;
 		this.CategorieDAO=CategorieDAO;
 		this.utilisateurDAO = utilisateurDAO;
 		this.AdresseDAO=AdresseDAO;
+		this.enchereDAO = enchereDAO;
 	}
 	
 	@Override
@@ -51,6 +53,11 @@ public class ArticleAVendreServiceImpl implements ArticleAVendreService{
 	private void chargerVendeurAcquereur(ArticleAVendre a) {
 			Utilisateur vendeur = utilisateurDAO.findByPseudo(a.getVendeur().getPseudo());
 			a.setVendeur(vendeur);
+			List<Enchere> encheres = enchereDAO.readByArticle(a.getId());
+			encheres.forEach((e) -> e.setUtilisateur(utilisateurDAO.findByPseudo(e.getUtilisateur().getPseudo())));
+			Collections.sort(encheres);
+			a.setEncheres(encheres);
+			 
 	}
 
 	

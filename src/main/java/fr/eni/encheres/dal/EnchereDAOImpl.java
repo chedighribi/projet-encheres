@@ -10,15 +10,17 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 
 import fr.eni.encheres.bo.ArticleAVendre;
 import fr.eni.encheres.bo.Enchere;
 import fr.eni.encheres.bo.Utilisateur;
 
+@Repository
 public class EnchereDAOImpl implements EnchereDAO {
 
-	private final String INSERT = "INSERT INTO ENCHERE (date_enchere, montant_enchere, id_utilisateur, no_article)";
-	private final String FIND_BY_ITEM = "SELECT date_enchere, montant_enchere, id_utilisateur, no_article FROM ENCHERE WHERE montant_enchere = :pseudo";
+	private final String INSERT = "INSERT INTO ENCHERES (date_enchere, montant_enchere, id_utilisateur, no_article)";
+	private final String FIND_BY_ARTICLE= "SELECT date_enchere, montant_enchere, id_utilisateur, no_article FROM ENCHERES WHERE no_article = :id";
 	
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
@@ -35,9 +37,10 @@ public class EnchereDAOImpl implements EnchereDAO {
 	}
 
 	@Override
-	public Enchere readByItem(long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Enchere> readByArticle(long id) {
+		MapSqlParameterSource namedParameter = new MapSqlParameterSource();
+		namedParameter.addValue("id", id);
+		return jdbcTemplate.query(FIND_BY_ARTICLE, namedParameter, new EnchereRowMapper());
 	}
 
 	@Override

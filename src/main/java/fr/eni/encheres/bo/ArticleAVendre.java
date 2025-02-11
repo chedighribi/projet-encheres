@@ -2,6 +2,7 @@ package fr.eni.encheres.bo;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.FutureOrPresent;
@@ -10,7 +11,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-public class ArticleAVendre implements Serializable{
+public class ArticleAVendre implements Serializable {
 	/**
 	 * 
 	 */
@@ -18,10 +19,10 @@ public class ArticleAVendre implements Serializable{
 	@NotNull
 	private long id;
 	@NotBlank
-	@Size(min=3, max=100)
+	@Size(min = 3, max = 100)
 	private String nom;
 	@NotBlank
-	@Size(max=250)
+	@Size(max = 250)
 	private String description;
 	@NotNull
 	@FutureOrPresent
@@ -32,24 +33,24 @@ public class ArticleAVendre implements Serializable{
 	@NotNull
 	private int statut;
 	@NotNull
-	@Min(value=1)
+	@Min(value = 1)
 	private int prixInitial;
 	private int prixVente;
 	@NotNull
 	private Categorie categorie;
 	@NotNull
 	private Adresse adresse;
-	//@NotNull
+	// @NotNull
 	private Utilisateur vendeur;
-	private Utilisateur acquereur;
+	private List<Enchere> encheres;
 
 	public ArticleAVendre() {
-		
+
 	}
 
 	public ArticleAVendre(long id, String nom, String description, LocalDate dateDebutEncheres,
-			LocalDate dateFinEncheres, int statut, int prixInitial, int prixVente, 
-			Categorie categorie, Adresse adresse, Utilisateur vendeur) {
+			LocalDate dateFinEncheres, int statut, int prixInitial, int prixVente, Categorie categorie, Adresse adresse,
+			Utilisateur vendeur, List<Enchere> encheres) {
 		super();
 		this.id = id;
 		this.nom = nom;
@@ -59,9 +60,10 @@ public class ArticleAVendre implements Serializable{
 		this.statut = statut;
 		this.prixInitial = prixInitial;
 		this.prixVente = prixVente;
-		this.categorie=categorie;
+		this.categorie = categorie;
 		this.adresse = adresse;
 		this.vendeur = vendeur;
+		this.encheres = encheres;
 	}
 
 	public long getId() {
@@ -144,7 +146,6 @@ public class ArticleAVendre implements Serializable{
 		this.adresse = adresse;
 	}
 
-	
 	public Utilisateur getVendeur() {
 		return vendeur;
 	}
@@ -153,21 +154,19 @@ public class ArticleAVendre implements Serializable{
 		this.vendeur = vendeur;
 	}
 
-	
-	public Utilisateur getAcquereur() {
-		return acquereur;
+	public List<Enchere> getEncheres() {
+		return encheres;
 	}
 
-	public void setAcquereur(Utilisateur acquereur) {
-		this.acquereur = acquereur;
+	public void setEncheres(List<Enchere> encheres) {
+		this.encheres = encheres;
 	}
 
 	@Override
 	public String toString() {
 		return "ArticleAVendre [id=" + id + ", nom=" + nom + ", description=" + description + ", dateDebutEncheres="
 				+ dateDebutEncheres + ", dateFinEncheres=" + dateFinEncheres + ", statut=" + statut + ", prixInitial="
-				+ prixInitial + ", prixVEnte=" + prixVente + ", categorie=" + categorie
-				+ ", adresse=" + adresse + "]";
+				+ prixInitial + ", prixVEnte=" + prixVente + ", categorie=" + categorie + ", adresse=" + adresse + "]";
 	}
-	
+
 }

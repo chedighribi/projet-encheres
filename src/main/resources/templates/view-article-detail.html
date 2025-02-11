@@ -22,8 +22,8 @@
 						<th:block
 				data-th-if="${#temporals.format(article.dateFinEncheres, 'yyyy-MM-dd') lt #temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}">
 				<h1> 
-				<th:block data-th-if="${membreEnSession.pseudo} != *{acquereur.pseudo}"> <a data-th-href="@{/???(id=${acquereur.pseudo})}"><span data-th-text="*{acquereur.pseudo}"></span></a> </th:block>
-				<th:block data-th-if="${membreEnSession.pseudo} == *{acquereur.pseudo}"> <span>vous avez</span> </th:block>
+				<th:block data-th-if="${membreEnSession.pseudo} != *{encheres.get(0).utilisateur.pseudo}"> <a data-th-href="@{/???(id=${acquereur.pseudo})}"><span data-th-text="*{encheres.get(0).utilisateur.pseudo}"></span></a> </th:block>
+				<th:block data-th-if="${membreEnSession.pseudo} == *{encheres.get(0).utilisateur.pseudo}"> <span>vous avez</span> </th:block>
 				remporté la vente</h1>
 			</th:block>
 			
@@ -60,6 +60,11 @@
 					<p>
 						<span class="label">Retrait :</span> <span>à faire</span>
 					</p>					
+					<p>
+						<th:block class="label" data-th-if="*{encheres} != null and *{encheres.size() > 0}"> <span
+							data-th-text="*{encheres.get(0).utilisateur.pseudo}"></span>
+							</th:block>
+					</p>
 
 					<p>
 						<span class="label">Vendeur :</span> <span
