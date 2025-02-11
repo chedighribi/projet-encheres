@@ -12,6 +12,7 @@
 
 <th:block id="ressources-css">
 	<link rel="stylesheet" href="/css/encheres.css">
+	<script src="/js/articles.js"></script>
 </th:block>
 </head>
 <body>
@@ -23,8 +24,12 @@
 					<label>Filtres :</label> <input type="text" class="input-text"
 						placeholder="Le nom de l'article contient"> <label
 						for="category">Catégorie :</label> <select id="category"
-						class="select-box">
+						class="select-box" onchange="filtrerParCategorie()">
 						<option>Toutes</option>
+						<option data-th-each="categorie : ${CategoriesEnSession}"
+								data-th-text="${categorie.libelle}"
+						        data-th-value="${categorie.id}">
+						</option>
 					</select>
 					<th:block
 						data-th-if="${#authorization.expression('isAuthenticated()')}">
@@ -33,7 +38,7 @@
 								<input type="radio" id="achats" name="type" checked> <label
 									for="achats">Achats</label>
 							</div>
-							<select class="select-box">
+							<select class="select-box" id="list-filtre-achats">
 								<option>Enchères ouvertes</option>
 								<option>Mes enchères en cours</option>
 								<option>Mes enchères remportées</option>
@@ -42,8 +47,10 @@
 								<input type="radio" id="ventes" name="type"> <label
 									for="ventes">Mes ventes</label>
 							</div>
-							<select class="filtres-select">
+							<select class="filtres-select" id="list-filtre-ventes" disabled>
 								<option>Mes ventes en cours</option>
+								<option>Mes ventes non débutées</option>
+								<option>Mes ventes terminées</option>
 							</select>
 						</div>
 					</th:block>
@@ -81,6 +88,8 @@
 								<p class="card-text" data-th-text="${article.dateFinEncheres}">Fin
 									de l'enchère</p>
 								<p class="card-text" data-th-text="${article.vendeur.pseudo}">Vendeur</p>
+								<a data-th-if="${membreEnSession.pseudo == article.vendeur.pseudo}" data-th-href="@{/articles/modifier(idArticle=${article.id})}">Supprimer</a>
+
 							</div>
 						</div>
 					</div>

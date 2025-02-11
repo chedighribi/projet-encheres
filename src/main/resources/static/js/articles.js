@@ -17,4 +17,14 @@ ventes.addEventListener("change", function() {
         listVentes.disabled=false;
     }
 });
+
+
 });
+
+function filtrerParCategorie() {
+        let idCategorie = document.getElementById("category").value;
+        window.location.href = "/articles/filtrer?filtre=" + idCategorie;
+    }
+
+ 
+     
