@@ -38,7 +38,20 @@ public class ArticleAVendreServiceImpl implements ArticleAVendreService{
 	
 	@Override
 	public List<ArticleAVendre> consulterArticles() {
-		return ArticleAVendreDAO.findAll();
+		List<ArticleAVendre> articles=ArticleAVendreDAO.findAll();
+		if (articles != null) {
+			articles.forEach(a -> {
+				chargerCategorieEtAdresse1Article(a);
+			});
+		}
+		return articles;
+	}
+	
+	private void chargerCategorieEtAdresse1Article(ArticleAVendre a) {
+		Adresse adresse = AdresseDAO.read(a.getAdresse().getNoAdresse());
+		a.setAdresse(adresse);
+		Categorie categorie = CategorieDAO.findById(a.getCategorie().getId());
+		a.setCategorie(categorie);
 	}
 
 	@Override
@@ -46,6 +59,7 @@ public class ArticleAVendreServiceImpl implements ArticleAVendreService{
 		ArticleAVendre a =  ArticleAVendreDAO.find(id);
 		if(a != null) {
 			chargerVendeurAcquereur(a); 
+			chargerCategorieEtAdresse1Article(a);
 		}
 		return a;
 	}
@@ -60,7 +74,11 @@ public class ArticleAVendreServiceImpl implements ArticleAVendreService{
 			 
 	}
 
-	
+	@Override
+	public List<ArticleAVendre> consulterArticlesParCategorie(String idCategorie) {
+		long theIdCategorie = Long.parseLong(idCategorie);
+		return ArticleAVendreDAO.findAll().stream().filter(art -> art.getCategorie().getId() == theIdCategorie).toList();
+	}
 
 	@Override
 	public List<Categorie> consulterCategories() {
@@ -70,16 +88,6 @@ public class ArticleAVendreServiceImpl implements ArticleAVendreService{
 	@Override
 	public Categorie consulterCategorieParId(long id) {
 		return CategorieDAO.findById(id);
-	}
-
-	@Override
-	public List<Adresse> consulterAdresses() {
-		return AdresseDAO.findAll();
-	}
-
-	@Override
-	public Adresse consulterAdresseParId(long id) {
-		return AdresseDAO.read(id);
 	}
 	
 	@Override
@@ -101,6 +109,31 @@ public class ArticleAVendreServiceImpl implements ArticleAVendreService{
 			throw be;
 		}
 	}
+	
+	@Override
+	public void modifierArticle(ArticleAVendre article) {
+		BusinessException be = new BusinessException();
+		boolean isValid = true;
+		isValid &= validerArticle(article, be);
+		isValid &= validerCategorie(article.getCategorie(), be);
+		isValid &= validerDescription(article.getDescription(), be);
+		isValid &= validerAdresse(article.getAdresse(), be);
+		isValid &= validerPrixInitial(article.getPrixInitial(), be);
+		isValid &= validerDateDebutEnchere(article.getDateDebutEncheres(), be);
+		isValid &= validerDateFinEnchere(article.getDateFinEncheres(), be);
+		isValid &= validerDates(article.getDateDebutEncheres(), article.getDateFinEncheres(), be);
+		if(isValid) {
+			ArticleAVendreDAO.updateArticle(article);
+		}else {
+			throw be;
+		}
+	}
+	
+	@Override
+	public void supprimerArticle(ArticleAVendre articleAVendre) {
+		ArticleAVendreDAO.delete(articleAVendre);
+	}
+
 	
 	public boolean validerArticle(ArticleAVendre article, BusinessException be) {
 		if(article == null) {
@@ -169,6 +202,11 @@ public class ArticleAVendreServiceImpl implements ArticleAVendreService{
 		}
 		return true;
 	}
+
+	
+	
+
+	
 
 	
 

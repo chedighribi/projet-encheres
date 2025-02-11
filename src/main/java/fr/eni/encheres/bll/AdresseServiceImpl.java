@@ -108,4 +108,9 @@ public class AdresseServiceImpl implements AdresseService {
 		adresseDAO.create(adresse);
 	}
 
+	@Override
+	public List<Adresse> consulterAdressesEni() {
+		return adresseDAO.findAllEni();
+	}
+	
 }

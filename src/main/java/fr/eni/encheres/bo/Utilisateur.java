@@ -35,6 +35,7 @@ public class Utilisateur {
 	private String motDePasse;
 	private int credit;
 	private boolean administrateur;
+
 	
 	@Valid
 	private Adresse adresse;	

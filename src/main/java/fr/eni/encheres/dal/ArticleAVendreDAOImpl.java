@@ -2,6 +2,7 @@ package fr.eni.encheres.dal;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,14 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
 			+ "      ,no_categorie\r\n"
 			+ "      ,no_adresse_retrait\r\n"
 			+ "  FROM ARTICLES_A_VENDRE WHERE no_article= :id";
+	
+	private String REQ_UPDATE_ARTICLE="UPDATE ARTICLES_A_VENDRE\r\n"
+			+ "SET nom_article = :nomArticle, description = :description, date_debut_encheres = :dateDebutEncheres, date_fin_encheres = :dateFinEncheres,"
+			+ "statut_enchere = :statut,prix_initial = :prixInit,prix_vente = :prixVente,no_categorie = :idCategorie,no_adresse_retrait = :idAdresse\r\n"
+			+ "WHERE no_article = :idArticle";
+	
+	private String REQ_DELETE_ARTICLE = "DELETE FROM ARTICLES_A_VENDRE WHERE no_article= :idArticle";
+	
 
 //	private String FIND_ONE = "SELECT a.no_article, a.nom_article, a.description, a.photo, a.date_debut_encheres"
 //			+ ", a.date_fin_encheres, a.statut_enchere, a.prix_initial, a.prix_vente "
@@ -77,12 +86,18 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
 		System.out.println("=========================ARTICLE A VENDRE=====================" + articleAVendre);
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 
+		if(articleAVendre.getDateDebutEncheres().isEqual(LocalDate.now())) {
+			articleAVendre.setStatut(1);
+		}else {
+			articleAVendre.setStatut(0);
+		}
+		
 		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 		namedParameters.addValue("nomArticle", articleAVendre.getNom());
 		namedParameters.addValue("description", articleAVendre.getDescription());
 		namedParameters.addValue("dateDebutEncheres", articleAVendre.getDateDebutEncheres());
 		namedParameters.addValue("dateFinEncheres", articleAVendre.getDateFinEncheres());
-		namedParameters.addValue("statut", 1);
+		namedParameters.addValue("statut", articleAVendre.getStatut());
 		namedParameters.addValue("prixInit", articleAVendre.getPrixInitial());
 		namedParameters.addValue("prixVente", articleAVendre.getPrixVente());
 		namedParameters.addValue("idUtilisateur", articleAVendre.getVendeur().getPseudo());
@@ -95,6 +110,38 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
 			articleAVendre.setId(keyHolder.getKey().longValue());
 		}
 	}
+
+	
+	@Override
+	public void updateArticle(ArticleAVendre articleAVendre) {
+		if(articleAVendre.getDateDebutEncheres().isEqual(LocalDate.now())) {
+			articleAVendre.setStatut(1);
+		}else {
+			articleAVendre.setStatut(0);
+		}
+		
+		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+		namedParameters.addValue("idArticle", articleAVendre.getId());
+		namedParameters.addValue("nomArticle", articleAVendre.getNom());
+		namedParameters.addValue("description", articleAVendre.getDescription());
+		namedParameters.addValue("dateDebutEncheres", articleAVendre.getDateDebutEncheres());
+		namedParameters.addValue("dateFinEncheres", articleAVendre.getDateFinEncheres());
+		namedParameters.addValue("statut", articleAVendre.getStatut());
+		namedParameters.addValue("prixInit", articleAVendre.getPrixInitial());
+		namedParameters.addValue("prixVente", articleAVendre.getPrixVente());
+		namedParameters.addValue("idCategorie", articleAVendre.getCategorie().getId());
+		namedParameters.addValue("idAdresse", articleAVendre.getAdresse().getNoAdresse());
+
+		jdbcTemplate.update(REQ_UPDATE_ARTICLE, namedParameters);
+	}
+	
+	@Override
+	public void delete(ArticleAVendre articleAVendre) {
+		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+		namedParameters.addValue("idArticle", articleAVendre.getId());
+		jdbcTemplate.update(REQ_DELETE_ARTICLE, namedParameters);
+	}
+
 
 	public ArticleAVendre find(long id) {
 		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
@@ -133,5 +180,11 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
 			return a;
 		}
 	}
+
+
+	
+
+
+	
 
 }

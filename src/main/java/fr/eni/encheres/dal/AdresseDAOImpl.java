@@ -21,7 +21,11 @@ public class AdresseDAOImpl implements AdresseDAO {
 	
 	private final String FIND_BY_ID = "SELECT no_adresse, rue, code_postal, ville, adresse_eni FROM adresses WHERE no_adresse = :no_adresse";
 	private final String FIND_ALL = "SELECT no_adresse, rue, code_postal, ville, adresse_eni FROM adresses";
+
+	private final String FIND_ALL_ENI = "select no_adresse,rue,code_postal, adresse_eni from adresses WHERE adresse_eni = 1;";
+
 	private final String FIND_ENI_PLUS_UTILISATEUR = "SELECT * FROM ADRESSES WHERE adresse_eni = 1 OR no_adresse = :no_adresse ORDER BY adresse_eni";
+
 	private final String INSERT = "INSERT INTO ADRESSES (rue, code_postal, ville, adresse_eni) VALUES (:rue, :code_postal, :ville, :adresse_eni)";
 	private final String COUNT_VILLE = "SELECT COUNT(ville) FROM adresses WHERE ville = :ville";
 
@@ -58,6 +62,11 @@ public class AdresseDAOImpl implements AdresseDAO {
 	public List<Adresse> findAll() {
 		System.out.println("DAO adresse findAll");
 		return jdbcTemplate.query(FIND_ALL, new BeanPropertyRowMapper<>(Adresse.class));
+	}
+
+	@Override
+	public List<Adresse> findAllEni() {
+		return jdbcTemplate.query(FIND_ALL_ENI, new BeanPropertyRowMapper<>(Adresse.class));
 	}
 	
 	/**
