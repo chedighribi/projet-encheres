@@ -5,9 +5,6 @@ import java.util.List;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,11 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import ch.qos.logback.classic.Logger;
-import ch.qos.logback.core.net.SyslogOutputStream;
-import fr.eni.encheres.bll.AdresseService;
 import fr.eni.encheres.bll.UtilisateurService;
 import fr.eni.encheres.bo.Adresse;
 import fr.eni.encheres.bo.Utilisateur;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @Controller
@@ -43,7 +40,7 @@ public class UtilisateurController {
 	}
 
 	@GetMapping("/")
-	public String index(Model model) {
+	public String index(@ModelAttribute("membreEnSession") Utilisateur membreEnSession, Model model) {
 		System.out.println("lancement index");
 		System.out.println("---------------------");
 		System.out.println(model);
@@ -67,6 +64,7 @@ public class UtilisateurController {
 	String afficherProfil(@ModelAttribute("membreEnSession") Utilisateur membreEnSession, Model model) {
 		logger.trace("Controller utilisateur afficherProfil");
 		logger.trace(membreEnSession.getPseudo());
+		System.out.println(membreEnSession.getPseudo());
 		model.addAttribute(getMembreEnSessionDetails(membreEnSession.getPseudo()));
 		return "view-profil";
 	}
@@ -88,7 +86,7 @@ public class UtilisateurController {
 	}
 
 	@PostMapping("/creer")
-	public String creerProfil(@Valid @ModelAttribute("personne") Utilisateur utilisateur, BindingResult bindingResult, Model model) {
+	public String creerProfil(@Valid @ModelAttribute("personne") Utilisateur utilisateur, BindingResult bindingResult, HttpServletRequest request) {
 		logger.trace("Post utilisateur creerProfil");
 		if (bindingResult.hasErrors()) {
 			logger.warn("Erreur de saisie ");
@@ -96,24 +94,16 @@ public class UtilisateurController {
 			return "view-profil-creer";
 		} else {
 			logger.trace("creer utilisateur");
+			String motDePasseClair = utilisateur.getMotDePasse();
 			utilisateur.setMotDePasse(PasswordEncoderFactories	.createDelegatingPasswordEncoder()
 																.encode(utilisateur.getMotDePasse()));
 			utilisateurService.creerUtilisateur(utilisateur);
-			// Authenticate the user
-			Authentication authentication =  new UsernamePasswordAuthenticationToken(
-					utilisateur.getPseudo(), utilisateur.getMotDePasse());
-			
-			SecurityContext securityContext = SecurityContextHolder.getContext();
-			
-			securityContext.setAuthentication(authentication);
-			System.out.println("##############################");
-			System.out.println(securityContext.getAuthentication().getName());
-			// Create a new session and add the security  
-			SecurityContextHolder.setContext(securityContext);
-			model.addAttribute("SPRING_SECURITY_CONTEXT", securityContext);
-//			.setContext( session = request.getSession(true);
-			
-//			SecurityContextHolder.getContext(). .setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
+			System.out.println(utilisateur.getPseudo() + " -- " + utilisateur.getMotDePasse());
+			try {
+				request.login(utilisateur.getEmail(), motDePasseClair);
+			} catch (ServletException e) {
+				e.printStackTrace();
+			}
 		}
 
 		return "redirect:/profil/session";

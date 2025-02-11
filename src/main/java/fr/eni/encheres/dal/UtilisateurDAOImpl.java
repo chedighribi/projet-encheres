@@ -9,8 +9,6 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.stereotype.Repository;
 
 import fr.eni.encheres.bo.Utilisateur;
@@ -25,8 +23,6 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	private final String COUNT_PSEUDO = "SELECT COUNT(pseudo) FROM utilisateurs WHERE pseudo = :pseudo";
 	private final String COUNT_EMAIL = "SELECT COUNT(email) FROM utilisateurs WHERE email = :email";
 
-	BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-	
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
 
@@ -43,7 +39,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 		namedParameters.addValue("administrateur", utilisateur.isAdministrateur());
 		namedParameters.addValue("telephone", utilisateur.getTelephone());
 		namedParameters.addValue("credit", 10);
-		namedParameters.addValue("mot_de_passe", "{bcrypt}" + encoder.encode(utilisateur.getMotDePasse()));
+		namedParameters.addValue("mot_de_passe", utilisateur.getMotDePasse());
 		namedParameters.addValue("no_adresse", utilisateur.getAdresse().getNoAdresse());
 
 		jdbcTemplate.update(INSERT, namedParameters, keyHolder);
