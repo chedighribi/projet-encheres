@@ -1,5 +1,6 @@
 package fr.eni.encheres.controller;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -36,9 +37,9 @@ public class ArticleAVendreController {
 	}
 
 	@GetMapping
-	public String afficherArticles(Model model) {
+	public String afficherArticles(@ModelAttribute("membreEnSession") Utilisateur membreEnSession, Model model) {
 		List<ArticleAVendre> articles = articleAVendreService.consulterArticles();
-		model.addAttribute("articles",articles);
+		model.addAttribute("articles", articles);
 		return "view-articles";
 	}
 	
