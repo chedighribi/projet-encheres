@@ -28,9 +28,8 @@
 			</th:block>
 		</ul>
 	</nav>
-	<th:block
-		data-th-if="${#authorization.expression('isAuthenticated()')}">
-		<div class="position-absolute bottom-0 start-100 translate-middle-x badge rounded-pill bg-primary">
+	
+		<div class="position-absolute bottom-0 start-50 translate-middle-x badge rounded-pill bg-primary">
 			<SCRIPT LANGUAGE="JavaScript">
 				var maintenant=new Date();
 				var jour=maintenant.getDate();
@@ -39,7 +38,8 @@
 				document.write("<span>Date du jour : ",jour,"/",mois,"/",an,"</span>");
 			</SCRIPT>
 			<br />
-			<span data-th-text="'Participant : '+ ${membreEnSession.pseudo}"></span>
+			<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
+				<span data-th-text="'Participant : '+ ${membreEnSession.pseudo}"></span>
+			</th:block>
 		</div>
-	</th:block>
 </header>
