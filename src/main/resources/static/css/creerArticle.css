@@ -27,8 +27,8 @@ textarea {
 
 .button-group {
     display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
+    margin: 10px;
+    align-items: center;
 }
 
 .btn {
