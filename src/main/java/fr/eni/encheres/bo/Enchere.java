@@ -1,15 +1,18 @@
 package fr.eni.encheres.bo;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Enchere implements Comparable<Enchere> {
+public class Enchere implements Comparable<Enchere>, Serializable {
+	private static final long serialVersionUID = 1L;
 	private LocalDateTime date;
 	private int montant;
 	private Utilisateur utilisateur;
 	private ArticleAVendre articleAVendre;
 	
 	public Enchere() {
-		
+		 this.utilisateur = new Utilisateur();
+		 this.articleAVendre = new ArticleAVendre();
 	}
 	
 	public Enchere(LocalDateTime date, int montant, Utilisateur utilisateur, ArticleAVendre articleAVendre) {

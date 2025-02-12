@@ -19,20 +19,21 @@ import fr.eni.encheres.bll.ArticleAVendreService;
 import fr.eni.encheres.bo.Adresse;
 import fr.eni.encheres.bo.ArticleAVendre;
 import fr.eni.encheres.bo.Categorie;
+import fr.eni.encheres.bo.Enchere;
 import fr.eni.encheres.bo.Utilisateur;
 import fr.eni.encheres.exceptions.BusinessException;
 import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/articles")
-@SessionAttributes({"CategoriesEnSession", "AdresseEnSession", "membreEnSession"})
+@SessionAttributes({ "CategoriesEnSession", "AdresseEnSession", "membreEnSession" })
 public class ArticleAVendreController {
 	private ArticleAVendreService articleAVendreService;
 	private AdresseService adresseService;
 
 	public ArticleAVendreController(ArticleAVendreService articleAVendreService, AdresseService adresseService) {
 		this.articleAVendreService = articleAVendreService;
-		this.adresseService=adresseService;
+		this.adresseService = adresseService;
 	}
 
 	@GetMapping
@@ -41,8 +42,8 @@ public class ArticleAVendreController {
 		model.addAttribute("articles", articles);
 		return "view-articles";
 	}
-	
-	//Premier test pour les filtres
+
+	// Premier test pour les filtres
 	@GetMapping("/filtrer")
 	public String afficherArticlesByCategorie(@RequestParam(name = "nomArticle", required = false) String nomArticle,
 			@RequestParam(name = "idCategorie", required = false) long idCategorie,
@@ -63,16 +64,21 @@ public class ArticleAVendreController {
 			articles = articleAVendreService.consulterArticleParStatutVente(idVente, membreEnSession.getPseudo());
 		}
 		model.addAttribute("articles",articles);
+
 		return "view-articles";
 	}
 
 	@GetMapping("/detail")
-	public String detailVente(@RequestParam(name = "id", required = true) long id, Model model) {
+	public String detailVente(@RequestParam(name = "id", required = true) long id, @ModelAttribute("membreEnSession") Utilisateur utilisateur, Model model) {
 		if (id > 0) {
 			ArticleAVendre article = articleAVendreService.consulerArticleParId(id);
 			if (article != null) {
 				System.out.println("Type of dateFinEncheres: " + article.getDateFinEncheres().getClass().getName());
 				model.addAttribute("article", article);
+				Enchere enchere = new Enchere();
+				enchere.getArticleAVendre().setId(article.getId());
+				enchere.getUtilisateur().setPseudo(utilisateur.getPseudo());
+				model.addAttribute("enchere", enchere);
 				return "view-article-detail";
 			} else
 				System.out.println("id invalide");
@@ -81,18 +87,19 @@ public class ArticleAVendreController {
 		}
 		return "redirect:/";
 	}
-	
+
 	@GetMapping("/creer")
 	public String creerArticle(Model model) {
-		 ArticleAVendre article = new ArticleAVendre();
-		 article.setDateDebutEncheres(LocalDate.now());
-		 article.setDateFinEncheres(LocalDate.now().plusWeeks(1));
-		 model.addAttribute("article", article);
-		return"view-article-creer";
+		ArticleAVendre article = new ArticleAVendre();
+		article.setDateDebutEncheres(LocalDate.now());
+		article.setDateFinEncheres(LocalDate.now().plusWeeks(1));
+		model.addAttribute("article", article);
+		return "view-article-creer";
 	}
-	
+
 	@PostMapping("/creer")
-	public String creerArticle(@Valid @ModelAttribute("article") ArticleAVendre articleAVendre, BindingResult bindingResult, @ModelAttribute("membreEnSession") Utilisateur user) {
+	public String creerArticle(@Valid @ModelAttribute("article") ArticleAVendre articleAVendre,
+			BindingResult bindingResult, @ModelAttribute("membreEnSession") Utilisateur user) {
 		if (user != null && user.getPseudo().length() >= 1) {
 			articleAVendre.setVendeur(user);
 			if (!bindingResult.hasErrors()) {
@@ -110,14 +117,15 @@ public class ArticleAVendreController {
 		}
 		return "view-article-creer";
 	}
-	
+
 	@GetMapping("/modifier")
 	public String modifierArticle(@RequestParam(name="idArticle", required=true)long id, Model model) {
 		 ArticleAVendre article = articleAVendreService.consulerArticleParId(id);
 		 model.addAttribute("article", article);
 		return"view-article-modifier";
+
 	}
-	
+
 	@PostMapping("/modifier")
 	public String modifierArticle(@Valid @ModelAttribute("article") ArticleAVendre articleAVendre, BindingResult bindingResult) {
 			if (!bindingResult.hasErrors()) {
@@ -146,14 +154,27 @@ public class ArticleAVendreController {
 		}
 		return "view-article-modifier";
 	}
-	
+
 	@ModelAttribute("CategoriesEnSession")
 	public List<Categorie> chargerCategories() {
 		return articleAVendreService.consulterCategories();
 	}
-	
+
 	@ModelAttribute("AdresseEnSession")
 	public List<Adresse> chargerAdresses() {
 		return adresseService.consulterAdressesEni();
 	}
+
+	@PostMapping("/enchere")
+	public String encherir(@ModelAttribute("enchere") Enchere enchere) {
+		try {
+			articleAVendreService.creerEnchere(enchere);
+			
+			return "redirect:/";
+		} catch (BusinessException e) {
+			System.err.println(e.getClefsExternalisations());
+		}
+		return null;
+	}
+
 }

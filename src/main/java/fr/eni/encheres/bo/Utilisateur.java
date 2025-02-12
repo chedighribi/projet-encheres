@@ -3,6 +3,7 @@ package fr.eni.encheres.bo;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import fr.eni.encheres.exceptions.BusinessCode;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Future;
@@ -29,7 +30,7 @@ public class Utilisateur {
 	private String email;
 	@Size(max=15)
 	private String telephone;
-	@Pattern(regexp = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{8,20})")
+	@Pattern(regexp = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%-+_!]).{8,20})",message = "{"+BusinessCode.VALIDATION_UTILISATEUR_MDP_PATTERN+"}")
 	@NotBlank
 	@Size(min=8, max=20)
 	private String motDePasse;

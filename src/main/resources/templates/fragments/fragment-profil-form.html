@@ -1,78 +1,98 @@
-<form xmlns:th="http://www.thymeleaf.org" 
-		data-th-fragment="frag-profil-form(action)"
-		data-th-action="@{/profil/__${action}__}" 
-		data-th-object="${personne}" method="post">
-		
-		<h1 data-th-text="#{Profil.titreForm.__${action}__}"></h1>
-		<div data-th-replace="~{fragments/errors/fragment-errors :: frag-errors}"></div>
-	
-		<ul class="flex-outer list-group">
-		<li>
-			<label for="inputPseudo" data-th-text="#{Profil.pseudo.req}"></label> 
+<form xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-profil-form(action)"
+	data-th-action="@{/profil/__${action}__}" data-th-object="${personne}" method="post" class="profil-form"
+	id="profil-form">
+
+	<h1 class="text-center" data-th-text="#{Profil.titreForm.__${action}__}"></h1>
+	<div data-th-replace="~{fragments/errors/fragment-errors :: frag-errors}"></div>
+
+	<div class="row justify-content-around form-inline py-2 mx-2">
+		<div class="col-3 d-none d-md-block py-2">
+			<label for="inputPseudo" data-th-text="#{Profil.pseudo.req}" class="w-100 text-center col-form-label"></label>
+		</div>
+		<div class="col-12 col-md-3 d-none d-md-block py-2">
 			<th:block data-th-if="${#strings.contains(action,'modifier')}">
-				<span class="input-display" data-th-text="*{pseudo}"></span>
+				<input type="text" id="inputPseudo" required readonly data-th-field="*{pseudo}"
+					class="form-control-plaintext col-sm-10 form-control" data-th-placeholder="#{Profil.pseudo.req}" />
 			</th:block>
 			<th:block data-th-if="${#strings.contains(action,'creer')}">
-				<input type="text" id="inputPseudo" required data-th-field="*{pseudo}" />
+				<input type="text" id="inputPseudo" required data-th-field="*{pseudo}" class="form-control"
+					data-th-placeholder="#{Profil.pseudo.req}" />
 				<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('pseudo')}"></div>
 			</th:block>
-		</li>
-		<li>
-			<label for="inputNom" data-th-text="#{Profil.nom.req}"></label> 
-			<input type="text" id="inputNom" required data-th-field="*{nom}" />
-			<div	data-th-replace="~{fragments/errors/fragment-error :: frag-error('nom')}"></div>
-		</li>
-		<li>
-			<label for="inputPrenom" data-th-text="#{Profil.prenom.req}"></label> 
-			<input type="text" id="inputPrenom" required data-th-field="*{prenom}" />
+		</div>
+
+		<div class="col-3 d-none d-md-block py-2">
+			<label for="inputNom" data-th-text="#{Profil.nom.req}" class="w-100 text-center col-form-label"></label>
+		</div>
+		<div class="col-12 col-md-3 py-2">
+			<input type="text" id="inputNom" required data-th-field="*{nom}" class="form-control"
+				data-th-placeholder="#{Profil.nom.req}" />
+			<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('nom')}"></div>
+		</div>
+
+		<div class="col-3 d-none d-md-block py-2">
+			<label for="inputPrenom" data-th-text="#{Profil.prenom.req}" class="w-100 text-center col-form-label"></label>
+		</div>
+		<div class="col-12 col-md-3 py-2">
+			<input type="text" id="inputPrenom" required data-th-field="*{prenom}" class="form-control"
+				data-th-placeholder="#{Profil.prenom.req}" />
 			<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('prenom')}"></div>
-			
-		</li>
-		<li>
-			<label for="inputEmail" data-th-text="#{Profil.email.req}">Email : </label> 
-			<input type="text" id="inputEmail" data-th-field="*{email}" />
+		</div>
+
+		<div class="col-3 d-none d-md-block py-2">
+			<label for="inputTelephone" data-th-text="#{Profil.telephone}" class="w-100 text-center col-form-label"></label>
+		</div>
+		<div class="col-12 col-md-3 py-2">
+			<input type="text" id="inputTelephone" data-th-field="*{telephone}" class="form-control"
+				data-th-placeholder="#{Profil.telephone}" />
+			<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('telephone')}"></div>
+		</div>
+
+		<div class="col-3 d-none d-md-block py-2">
+			<label for="inputEmail" data-th-text="#{Profil.email.req}" class="w-100 text-center col-form-label"></label>
+		</div>
+		<div class="col-12 col-md-9 py-2">
+			<input type="text" id="inputEmail" required data-th-field="*{email}" class="form-control"
+				data-th-placeholder="#{Profil.email.req}" />
 			<th:block data-th-if="${#strings.contains(action,'creer')}">
 				<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('email')}"></div>
 			</th:block>
-			
-		</li>
-		<li>
-			<label for="inputTelephone" data-th-text="#{Profil.telephone.req}"></label> 
-			<input type="text" id="inputTelephone" data-th-field="*{telephone}" />
-			<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('telephone')}"></div>
-			
-		</li>
-		<li>
-			<label for="inputAdresseRue">Adresse (*): </label> 
-			<input type="text" id="inputAdresseRue" required data-th-field="*{adresse.rue}" />
-			<input type="text" id="inputAdresseCodePostal" required data-th-field="*{adresse.codePostal}" />
-			<input type="text" id="inputAdresseVille" required data-th-field="*{adresse.ville}" />
-			<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('adresse')}"></div>
-			
-		</li>
+		</div>
+
+		<div class="col-12 col-md-3 form-inline row justify-content-around py-2">
+			<label for="inputAdresseRue" class="text-center">Adresse (*): </label>
+		</div>
+		<div class="col-12 col-md-3 py-2">
+			<input class="form-control" type="text" id="inputAdresseRue" required data-th-field="*{adresse.rue}"
+				data-th-placeholder="#{Profil.adresse.rue.req}" />
+		</div>
+		<div class="col-12 col-md-3 py-2">
+			<input class="form-control" type="text" id="inputAdresseCodePostal" required data-th-field="*{adresse.codePostal}"
+				data-th-placeholder="#{Profil.adresse.codepostal.req}" />
+		</div>
+		<div class="col-12 col-md-3 py-2">
+			<input class="form-control" type="text" id="inputAdresseVille" required data-th-field="*{adresse.ville}"
+				data-th-placeholder="#{Profil.adresse.ville.req}" />
+		</div>
+
+		<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('adresse')}"></div>
+
 		<th:block data-th-if="${#strings.contains(action,'modifier')}">
-		<li>
-			<label for="input" data-th-text="#{Profil.credit}"></label>
-			<span class="input-display" data-th-text="*{credit}"></span>
-		</li>
+			<div class="col-6 col-md-3 py-2">
+				<label for="input" data-th-text="#{Profil.credit}" class="w-100 text-center col-form-label"></label>
+			</div>
+			<div class="col-6 col-md-9 py-2">
+				<span class="input-display" data-th-text="*{credit}"></span>
+			</div>
 		</th:block>
 		<th:block data-th-if="${#strings.contains(action,'creer')}">
-			<li>
-				<label for="inputMotDePasse" data-th-text="#{Profil.motDePasse.req}"></label> 
-				<input type="password" id="inputMotdDePasse" required data-th-field="*{motDePasse}"  data-th-readonly="${#strings.contains(action,'modifier')}"/>
-					<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('motDePasse')}"></div>			
-			</li>
-			<li>
-				<label for="inputConfirmation" data-th-text="#{Profil.confirmation.req}"></label> 
-				<input type="password" id="inputConfirmation" required />
-				<div></div>
-			</li>
+			<div data-th-replace="~{fragments/fragment-password :: frag-password}"></div>
 		</th:block>
-		<li>
-			<button type="submit" data-th-text="#{Profil.btn.creer}"></button>
-		</li>
-		<li>
-			<button type="submit" data-th-text="#{Profil.btn.annuler}"></button>
-		</li>
-		</ul>
+		<div class="col-12 col-md-5 py-2 text-end">
+			<button id="bouton-soumettre" class="btn btn-primary" type="submit" data-th-text="#{Profil.btn.__${action}__}"></button>
+		</div>
+		<div class="col-md-5 d-none d-md-block py-2 text-start">
+			<button class="btn btn-secondary" type="submit" data-th-text="#{Profil.btn.annuler}"></button>
+		</div>
+	</div>
 </form>

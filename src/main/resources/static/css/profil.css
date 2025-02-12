@@ -7,3 +7,23 @@
 li {
 	list-style-type: none;
 }
+
+@media screen and (min-width: 768px) {
+    /* For mobile display placeholder rather than label */
+    #profil-form ::-webkit-input-placeholder { /* WebKit browsers */
+        color: transparent;
+    }
+    #profil-form ::-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+       color: transparent;
+    }
+    #profil-form :-moz-placeholder { /* Mozilla Firefox 19+ */
+       color: transparent;
+    }
+   	#profil-form :-ms-input-placeholder { /* Internet Explorer 10+ */
+       color: transparent;
+    }
+}
+
+div {
+	/*border : 1px solid black;*/
+}

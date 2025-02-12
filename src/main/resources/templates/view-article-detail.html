@@ -19,21 +19,31 @@
 				<h1>Détail d'une vente</h1>
 			</th:block>
 			<!-- Add link to buyer profile -->
-						<th:block
+			<th:block
 				data-th-if="${#temporals.format(article.dateFinEncheres, 'yyyy-MM-dd') lt #temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}">
-				<h1> 
-				<th:block data-th-if="${membreEnSession.pseudo} != *{encheres.get(0).utilisateur.pseudo}"> <a data-th-href="@{/???(id=${acquereur.pseudo})}"><span data-th-text="*{encheres.get(0).utilisateur.pseudo}"></span></a> </th:block>
-				<th:block data-th-if="${membreEnSession.pseudo} == *{encheres.get(0).utilisateur.pseudo}"> <span>vous avez</span> </th:block>
-				remporté la vente</h1>
+				<h1>
+					<th:block
+						data-th-if="${membreEnSession.pseudo} != *{encheres.get(0).utilisateur.pseudo}">
+						<a data-th-href="@{/???}"
+							data-th-text="*{encheres.get(0).utilisateur.pseudo}"> </a>
+						<span> a</span>
+					</th:block>
+					<th:block
+						data-th-if="${membreEnSession.pseudo} == *{encheres.get(0).utilisateur.pseudo}">
+						<span>Vous avez</span>
+					</th:block>
+					remporté la vente
+				</h1>
 			</th:block>
-			
+
 			<div class="container-info">
 				<div>
 					<p>
 						<span class="label">Article :</span> <span data-th-text="*{nom}"></span>
 					</p>
 					<p>
-						<span class="label">Catégorie :</span> <span>à faire</span>
+						<span class="label">Catégorie :</span> <span
+							data-th-text="*{categorie.libelle}"></span>
 					</p>
 					<p>
 						<span class="label">Description :</span> <span
@@ -43,12 +53,12 @@
 				<div>
 					<p>
 						<span class="label">Mise à prix :</span> <span
-							data-th-text="*{prixInitial}"></span>
+							data-th-text="*{prixInitial} + ' point(s)'"></span>
 					</p>
 
 					<p>
 						<span class="label">Meilleure offre :</span> <span
-							data-th-text="*{statut}"></span>
+							th:text="*{prixVente} >= *{prixInitial} ? *{prixVente} + ' point(s) par ' + *{encheres[0].utilisateur.pseudo} :  *{prixInitial} + ' point(s)'"></span>
 					</p>
 
 					<p>
@@ -58,36 +68,41 @@
 				</div>
 				<div>
 					<p>
-						<span class="label">Retrait :</span> <span>à faire</span>
-					</p>					
-					<p>
-						<th:block class="label" data-th-if="*{encheres} != null and *{encheres.size() > 0}"> <span
-							data-th-text="*{encheres.get(0).utilisateur.pseudo}"></span>
-							</th:block>
+						<span class="label">Retrait :</span> <span
+							data-th-text="*{adresse}"></span>
 					</p>
-
 					<p>
 						<span class="label">Vendeur :</span> <span
 							data-th-text="*{vendeur.pseudo}"></span>
 					</p>
-					<!-- add debut date condition -->
 					<th:block
-						data-th-if="${membreEnSession.pseudo} != *{vendeur.pseudo}">
-						<form data-th-action="@{/enchaire}" method="post">
-							<label for="inputEnchere"> <span class="label">Mon
-									enchère: </span></label> <input type="number" id="inputEnchere"
-								onkeydown="return false;" data-th-min="*{statut + 1}"
-								data-th-max="${membreEnSession.credit}"
-								data-th-value="*{statut + 1}" /> <a href="/"
-								class="validation-button-sm">Encherir</a>
+						data-th-if="${#temporals.format(article.dateFinEncheres, 'yyyy-MM-dd') gt #temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}">
+						<th:block
+							data-th-if="${membreEnSession.pseudo} != *{vendeur.pseudo}">
+							<form data-th-action="@{/articles/enchere}" method="post"
+								th:object="${enchere}">
 
-							<!-- add enchaire to model -->
-							<!-- data-th-field="*{montant}"  -->
-						</form>
-
+								<input type="hidden" data-th-field="*{articleAVendre.id}"
+									data-th-value="${article.id}" /> <input type="hidden"
+									data-th-field="*{utilisateur.pseudo}"
+									data-th-value="${membreEnSession.pseudo}" /> <label
+									for="inputEnchere"> <span class="label">Mon
+										enchère: </span></label> <input type="number" id="inputEnchere"
+									onkeydown="return false;" data-th-field="*{montant}"
+									data-th-min="${article.prixVente + 1}"
+									data-th-max="${membreEnSession.credit}"
+									data-th-value="${article.prixVente + 1}" />
+								<button type="submit" class="validation-button-sm">Enchérir</button>
+							</form>
+						</th:block>
 					</th:block>
-
-
+					<th:block
+						data-th-if="${#temporals.format(article.dateFinEncheres, 'yyyy-MM-dd') lt #temporals.format(#temporals.createNow(), 'yyyy-MM-dd')} and ${membreEnSession.pseudo} == *{encheres.get(0).utilisateur.pseudo}">
+						<p>
+							<span class="label">Téléphone :</span> <span
+								data-th-text="*{vendeur.telephone}"></span>
+						</p>
+					</th:block>
 				</div>
 
 
