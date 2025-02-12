@@ -1,21 +1,15 @@
 <header xmlns:th="http://www.thymeleaf.org" 
-	data-th-fragment="frag-entete">
+	data-th-fragment="frag-entete" class="position-relative">
 	<section id="nav-title">
 		<h1>
 			<a href="/" class="logo-container"><img class="logo"
 				data-th-src="@{/images/logo-auction.png}"><span
 				data-th-text="Eni-Encheres"></span></a>
-
-			<th:block
-				data-th-if="${#authorization.expression('isAuthenticated()')}">
-				<span data-th-text="'['+ ${membreEnSession.pseudo}+']'"></span>
-			</th:block>
 		</h1>
 		<div>
 			<a href="/?language=fr"><img alt="Français" src="/images/French.webp"></a>
 			<a href="/?language=en"><img alt="English" src="/images/English.webp"></a>
 		</div>
-		
 	</section>
 	<nav>
 		<ul>
@@ -32,8 +26,20 @@
 				
 				<li><a href="/logout" data-th-text="#{Menu.logout}"></a></li>
 			</th:block>
-			
-			<li><a href="/profil/creer">test2</a></li>
 		</ul>
 	</nav>
+	<th:block
+		data-th-if="${#authorization.expression('isAuthenticated()')}">
+		<div class="position-absolute bottom-0 start-100 translate-middle-x badge rounded-pill bg-primary">
+			<SCRIPT LANGUAGE="JavaScript">
+				var maintenant=new Date();
+				var jour=maintenant.getDate();
+				var mois=maintenant.getMonth()+1;
+				var an=maintenant.getFullYear();
+				document.write("<span>Date du jour : ",jour,"/",mois,"/",an,"</span>");
+			</SCRIPT>
+			<br />
+			<span data-th-text="'Participant : '+ ${membreEnSession.pseudo}"></span>
+		</div>
+	</th:block>
 </header>
