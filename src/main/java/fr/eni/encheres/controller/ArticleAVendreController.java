@@ -1,6 +1,5 @@
 package fr.eni.encheres.controller;
 
-import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -106,12 +105,29 @@ public class ArticleAVendreController {
 	public String modifierArticle(@RequestParam(name="idArticle", required=true)long id, Model model) {
 		 ArticleAVendre article = articleAVendreService.consulerArticleParId(id);
 		 model.addAttribute("article", article);
-		 System.out.println("le model: " + model);
 		return"view-article-modifier";
 	}
 	
 	@PostMapping("/modifier")
-	public String modifierArticle(@ModelAttribute("article") ArticleAVendre articleAVendre) {
+	public String modifierArticle(@Valid @ModelAttribute("article") ArticleAVendre articleAVendre, BindingResult bindingResult) {
+			if (!bindingResult.hasErrors()) {
+				try {
+					articleAVendreService.modifierArticle(articleAVendre);
+					return "redirect:/articles";
+				} catch (BusinessException e) {
+					System.err.println(e.getClefsExternalisations());
+					e.getClefsExternalisations().forEach(key -> {
+						ObjectError error = new ObjectError("globalError", key);
+						bindingResult.addError(error);
+					});
+				}
+			}
+		return "view-article-creer";
+	}
+	
+	@PostMapping("/supprimer")
+	public String supprimerArticle(@ModelAttribute("article") ArticleAVendre articleAVendre) {
+		System.out.println("article suppr: " + articleAVendre);
 		try {
 			articleAVendreService.supprimerArticle(articleAVendre);
 			return "redirect:/articles";
@@ -130,7 +146,4 @@ public class ArticleAVendreController {
 	public List<Adresse> chargerAdresses() {
 		return adresseService.consulterAdressesEni();
 	}
-
-	
-	
 }
