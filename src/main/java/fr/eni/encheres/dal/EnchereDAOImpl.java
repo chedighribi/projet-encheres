@@ -2,6 +2,7 @@ package fr.eni.encheres.dal;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ import fr.eni.encheres.bo.Utilisateur;
 @Repository
 public class EnchereDAOImpl implements EnchereDAO {
 
-	private final String INSERT = "INSERT INTO ENCHERES (date_enchere, montant_enchere, id_utilisateur, no_article)";
+	private final String INSERT = "INSERT INTO ENCHERES (date_enchere, montant_enchere, id_utilisateur, no_article) VALUES(:date_enchere, :montant_enchere, :id_utilisateur, :no_article)";
 	private final String FIND_BY_ARTICLE= "SELECT date_enchere, montant_enchere, id_utilisateur, no_article FROM ENCHERES WHERE no_article = :id";
 	
 	@Autowired
@@ -29,10 +30,10 @@ public class EnchereDAOImpl implements EnchereDAO {
 	public void create(Enchere enchere) {
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		MapSqlParameterSource namedParameter = new MapSqlParameterSource();
-		namedParameter.addValue("date", enchere.getDate());
-		namedParameter.addValue("montant", enchere.getMontant());
-		namedParameter.addValue("utilisateur", enchere.getUtilisateur());
-		namedParameter.addValue("articleAVendre", enchere.getArticleAVendre());
+		namedParameter.addValue("date_enchere", LocalDate.now());
+		namedParameter.addValue("montant_enchere", enchere.getMontant());
+		namedParameter.addValue("id_utilisateur", enchere.getUtilisateur().getPseudo());
+		namedParameter.addValue("no_article", enchere.getArticleAVendre().getId());
 		jdbcTemplate.update(INSERT, namedParameter, keyHolder);
 	}
 
@@ -48,7 +49,7 @@ public class EnchereDAOImpl implements EnchereDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	class EnchereRowMapper implements RowMapper<Enchere> {
 
 		@Override

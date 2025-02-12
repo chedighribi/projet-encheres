@@ -45,4 +45,6 @@ public class BusinessCode {
 	public static final String VALIDATION_ADRESSE_CODEPOSTAL_BLANK = "validation.adresse.codePostal.blank";
 	public static final String VALIDATION_ADRESSE_CODEPOSTAL_SIZE = "validation.adresse.codePostal.size";
 	
+	public static final String VALIDATION_ENCHERE_AMOUNT = "validation.enchere.amount";
+
 }
