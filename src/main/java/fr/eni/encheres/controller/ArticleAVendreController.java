@@ -44,13 +44,23 @@ public class ArticleAVendreController {
 	
 	//Premier test pour les filtres
 	@GetMapping("/filtrer")
-	public String afficherArticlesByCategorie(@RequestParam(name = "filtre", required = false) String idCategorie, Model model){
-		List<ArticleAVendre> articles;
+	public String afficherArticlesByCategorie(@RequestParam(name = "nomArticle", required = false) String nomArticle,
+			@RequestParam(name = "idCategorie", required = false) long idCategorie,
+			@RequestParam(name = "idVente", required = false) String idVente,
+			@RequestParam(name = "idAchat", required = false) String idAchat,
+			@ModelAttribute("membreEnSession") Utilisateur membreEnSession,
+			Model model){
 		System.out.println("filtre: " + idCategorie);
-		if(idCategorie == "-1" || idCategorie.isBlank()) {
-			articles = articleAVendreService.consulterArticles();
-		}else {
+		List<ArticleAVendre> articles;
+		articles = articleAVendreService.consulterArticles();
+		if(!nomArticle.isBlank()) {
+			articles = articleAVendreService.consulterArticleParNom(nomArticle);
+		}
+		if(idCategorie != 0) {
 			articles = articleAVendreService.consulterArticlesParCategorie(idCategorie);
+		}
+		if(idVente!= null) {
+			articles = articleAVendreService.consulterArticleParStatutVente(idVente, membreEnSession.getPseudo());
 		}
 		model.addAttribute("articles",articles);
 		return "view-articles";
