@@ -3,6 +3,7 @@ package fr.eni.encheres.dal;
 import java.util.List;
 
 import fr.eni.encheres.bo.ArticleAVendre;
+import fr.eni.encheres.bo.Utilisateur;
 
 public interface ArticleAVendreDAO {
 	List<ArticleAVendre> findAll();
@@ -10,4 +11,5 @@ public interface ArticleAVendreDAO {
 	ArticleAVendre find(long id);
 	void updateArticle(ArticleAVendre articleAVendre);
 	void delete(ArticleAVendre articleAVendre);
+	List<ArticleAVendre> findAllByMembre(String pseudoMembre);
 }

@@ -38,7 +38,7 @@ public class ArticleAVendreServiceImpl implements ArticleAVendreService{
 	
 	@Override
 	public List<ArticleAVendre> consulterArticles() {
-		List<ArticleAVendre> articles=ArticleAVendreDAO.findAll();
+		List<ArticleAVendre> articles=ArticleAVendreDAO.findAll().stream().filter(article -> article.getStatut() == 1).toList();
 		if (articles != null) {
 			articles.forEach(a -> {
 				chargerCategorieEtAdresse1Article(a);
@@ -75,9 +75,8 @@ public class ArticleAVendreServiceImpl implements ArticleAVendreService{
 	}
 
 	@Override
-	public List<ArticleAVendre> consulterArticlesParCategorie(String idCategorie) {
-		long theIdCategorie = Long.parseLong(idCategorie);
-		return ArticleAVendreDAO.findAll().stream().filter(art -> art.getCategorie().getId() == theIdCategorie).toList();
+	public List<ArticleAVendre> consulterArticlesParCategorie(long idCategorie) {
+		return ArticleAVendreDAO.findAll().stream().filter(article -> article.getCategorie().getId() == idCategorie).toList();
 	}
 
 	@Override
@@ -90,6 +89,16 @@ public class ArticleAVendreServiceImpl implements ArticleAVendreService{
 		return CategorieDAO.findById(id);
 	}
 	
+	@Override
+	public List<ArticleAVendre> consulterArticleParNom(String nomArticle) {
+		return ArticleAVendreDAO.findAll().stream().filter(article -> article.getNom().contains(nomArticle)).toList();
+	}
+
+	@Override
+	public List<ArticleAVendre> consulterArticleParStatutVente(String idStatut, String pseudoMembre) {
+		Long theIdSatut = Long.parseLong(idStatut);
+		return ArticleAVendreDAO.findAllByMembre(pseudoMembre).stream().filter(article -> article.getStatut() == theIdSatut).toList();
+	}
 	@Override
 	@Transactional
 	public void creerArticle(ArticleAVendre article) {
@@ -202,12 +211,4 @@ public class ArticleAVendreServiceImpl implements ArticleAVendreService{
 		}
 		return true;
 	}
-
-	
-	
-
-	
-
-	
-
 }
