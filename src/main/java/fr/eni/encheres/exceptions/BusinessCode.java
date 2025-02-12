@@ -33,6 +33,7 @@ public class BusinessCode {
 	public static final String VALIDATION_UTILISATEUR_PHONE_SIZE = "validation.utilisateur.phone.size";
 	public static final String VALIDATION_UTILISATEUR_MDP_BLANK = "validation.utilisateur.mdp.blank";
 	public static final String VALIDATION_UTILISATEUR_MDP_SIZE = "validation.utilisateur.mdp.size";
+	public static final String VALIDATION_UTILISATEUR_MDP_PATTERN = "validation.utilisateur.mdp.pattern";
 	public static final String VALIDATION_UTILISATEUR_ADRESSE_BLANK = "validation.utilisateur.adresse.blank";
 
 	
