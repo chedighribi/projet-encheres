@@ -22,6 +22,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	private final String INSERT = "INSERT INTO utilisateurs (pseudo, email, nom, prenom, administrateur, telephone, credit, mot_de_passe, no_adresse) VALUES (:pseudo, :email, :nom, :prenom, :administrateur, :telephone, :credit, :mot_de_passe, :no_adresse)";
 	private final String COUNT_PSEUDO = "SELECT COUNT(pseudo) FROM utilisateurs WHERE pseudo = :pseudo";
 	private final String COUNT_EMAIL = "SELECT COUNT(email) FROM utilisateurs WHERE email = :email";
+	private final String UPDATE_CREDIT = "UPDATE utilisateurs SET credit = :credit WHERE pseudo = :pseudo";
 
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
@@ -96,5 +97,15 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 		namedParameters.addValue("email", email);
 		return jdbcTemplate.queryForObject(COUNT_EMAIL, namedParameters, Integer.class);
+	}
+
+	@Override
+	public void updateCredit(String pseudo, int newCredit) {
+	    MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+	    namedParameters.addValue("pseudo", pseudo);
+	    namedParameters.addValue("credit", newCredit);
+
+		 jdbcTemplate.update(UPDATE_CREDIT, namedParameters);
+;
 	}
 }

@@ -18,27 +18,28 @@ import fr.eni.encheres.dal.CategorieDAO;
 import fr.eni.encheres.dal.EnchereDAO;
 import fr.eni.encheres.dal.UtilisateurDAO;
 import fr.eni.encheres.exceptions.BusinessCode;
-import fr.eni.encheres.exceptions.BusinessException; 
+import fr.eni.encheres.exceptions.BusinessException;
 
 @Service
-public class ArticleAVendreServiceImpl implements ArticleAVendreService{
+public class ArticleAVendreServiceImpl implements ArticleAVendreService {
 	private ArticleAVendreDAO ArticleAVendreDAO;
 	private UtilisateurDAO utilisateurDAO;
 	private CategorieDAO CategorieDAO;
 	private AdresseDAO AdresseDAO;
 	private EnchereDAO enchereDAO;
 
-	public ArticleAVendreServiceImpl(ArticleAVendreDAO ArticleAVendreDAO, UtilisateurDAO utilisateurDAO, CategorieDAO CategorieDAO,AdresseDAO AdresseDAO, EnchereDAO enchereDAO) {
+	public ArticleAVendreServiceImpl(ArticleAVendreDAO ArticleAVendreDAO, UtilisateurDAO utilisateurDAO,
+			CategorieDAO CategorieDAO, AdresseDAO AdresseDAO, EnchereDAO enchereDAO) {
 		this.ArticleAVendreDAO = ArticleAVendreDAO;
-		this.CategorieDAO=CategorieDAO;
+		this.CategorieDAO = CategorieDAO;
 		this.utilisateurDAO = utilisateurDAO;
-		this.AdresseDAO=AdresseDAO;
+		this.AdresseDAO = AdresseDAO;
 		this.enchereDAO = enchereDAO;
 	}
-	
+
 	@Override
 	public List<ArticleAVendre> consulterArticles() {
-		List<ArticleAVendre> articles=ArticleAVendreDAO.findAll();
+		List<ArticleAVendre> articles = ArticleAVendreDAO.findAll();
 		if (articles != null) {
 			articles.forEach(a -> {
 				chargerCategorieEtAdresse1Article(a);
@@ -46,7 +47,7 @@ public class ArticleAVendreServiceImpl implements ArticleAVendreService{
 		}
 		return articles;
 	}
-	
+
 	private void chargerCategorieEtAdresse1Article(ArticleAVendre a) {
 		Adresse adresse = AdresseDAO.read(a.getAdresse().getNoAdresse());
 		a.setAdresse(adresse);
@@ -56,28 +57,29 @@ public class ArticleAVendreServiceImpl implements ArticleAVendreService{
 
 	@Override
 	public ArticleAVendre consulerArticleParId(long id) {
-		ArticleAVendre a =  ArticleAVendreDAO.find(id);
-		if(a != null) {
-			chargerVendeurAcquereur(a); 
+		ArticleAVendre a = ArticleAVendreDAO.find(id);
+		if (a != null) {
+			chargerVendeurAcquereur(a);
 			chargerCategorieEtAdresse1Article(a);
 		}
 		return a;
 	}
 
 	private void chargerVendeurAcquereur(ArticleAVendre a) {
-			Utilisateur vendeur = utilisateurDAO.findByPseudo(a.getVendeur().getPseudo());
-			a.setVendeur(vendeur);
-			List<Enchere> encheres = enchereDAO.readByArticle(a.getId());
-			encheres.forEach((e) -> e.setUtilisateur(utilisateurDAO.findByPseudo(e.getUtilisateur().getPseudo())));
-			Collections.sort(encheres);
-			a.setEncheres(encheres);
-			 
+		Utilisateur vendeur = utilisateurDAO.findByPseudo(a.getVendeur().getPseudo());
+		a.setVendeur(vendeur);
+		List<Enchere> encheres = enchereDAO.readByArticle(a.getId());
+		encheres.forEach((e) -> e.setUtilisateur(utilisateurDAO.findByPseudo(e.getUtilisateur().getPseudo())));
+		Collections.sort(encheres);
+		a.setEncheres(encheres);
+
 	}
 
 	@Override
 	public List<ArticleAVendre> consulterArticlesParCategorie(String idCategorie) {
 		long theIdCategorie = Long.parseLong(idCategorie);
-		return ArticleAVendreDAO.findAll().stream().filter(art -> art.getCategorie().getId() == theIdCategorie).toList();
+		return ArticleAVendreDAO.findAll().stream().filter(art -> art.getCategorie().getId() == theIdCategorie)
+				.toList();
 	}
 
 	@Override
@@ -89,7 +91,7 @@ public class ArticleAVendreServiceImpl implements ArticleAVendreService{
 	public Categorie consulterCategorieParId(long id) {
 		return CategorieDAO.findById(id);
 	}
-	
+
 	@Override
 	@Transactional
 	public void creerArticle(ArticleAVendre article) {
@@ -103,13 +105,13 @@ public class ArticleAVendreServiceImpl implements ArticleAVendreService{
 		isValid &= validerDateDebutEnchere(article.getDateDebutEncheres(), be);
 		isValid &= validerDateFinEnchere(article.getDateFinEncheres(), be);
 		isValid &= validerDates(article.getDateDebutEncheres(), article.getDateFinEncheres(), be);
-		if(isValid) {
+		if (isValid) {
 			ArticleAVendreDAO.insertArticle(article);
-		}else {
+		} else {
 			throw be;
 		}
 	}
-	
+
 	@Override
 	public void modifierArticle(ArticleAVendre article) {
 		BusinessException be = new BusinessException();
@@ -122,92 +124,107 @@ public class ArticleAVendreServiceImpl implements ArticleAVendreService{
 		isValid &= validerDateDebutEnchere(article.getDateDebutEncheres(), be);
 		isValid &= validerDateFinEnchere(article.getDateFinEncheres(), be);
 		isValid &= validerDates(article.getDateDebutEncheres(), article.getDateFinEncheres(), be);
-		if(isValid) {
+		if (isValid) {
 			ArticleAVendreDAO.updateArticle(article);
-		}else {
+		} else {
 			throw be;
 		}
 	}
-	
+
 	@Override
 	public void supprimerArticle(ArticleAVendre articleAVendre) {
 		ArticleAVendreDAO.delete(articleAVendre);
 	}
 
-	
+	@Override
+	public void creerEnchere(Enchere e) {
+		BusinessException be = new BusinessException();
+		Utilisateur utilisateur = utilisateurDAO.findByPseudo(e.getUtilisateur().getPseudo());
+		boolean isValid = true;
+		isValid &= validerSolde(e, be, utilisateur.getCredit());
+		if (isValid) {
+	        int newCredit = utilisateur.getCredit() - e.getMontant();
+	        utilisateurDAO.updateCredit(utilisateur.getPseudo(), newCredit );
+			enchereDAO.create(e);
+		} else {
+			throw be;
+		}
+	}
+
+	private boolean validerSolde(Enchere e, BusinessException be, int credit) {
+		if (credit < e.getMontant()) {
+			be.add(BusinessCode.VALIDATION_ENCHERE_AMOUNT);
+			return false;
+		}
+		return true;
+	}
+
 	public boolean validerArticle(ArticleAVendre article, BusinessException be) {
-		if(article == null) {
+		if (article == null) {
 			be.add(BusinessCode.VALIDATION_ARTICLE_NULL);
 			return false;
 		}
 		return true;
 	}
-	
+
 	public boolean validerCategorie(Categorie categorie, BusinessException be) {
-		if(categorie == null) {
+		if (categorie == null) {
 			be.add(BusinessCode.VALIDATION_ARTICLE_CATEGORIE_NULL);
 			return false;
 		}
 		return true;
 	}
-	
+
 	public boolean validerDescription(String description, BusinessException be) {
-		if(description == null) {
+		if (description == null) {
 			be.add(BusinessCode.VALIDATION_ARTICLE_DESCRIPTION_BLANK);
 			return false;
 		}
-		if(description.length() > 250) {
+		if (description.length() > 250) {
 			be.add(BusinessCode.VALIDATION_ARTICLE_DESCRIPTION_LENGTH);
 			return false;
 		}
 		return true;
 	}
-	
+
 	public boolean validerAdresse(Adresse adresse, BusinessException be) {
-		if(adresse == null) {
+		if (adresse == null) {
 			be.add(BusinessCode.VALIDATION_ARTICLE_ADRESSE_NULL);
 			return false;
 		}
 		return true;
 	}
-	
+
 	public boolean validerPrixInitial(int prix, BusinessException be) {
-		if(prix < 1) {
+		if (prix < 1) {
 			be.add(BusinessCode.VALIDATION_ARTICLE_PRIX_MIN);
 			return false;
 		}
 		return true;
 	}
-	
+
 	public boolean validerDateDebutEnchere(LocalDate dateDebut, BusinessException be) {
-		if(dateDebut.isBefore(LocalDate.now())) {
+		if (dateDebut.isBefore(LocalDate.now())) {
 			be.add(BusinessCode.VALIDATION_ARTICLE_DATEDEBUT_MIN);
 			return false;
 		}
 		return true;
 	}
-	
+
 	public boolean validerDateFinEnchere(LocalDate dateFin, BusinessException be) {
-		if(dateFin.isBefore(LocalDate.now())) {
+		if (dateFin.isBefore(LocalDate.now())) {
 			be.add(BusinessCode.VALIDATION_ARTICLE_DATEFIN_MIN);
 			return false;
 		}
 		return true;
 	}
-	
+
 	public boolean validerDates(LocalDate dateDebut, LocalDate dateFin, BusinessException be) {
-		if(dateFin.isBefore(dateDebut)) {
+		if (dateFin.isBefore(dateDebut)) {
 			be.add(BusinessCode.VALIDATION_ARTICLE_DATES);
 			return false;
 		}
 		return true;
 	}
-
-	
-	
-
-	
-
-	
 
 }
