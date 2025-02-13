@@ -159,11 +159,4 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
 			return a;
 		}
 	}
-
-
-	
-
-
-	
-
 }
