@@ -6,30 +6,30 @@
 					)}">
 
 <head>
-<title data-th-text="inscription"></title>
+<title data-th-text="#{Login.title}"></title>
 <th:block id="ressources-css">
 	<link rel="stylesheet" data-th-href="@{/css/tp-form.css}" />
 </th:block>
 </head>
 <body>
 	<main>
-		<div class = "login-panel w-75 mx-auto my-auto">
-			<form th:action="@{/login}" method="post">
+		<div class="login-panel w-75 mx-auto my-auto">
+			<form th:action="@{/login}" method="post" id="login-form">
 				<ul class="flex-outer">
 					<li>
-						<label for="username" data-th-text="#{Login.identifiant}"> Identifiant :</label> 
-						<input id="username" type="text" name="username" class="login-input" placeholder=""/></li>
+						<label for="username" data-th-text="#{Login.identifiant}"></label> 
+						<input id="username" type="text" name="username" class="login-input" data-th-placeholder="#{Login.identifiant}"/></li>
 					
 					<li>
-						<label for="password">Mot de passe :</label> 
-						<input id="password" name="password" type="password" class="login-input"/></li>
+						<label for="password" data-th-text="#{Login.motDePasse}"></label> 
+						<input id="password" name="password" type="password" class="login-input" data-th-placeholder="#{Login.motDePasse}"/></li>
 					
 					<li class="d-inline-block">
-						<button type="submit">Connexion</button>
-						<a href="/tofigureout" class="ps-4">Mot de passe oublié</a></li>
+						<button type="submit" data-th-text="#{Login.btn.connexion}"></button>
+						<a href="/tofigureout" class="ps-4" data-th-text="#{Login.btn.mdpOublie}"></a></li>
 					
 					<li>
-						<a href="/profil/creer" class="create-account">Créer un compte</a></li>
+						<a href="/profil/creer" class="create-account" data-th-text="#{Login.btn.creerCompte}"></a></li>
 				</ul>
 			</form>
 		</div>

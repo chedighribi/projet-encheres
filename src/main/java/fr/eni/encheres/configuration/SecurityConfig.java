@@ -21,9 +21,11 @@ public class SecurityConfig {
 	@Bean
 	UserDetailsManager userDetailsManager(DataSource dataSource) {
 		JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
-		jdbcUserDetailsManager.setUsersByUsernameQuery("SELECT email, mot_de_passe, 1 FROM utilisateurs WHERE email=?");
+//		jdbcUserDetailsManager.setUsersByUsernameQuery("SELECT email, mot_de_passe, 1 FROM utilisateurs WHERE email=?");
+		jdbcUserDetailsManager.setUsersByUsernameQuery("SELECT pseudo, mot_de_passe, 1 FROM utilisateurs WHERE pseudo=?");
 		jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
-				"SELECT u.email, r.IS_ADMIN FROM utilisateurs u INNER JOIN roles r ON r.IS_ADMIN = u.administrateur WHERE u.email=?");
+				"SELECT u.pseudo, r.role ,r.is_admin FROM utilisateurs u INNER JOIN roles r ON r.is_admin = u.administrateur WHERE u.pseudo = ?");
+	/*"SELECT u.email, r.IS_ADMIN FROM utilisateurs u INNER JOIN roles r ON r.IS_ADMIN = u.administrateur WHERE u.email=?");*/
 		return jdbcUserDetailsManager;
 	}
 

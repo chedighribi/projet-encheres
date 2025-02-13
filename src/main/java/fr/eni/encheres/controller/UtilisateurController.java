@@ -219,7 +219,7 @@ public class UtilisateurController {
 	
 	@GetMapping("/session")
 	public String connexion(@ModelAttribute("membreEnSession") Utilisateur membreEnSession, Principal principal) {
-		Utilisateur aCharger = utilisateurService.findByEmail(principal.getName());
+		Utilisateur aCharger = utilisateurService.consulterUtilisateurParPseudo(principal.getName());
 		System.out.println("---------------------");
 		System.out.println(aCharger);
 		if (aCharger != null) {

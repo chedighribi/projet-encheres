@@ -32,3 +32,31 @@ nav li {
 .login-input {
 	width : 20vw;
 }
+
+@media screen and (min-width: 768px) {
+    /* For mobile display placeholder rather than label */
+    #profil-form ::-webkit-input-placeholder, 
+    #password-form ::-webkit-input-placeholder,
+    #login-form ::-webkit-input-placeholder
+     { /* WebKit browsers */
+        color: transparent;
+    }
+    #profil-form ::-moz-placeholder, 
+    #password-form ::-moz-placeholder,
+    #login-form ::-moz-placeholder
+     { /* Mozilla Firefox 4 to 18 */
+       color: transparent;
+    }
+    #profil-form :-moz-placeholder, 
+    #password-form :-moz-placeholder,
+    #login-form :-moz-placeholder
+     { /* Mozilla Firefox 19+ */
+       color: transparent;
+    }
+   	#profil-form :-ms-input-placeholder, 
+   	#password-form :-ms-input-placeholder,
+   	#login-form :-ms-input-placeholder
+   	 { /* Internet Explorer 10+ */
+       color: transparent;
+    }
+}
