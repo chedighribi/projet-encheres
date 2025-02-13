@@ -25,7 +25,7 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
 			+ "      ,photo\r\n" + "      ,date_debut_encheres\r\n" + "      ,date_fin_encheres\r\n"
 			+ "      ,statut_enchere\r\n" + "      ,prix_initial\r\n" + "      ,prix_vente\r\n"
 			+ "      ,id_utilisateur\r\n" + "      ,no_categorie\r\n" + "      ,no_adresse_retrait\r\n"
-			+ "  FROM ARTICLES_A_VENDRE WHERE statut_enchere = 1";
+			+ "  FROM ARTICLES_A_VENDRE";
 
 	private String REQ_INSERT_ARTICLE = "INSERT INTO ARTICLES_A_VENDRE "
 			+ "(nom_article,description,date_debut_encheres,date_fin_encheres,statut_enchere,prix_initial,"
@@ -53,12 +53,6 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
 			+ "WHERE no_article = :idArticle";
 	
 	private String REQ_DELETE_ARTICLE = "DELETE FROM ARTICLES_A_VENDRE WHERE no_article= :idArticle";
-	
-	private String REQ_ARTICLES_UTILISATEUR = "SELECT no_article\r\n" + "      ,nom_article\r\n" + "      ,description\r\n"
-			+ "      ,photo\r\n" + "      ,date_debut_encheres\r\n" + "      ,date_fin_encheres\r\n"
-			+ "      ,statut_enchere\r\n" + "      ,prix_initial\r\n" + "      ,prix_vente\r\n"
-			+ "      ,id_utilisateur\r\n" + "      ,no_categorie\r\n" + "      ,no_adresse_retrait\r\n"
-			+ "  FROM ARTICLES_A_VENDRE WHERE id_utilisateur = :pseudoMembre";
 
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
@@ -66,14 +60,6 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
 	@Override
 	public List<ArticleAVendre> findAll() {
 		return jdbcTemplate.query(REQ_ARTICLES, new ArticleAVendreRowMapper());
-	}
-	
-	@Override
-	public List<ArticleAVendre> findAllByMembre(String pseudoMembre) {
-		MapSqlParameterSource namedParameter = new MapSqlParameterSource();
-		namedParameter.addValue("pseudoMembre", pseudoMembre);
-		
-		return jdbcTemplate.query(REQ_ARTICLES_UTILISATEUR,namedParameter ,new ArticleAVendreRowMapper());
 	}
 
 	@Override
@@ -157,11 +143,10 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
 			a.setPrixInitial(rs.getInt("prix_initial"));
 			a.setPrixVente(rs.getInt("prix_vente"));
 			a.setStatut(rs.getInt("statut_enchere"));
-
+			
 			Utilisateur vendeur = new Utilisateur();
 			vendeur.setPseudo(rs.getString("id_utilisateur"));
 			a.setVendeur(vendeur);
-
 
 			Categorie categorie = new Categorie();
 			categorie.setId(rs.getLong("no_categorie"));
@@ -171,7 +156,6 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
 
 			a.setCategorie(categorie);
 			a.setAdresse(adresse);
-
 			return a;
 		}
 	}

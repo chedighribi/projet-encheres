@@ -26,7 +26,7 @@ import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/articles")
-@SessionAttributes({ "CategoriesEnSession", "membreEnSession" })
+@SessionAttributes({ "CategoriesEnSession","adressesEnSession", "membreEnSession" })
 public class ArticleAVendreController {
 	private ArticleAVendreService articleAVendreService;
 	private AdresseService adresseService;
@@ -43,30 +43,25 @@ public class ArticleAVendreController {
 		return "view-articles";
 	}
 
-	// Premier test pour les filtres
-	@GetMapping("/filtrer")
-	public String afficherArticlesByCategorie(@RequestParam(name = "nomArticle", required = false) String nomArticle,
-			@RequestParam(name = "idCategorie", required = false) long idCategorie,
-			@RequestParam(name = "idVente", required = false) String idVente,
-			@RequestParam(name = "idAchat", required = false) String idAchat,
-			@ModelAttribute("membreEnSession") Utilisateur membreEnSession,
-			Model model){
-		System.out.println("filtre: " + idCategorie);
-		List<ArticleAVendre> articles;
-		articles = articleAVendreService.consulterArticles();
-		if(!nomArticle.isBlank()) {
-			articles = articleAVendreService.consulterArticleParNom(nomArticle);
-		}
-		if(idCategorie != 0) {
-			articles = articleAVendreService.consulterArticlesParCategorie(idCategorie);
-		}
-		if(idVente!= null) {
-			articles = articleAVendreService.consulterArticleParStatutVente(idVente, membreEnSession.getPseudo());
-		}
-		model.addAttribute("articles",articles);
+	@RequestMapping("/filtrer")
+	public String afficherArticlesByCategorie(
+	        @RequestParam(name = "nomArticle", required = false) String nomArticle,
+	        @RequestParam(name = "idCategorie", required = false) Long idCategorie,
+	        @RequestParam(name = "idVente", required = false) String idVente,
+	        @RequestParam(name = "idAchat", required = false) String idAchat,
+	        @ModelAttribute("membreEnSession") Utilisateur membreEnSession,
+	        Model model) {
+	    List<ArticleAVendre> articles = articleAVendreService.consulterArticlesParFiltres(nomArticle, idCategorie, idVente, idAchat, membreEnSession.getPseudo());
 
-		return "view-articles";
+	    model.addAttribute("articles", articles);
+	    model.addAttribute("nomArticle", nomArticle);
+	    model.addAttribute("idCategorie", idCategorie);
+	    model.addAttribute("idVente", idVente);
+	    model.addAttribute("idAchat", idAchat);
+
+	    return "view-articles";
 	}
+
 
 	@GetMapping("/detail")
 	public String detailVente(@RequestParam(name = "id", required = true) long id, @ModelAttribute("membreEnSession") Utilisateur utilisateur, Model model) {
@@ -94,7 +89,7 @@ public class ArticleAVendreController {
 		article.setDateDebutEncheres(LocalDate.now());
 		article.setDateFinEncheres(LocalDate.now().plusWeeks(1));
 		List<Adresse> adresses = adresseService.consulterAdressesEniPlusUtilisateur(user.getAdresse().getNoAdresse());
-		model.addAttribute("adresses",adresses);
+		model.addAttribute("adressesEnSession",adresses);
 		model.addAttribute("article", article);
 		return "view-article-creer";
 	}
@@ -124,7 +119,7 @@ public class ArticleAVendreController {
 	public String modifierArticle(@RequestParam(name="idArticle", required=true)long id, Model model,@ModelAttribute("membreEnSession") Utilisateur user) {
 		 ArticleAVendre article = articleAVendreService.consulerArticleParId(id);
 		 List<Adresse> adresses = adresseService.consulterAdressesEniPlusUtilisateur(user.getAdresse().getNoAdresse());
-			model.addAttribute("adresses",adresses);
+		 model.addAttribute("adressesEnSession",adresses);
 		 model.addAttribute("article", article);
 		return"view-article-modifier";
 

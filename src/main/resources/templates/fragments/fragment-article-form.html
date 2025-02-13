@@ -1,88 +1,77 @@
-<div class="container" xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-article-form(action)">
-	    <h2>Nouvelle vente</h2> 
-<form  data-th-action="@{${action}}" method="POST" data-th-object="${article}">
-		        <div class="form-groups">
-		        	<div class="form-group">
-			            <div class="form-group-label">
-			            	<input type="hidden" data-th-field="*{id}" />
-			                <label for="article">Article (*) :</label>
-							    
-			                
-			                <input type="text" id="article" name="article" data-th-field="*{nom}">
-			                <th:block data-th-if="${!#strings.isEmpty(action)}">
-								<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('nom')}"></div>
-							</th:block>	
-			            </div>
-			
-			            <div class="form-group-label">
-			                <label for="categorie">Catégorie (*) :</label>
-			                <select id="categorie" name="categorie" data-th-field="*{categorie}">
-				                	<option data-th-each="categorie : ${CategoriesEnSession}"
-									        data-th-text="${categorie.libelle}"
-									        data-th-value="${categorie.id}">
-									</option>
-							</select>
-							<th:block data-th-if="${!#strings.isEmpty(action)}">
-								<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('categorie')}"></div>
-							</th:block>	
-			            </div>
-			
-			            <div class="form-group-label">
-			                <label for="description">Description (*) :</label>
-			                <textarea id="description" name="description" data-th-field="*{description}" required></textarea>
-			                <th:block data-th-if="${!#strings.isEmpty(action)}">
-								<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('description')}"></div>
-							</th:block>	
-			            </div>
-			            <div class="form-group-label">
-			                <label for="retrait">Retrait (*) :</label>
-			                <select id="retrait" name="retrait" class="retrait" data-th-field="*{adresse}">
-				                	<option data-th-each="adresse : ${adresses}" data-th-text="${adresse.rue}" data-th-value="${adresse.noAdresse}">
-				                	</option>
-			                </select>
-			                <th:block data-th-if="${!#strings.isEmpty(action)}">
-								<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('adresse')}"></div>
-							</th:block>	
-			            </div>
-		           	</div>
-		           	<div class="form-group">
-			            <div class="form-group-label">
-			                <label for="prix">Mise à prix (*) :</label>
-			                <input type="number" id="prix" name="prix" min=1 data-th-field="*{prixInitial}" required>
-			                <th:block data-th-if="${!#strings.isEmpty(action)}">
-								<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('prixInitial')}"></div>
-							</th:block>	
-			            </div>
-			
-			            <div class="form-group-label">
-			                <label for="debut">Début de l'enchère (*) :</label>
-			                <input type="date" id="debut" name="debut" data-th-min="*{dateDebutEncheres}" data-th-field="*{dateDebutEncheres}"  required data-th-readonly="${#strings.contains(action,'modifier')}">
-			                <th:block data-th-if="${!#strings.isEmpty(action)}">
-								<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('dateDebutEncheres')}"></div>
-							</th:block>	
-			            </div>
-			
-			            <div class="form-group-label">
-			                <label for="fin">Fin de l'enchère (*) :</label>
-			                <input type="date" id="fin" data-th-min="*{dateDebutEncheres}" name="fin" data-th-field="*{dateFinEncheres}" required data-th-readonly="${#strings.contains(action,'modifier')}">
-			            </div>
-			            <th:block data-th-if="${!#strings.isEmpty(action)}">
-							<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('dateFinEncheres')}"></div>
-						</th:block>	
-		            </div>
-				</div>
-		            <div class="button-group">
-			            <button type="submit" class="btn primary">Suivant</button>
-		                <a data-th-href="@{/articles}" class="btn danger">Annuler</a>
-		            </div>
-	        </form>
-	        <th:block data-th-if="${#strings.contains(action,'modifier')}">
-		        <form data-th-action="@{/articles/supprimer}" method="post" data-th-object="${article}">
-		        	<input type="hidden" name="id" data-th-value="*{id}" />
-		        	<div class="button-group">
-				    	<button type="submit" class="btn btn-danger">Annuler Vente</button>
-				    </div>
-				</form>
-			</th:block>
+<div xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-article-form(action)">
+	<form  data-th-action="@{${action}}" method="POST" data-th-object="${article}">
+		<ul class="form-group">
+			<li class="form-label">
+				<input type="hidden" data-th-field="*{id}" />
+				<label for="article" data-th-text="#{form.article.article}">Article (*) :</label>
+				<input type="text" id="article" name="article" data-th-field="*{nom}">
+			    <th:block data-th-if="${!#strings.isEmpty(action)}">
+					<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('nom')}" data-th-text="#{validation.article.nom.blank}"></div>
+				</th:block>	
+			</li>
+			<li class="form-label">
+				<label for="prix" data-th-text="#{form.article.miseAPrix}">Mise à prix (*) :</label>
+			    <input type="number" id="prix" name="prix" min=1 data-th-field="*{prixInitial}" required>
+			    <th:block data-th-if="${!#strings.isEmpty(action)}">
+					<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('prixInitial')}" data-th-text="#{validation.article.prix.null}"></div>
+				</th:block>	
+			</li>
+			<li class="form-label">
+				<label for="categorie" data-th-text="#{form.article.categorie}">Catégorie (*) :</label>
+			    <select id="categorie" name="categorie" data-th-field="*{categorie}">
+					<option data-th-each="categorie : ${CategoriesEnSession}"
+							data-th-text="${categorie.libelle}"
+							data-th-value="${categorie.id}">
+					</option>
+				</select>
+				<th:block data-th-if="${!#strings.isEmpty(action)}">
+					<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('categorie')}"  data-th-text="#{validation.article.categorie.null}"></div>
+				</th:block>	
+			</li>
+			<li class="form-label">
+				<label for="debut" data-th-text="#{form.article.debutDate}">Début de l'enchère (*) :</label>
+			    <input type="date" id="debut" name="debut" data-th-min="*{dateDebutEncheres}" data-th-field="*{dateDebutEncheres}"  required data-th-readonly="${#strings.contains(action,'modifier')}">
+			    <th:block data-th-if="${!#strings.isEmpty(action)}">
+					<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('dateDebutEncheres')}" data-th-text="#{validation.article.datedebut.min}"></div>
+				</th:block>	
+			</li>
+			<li class="form-label">
+				<label for="description" data-th-text="#{form.article.description}">Description (*) :</label>
+			    <textarea id="description" name="description" data-th-field="*{description}" required></textarea>
+			    <th:block data-th-if="${!#strings.isEmpty(action)}">
+					<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('description')}" data-th-text="#{validation.article.desciption.blank} + ' ' + #{validation.article.description.length}"></div>
+				</th:block>	
+			</li>
+			<li class="form-label">
+				<label for="fin" data-th-text="#{form.article.finDate}">Fin de l'enchère (*) :</label>
+			    <input type="date" id="fin" data-th-min="*{dateDebutEncheres}" name="fin" data-th-field="*{dateFinEncheres}" required data-th-readonly="${#strings.contains(action,'modifier')}">
+			    <th:block data-th-if="${!#strings.isEmpty(action)}">
+					<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('dateFinEncheres')}" data-th-text="#{validation.article.datefin.min}"></div>
+				</th:block>	
+			</li>
+			<li class="form-label">
+				<label for="retrait" data-th-text="#{form.article.retrait}">Retrait (*) :</label>
+			    <select id="retrait" name="retrait" class="retrait" data-th-field="*{adresse}">
+					<option data-th-each="adresse : ${adressesEnSession}" data-th-text="${adresse.rue}" data-th-value="${adresse.noAdresse}">
+				   	</option>
+			    </select>
+			   	<th:block data-th-if="${!#strings.isEmpty(action)}">
+					<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('adresse')}" data-th-text="#{validation.article.adresse.null}"></div>
+				</th:block>	
+			</li>            
+		</ul>
+		<div class="button-group">
+			<button type="submit" class="btn btn-success" data-th-text="#{form.article.suivant}">Suivant</button>
+		    <a data-th-href="@{/articles}" class="btn btn-primary" data-th-text="#{form.article.retour}">Annuler</a>
 		</div>
+	</form>
+	<th:block data-th-if="${#strings.contains(action,'modifier')}">
+		<form data-th-action="@{/articles/supprimer}" method="post" data-th-object="${article}">
+		    <input type="hidden" name="id" data-th-value="*{id}" />
+		    <div class="button-group">
+				 <button type="submit" class="btn btn-danger" data-th-text="#{form.article.annuler}">Annuler Vente</button>
+			</div>
+		</form>
+	</th:block>
+</div>
 	        

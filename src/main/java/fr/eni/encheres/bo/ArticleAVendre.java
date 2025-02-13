@@ -166,7 +166,7 @@ public class ArticleAVendre implements Serializable {
 	public String toString() {
 		return "ArticleAVendre [id=" + id + ", nom=" + nom + ", description=" + description + ", dateDebutEncheres="
 				+ dateDebutEncheres + ", dateFinEncheres=" + dateFinEncheres + ", statut=" + statut + ", prixInitial="
-				+ prixInitial + ", prixVEnte=" + prixVente + ", categorie=" + categorie + ", adresse=" + adresse + "]";
+				+ prixInitial + ", prixVEnte=" + prixVente + ", categorie=" + categorie + ", adresse=" + adresse + ", vendeur="+vendeur+ "]";
 	}
 
 }
