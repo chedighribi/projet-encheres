@@ -10,7 +10,8 @@ public interface ArticleAVendreService {
 	List<ArticleAVendre> consulterArticles();
 	List<ArticleAVendre> consulterArticleParNom(String nomArticle);
 	List<ArticleAVendre> consulterArticlesParCategorie(long idCategorie);
-	List<ArticleAVendre> consulterArticleParStatutVente(String idStatut, String pseudoMembre);
+	List<ArticleAVendre> consulterArticleParStatutVente(long idStatut, String pseudoMembre);
+	List<ArticleAVendre> consulterArticleParStatutAchat(long idStatut, String pseudoMembre);
 	void creerArticle(ArticleAVendre articleAVendre);
 	List<Categorie> consulterCategories();
 	Categorie consulterCategorieParId(long id);

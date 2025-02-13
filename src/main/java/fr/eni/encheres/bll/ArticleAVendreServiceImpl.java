@@ -94,15 +94,22 @@ public class ArticleAVendreServiceImpl implements ArticleAVendreService {
 
 	@Override
 	public List<ArticleAVendre> consulterArticleParNom(String nomArticle) {
-		return ArticleAVendreDAO.findAll().stream().filter(article -> article.getNom().contains(nomArticle)).toList();
+		return ArticleAVendreDAO.findAll().stream().filter(article -> article.getNom().toLowerCase().contains(nomArticle.toLowerCase())).toList();
 	}
 
 	@Override
-	public List<ArticleAVendre> consulterArticleParStatutVente(String idStatut, String pseudoMembre) {
-		Long theIdSatut = Long.parseLong(idStatut);
-		return ArticleAVendreDAO.findAllByMembre(pseudoMembre).stream().filter(article -> article.getStatut() == theIdSatut).toList();
+	public List<ArticleAVendre> consulterArticleParStatutVente(long idStatut, String pseudoMembre) {
+		return ArticleAVendreDAO.findAllByMembre(pseudoMembre).stream().filter(article -> article.getStatut() == idStatut).toList();
 	}
 	
+	@Override
+	public List<ArticleAVendre> consulterArticleParStatutAchat(long idStatut, String pseudoMembre) {
+		if(idStatut == 0) {
+			return ArticleAVendreDAO.findAll().stream().filter(article -> article.getStatut() == idStatut).toList();
+		}
+		return ArticleAVendreDAO.findAllByMembre(pseudoMembre).stream().filter(article -> article.getStatut() == idStatut).toList();
+	}
+
 	@Override
 	@Transactional
 	public void creerArticle(ArticleAVendre article) {

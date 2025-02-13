@@ -25,7 +25,7 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
 			+ "      ,photo\r\n" + "      ,date_debut_encheres\r\n" + "      ,date_fin_encheres\r\n"
 			+ "      ,statut_enchere\r\n" + "      ,prix_initial\r\n" + "      ,prix_vente\r\n"
 			+ "      ,id_utilisateur\r\n" + "      ,no_categorie\r\n" + "      ,no_adresse_retrait\r\n"
-			+ "  FROM ARTICLES_A_VENDRE WHERE statut_enchere = 1";
+			+ "  FROM ARTICLES_A_VENDRE";
 
 	private String REQ_INSERT_ARTICLE = "INSERT INTO ARTICLES_A_VENDRE "
 			+ "(nom_article,description,date_debut_encheres,date_fin_encheres,statut_enchere,prix_initial,"
