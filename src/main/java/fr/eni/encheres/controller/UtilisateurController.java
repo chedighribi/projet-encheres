@@ -13,12 +13,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import ch.qos.logback.classic.Logger;
 import fr.eni.encheres.bll.UtilisateurService;
 import fr.eni.encheres.bo.Adresse;
 import fr.eni.encheres.bo.Utilisateur;
+import fr.eni.encheres.exceptions.BusinessCode;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -69,12 +71,19 @@ public class UtilisateurController {
 		return "view-profil";
 	}
 
-	@GetMapping("/profil/{utilisateurPseudo}")
-	String afficherProfil(String utilisateurPseudo, Model model) {
+	@GetMapping("/profil/view")
+	String afficherProfil(@RequestParam(name = "utilisateurPseudo", required = true) String utilisateurPseudo, Model model) {
 		logger.trace("Controller utilisateur afficherProfil");
+		System.out.println("Controller utilisateur afficherProfil");
 		logger.trace(utilisateurPseudo);
-		model.addAttribute(getMembreDetails(utilisateurPseudo));
-		return "view-profil";
+		System.out.println(utilisateurPseudo);
+		try {
+			model.addAttribute(getMembreDetails(utilisateurPseudo));
+			return "view-profil";
+		} catch (Exception e) {
+			model.addAttribute("messageErreur", BusinessCode.MESSAGE_ERREUR_PROFILE_NON_TROUVE);
+			return "view-profil";
+		}
 	}
 
 	@GetMapping("/creer")
@@ -120,15 +129,20 @@ public class UtilisateurController {
 	}
 
 	@PostMapping("/modifier")
-	public String modifierProfil(@Valid @ModelAttribute("personne") Utilisateur utilisateur,
-			@Valid @ModelAttribute("adresse") Adresse adresse, BindingResult bindingResult) {
-		System.out.println("view-profil-modifier");
+	public String modifierProfil(@Valid @ModelAttribute("personne") Utilisateur utilisateur, BindingResult bindingResult) {
+		System.out.println("Post utilisateur modifierProfil");
+		logger.trace("Post utilisateur modifierProfil");
 		System.out.println(utilisateur);
-		System.out.println(adresse);
 		System.out.println("---------------------");
-//		Utilisateur membreEnSession = (Utilisateur) model.getAttribute("membreEnSession");
-//		model.addAttribute("personne", getMembreEnSessionDetails(membreEnSession.getPseudo()));
-		return "view-profil-modifier";
+		if (bindingResult.hasErrors()) {
+			logger.warn("Erreur de saisie ");
+			logger.warn(" " + bindingResult);
+			return "view-profil-modifier";
+		} else {
+			logger.trace("modifier utilisateur");
+			utilisateurService.modifierUtilisateur(utilisateur);
+		}
+		return "redirect:/profil";
 	}
 
 	@GetMapping("/session")

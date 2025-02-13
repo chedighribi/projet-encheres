@@ -44,7 +44,7 @@ public class SecurityConfig {
 			.requestMatchers("/encheres/*").permitAll()
 			
 			.requestMatchers("/profil").authenticated()
-			.requestMatchers("/profil/{utilisateurPseudo}").authenticated()
+			.requestMatchers("/profil/view*").authenticated()
 	        .anyRequest().authenticated();
 		});
 		http.formLogin(form -> {

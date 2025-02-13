@@ -13,4 +13,5 @@ public interface UtilisateurService {
 	
 	public void add(Utilisateur utilisateur);
 	boolean canAdd(Utilisateur utilisateur);
+	void modifierUtilisateur(Utilisateur utilisateur);
 }

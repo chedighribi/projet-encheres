@@ -12,6 +12,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import fr.eni.encheres.bo.Utilisateur;
+import fr.eni.encheres.dal.mapper.UtilisateurRowMapper;
 
 @Repository
 public class UtilisateurDAOImpl implements UtilisateurDAO {
@@ -20,18 +21,16 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	private final String FIND_BY_EMAIL = "SELECT pseudo, email, nom, prenom, administrateur, telephone, credit, no_adresse FROM utilisateurs WHERE email = :email";
 	private final String FIND_ALL = "SELECT pseudo, email, nom, prenom, administrateur, telephone, credit, no_adresse FROM utilisateurs";
 	private final String INSERT = "INSERT INTO utilisateurs (pseudo, email, nom, prenom, administrateur, telephone, credit, mot_de_passe, no_adresse) VALUES (:pseudo, :email, :nom, :prenom, :administrateur, :telephone, :credit, :mot_de_passe, :no_adresse)";
+	private final String UPDATE = "UPDATE utilisateurs SET email = :email, nom = :nom, prenom = :prenom, administrateur = :administrateur, telephone = :telephone, credit = :credit, no_adresse = :no_adresse WHERE pseudo = :pseudo";
 	private final String COUNT_PSEUDO = "SELECT COUNT(pseudo) FROM utilisateurs WHERE pseudo = :pseudo";
 	private final String COUNT_EMAIL = "SELECT COUNT(email) FROM utilisateurs WHERE email = :email";
+	private final String COUNT_NEW_EMAIL = "SELECT COUNT(email) FROM utilisateurs WHERE email = :email AND pseudo <> :pseudo";
 	private final String UPDATE_CREDIT = "UPDATE utilisateurs SET credit = :credit WHERE pseudo = :pseudo";
 
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
 
-	@Override
-	public void create(Utilisateur utilisateur) {
-		System.out.println(" DAO utilisateur create");
-		System.out.println(utilisateur);
-		KeyHolder keyHolder = new GeneratedKeyHolder();
+	private MapSqlParameterSource loadNamedParameters(Utilisateur utilisateur) {
 		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 		namedParameters.addValue("pseudo", utilisateur.getPseudo());
 		namedParameters.addValue("email", utilisateur.getEmail());
@@ -42,13 +41,32 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 		namedParameters.addValue("credit", 10);
 		namedParameters.addValue("mot_de_passe", utilisateur.getMotDePasse());
 		namedParameters.addValue("no_adresse", utilisateur.getAdresse().getNoAdresse());
+		return namedParameters;
+	}
+	
+	@Override
+	public void create(Utilisateur utilisateur) {
+		System.out.println(" DAO utilisateur create");
+		System.out.println(utilisateur);
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+		
+		MapSqlParameterSource namedParameters = loadNamedParameters(utilisateur);
 
 		jdbcTemplate.update(INSERT, namedParameters, keyHolder);
+	}
+	
+	@Override
+	public void update(Utilisateur utilisateur) {
+		System.out.println(" DAO utilisateur update");
+		System.out.println(utilisateur);
+		
+		MapSqlParameterSource namedParameters = loadNamedParameters(utilisateur);
 
+		jdbcTemplate.update(UPDATE, namedParameters);
 	}
 
 	// need to check if we manage the id and add read with pseudo
-
+	@Override
 	public Utilisateur findByPseudo(String pseudo) {
 		System.out.println("DAO utilisateur findByPseudo : " + pseudo);
 		Utilisateur utilisateur = null;
@@ -57,6 +75,21 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 		try {
 			utilisateur = jdbcTemplate.queryForObject(FIND_BY_PSEUDO, namedParameters,
 					new BeanPropertyRowMapper<>(Utilisateur.class));
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		return utilisateur;
+	}
+	
+	@Override
+	public Utilisateur ReadByPseudo(String pseudo) {
+		System.out.println("DAO utilisateur ReadByPseudo : " + pseudo);
+		Utilisateur utilisateur = null;
+		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+		namedParameters.addValue("pseudo", pseudo);
+		try {
+			utilisateur = jdbcTemplate.queryForObject(FIND_BY_PSEUDO, namedParameters,
+					new UtilisateurRowMapper());
 		} catch (DataAccessException e) {
 			e.printStackTrace();
 		}
@@ -90,7 +123,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 		namedParameters.addValue("pseudo", pseudo);
 		return jdbcTemplate.queryForObject(COUNT_PSEUDO, namedParameters, Integer.class);
 	}
-
+	
 	@Override
 	public int uniqueEmail(String email) {
 		System.out.println("DAO utilisateur uniqueEmail");
@@ -98,6 +131,16 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 		namedParameters.addValue("email", email);
 		return jdbcTemplate.queryForObject(COUNT_EMAIL, namedParameters, Integer.class);
 	}
+	
+	@Override
+	public int uniqueNewEmail(String email, String pseudo) {
+		System.out.println("DAO utilisateur uniqueNewEmail");
+		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+		namedParameters.addValue("pseudo", pseudo);
+		namedParameters.addValue("email", email);
+		return jdbcTemplate.queryForObject(COUNT_NEW_EMAIL, namedParameters, Integer.class);
+	}
+
 
 	@Override
 	public void updateCredit(String pseudo, int newCredit) {
