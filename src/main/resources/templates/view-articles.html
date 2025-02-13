@@ -21,7 +21,7 @@
 				<form class="container" action="/articles/filtrer" method="GET">
 					<div class="filtres">
 						<label data-th-text="#{articles.filtre}">Filtres :</label> 
-						<input type="text" id="nomArticle" name="nomArticle" class="input-text" data-th-placeholder="#{articles.filtre.input}"> 
+						<input type="text" id="nomArticle" name="nomArticle" class="input-text" data-th-placeholder="#{articles.filtre.input}" data-th-value="${param.nomArticle}"> 
 						<label for="category" data-th-text="#{articles.categorie}">Catégorie :</label> 
 						<select id="idCategorie" name="idCategorie" class="select-box" >
 							<option value=0>Toutes</option>
@@ -59,12 +59,12 @@
 						<a class="btn" href="/articles" data-th-text="#{articles.annuler}">Annuler</a>
 					</div>
 				</form>
+
 		</section>
 		<section class="cards">
 			<div class="card mb-8" style="max-width: 540px;"
 				data-th-each="article : ${articles}">
-				<a data-th-href="@{/articles/detail(id=${article.id})}"
-					style="text-decoration: none; color: inherit;">
+				
 					<div class="row g-0">
 						<div class="col-md-4">
 							<img src="" class="img-fluid rounded-start"
@@ -72,27 +72,32 @@
 						</div>
 						<div class="col-md-8">
 							<div class="card-body">
-								<h5 class="card-title" data-th-text="${article.nom}">Titre
-									Article</h5>
+								<th:block data-th-unless="${membreEnSession.pseudo == article.vendeur.pseudo and article.dateDebutEncheres.isAfter(T(java.time.LocalDate).now())}">
+									<a data-th-href="@{/articles/detail(id=${article.id})}" style="color: inherit;">
+										<h5 class="card-title" data-th-text="${article.nom}">Titre Article</h5>
+									</a>
+								</th:block>
+								<th:block data-th-if="${membreEnSession.pseudo == article.vendeur.pseudo and article.dateDebutEncheres.isAfter(T(java.time.LocalDate).now())}">
+								<a data-th-href="@{/articles/modifier(idArticle=${article.id})}" style="color: #5bc0de;">
+                              		<h5 class="card-title" data-th-text="${article.nom}">Titre Article</h5>
+                        		</a>
+								</th:block>
+								
 								<th:block th:if="${article.prixVente == 0}">
 									<p class="card-text"
-										data-th-text="${article.prixInitial} + ' point(s)'">Prix</p>
+										data-th-text="#{articles.prix} + ' ' +${article.prixInitial} + ' point(s)'">Prix</p>
 								</th:block>
 								<th:block th:unless="${article.prixVente == 0}">
 									<p class="card-text"
-										data-th-text="${article.prixVente} + ' point(s)'">Prix</p>
+										data-th-text="#{articles.prix} + ' ' + ${article.prixVente} + ' point(s)'">Prix</p>
 								</th:block>
-
-								<p class="card-text" data-th-text="${article.dateFinEncheres}">Fin
-									de l'enchère</p>
-								<p class="card-text" data-th-text="${article.vendeur.pseudo}">Vendeur</p>
-								<a data-th-if="${membreEnSession.pseudo == article.vendeur.pseudo 
-								    			and article.dateDebutEncheres.isAfter(T(java.time.LocalDate).now())}"
-									data-th-href="@{/articles/modifier(idArticle=${article.id})}">Modifier</a>
+								<p class="card-text" data-th-text="#{articles.dateFin} + ' ' + ${article.dateFinEncheres}">Fin de l'enchère</p>
+								<p class="card-text" data-th-text="#{articles.vendeur} + ' ' + ${article.vendeur.pseudo}">Vendeur</p>
+								
 							</div>
 						</div>
 					</div>
-				</a>
+				
 			</div>
 		</section>
 	</main>
