@@ -19,20 +19,24 @@ public class AdresseServiceImpl implements AdresseService {
 		this.adresseDAO = adresseDAO;
 	}
 
-	@Override
-	public void creerAdresse(Adresse adresse) {
+	private boolean isValidAdresse(Adresse adresse) {
 		BusinessException be = new BusinessException();
 		boolean isValid = true;
 		isValid &= validerAdresse(adresse, be);
 		isValid &= validerRue(adresse, be);
 		isValid &= validerCodePostal(adresse, be);
 		isValid &= validerVille(adresse, be);
-//		isValid &= validerIsEni(adresse, be);
 		if (isValid) {
-			adresseDAO.create(adresse);
-//			adresse.setNoAdresse(noAdresse);
+			return true;
 		} else {
 			throw be;
+		}
+	}
+	
+	@Override
+	public void modifierAdresse(Adresse adresse) {
+		if (isValidAdresse(adresse)) {
+			adresseDAO.update(adresse);
 		}
 	}
 
@@ -116,6 +120,12 @@ public class AdresseServiceImpl implements AdresseService {
 	@Override
 	public List<Adresse> consulterAdressesEniPlusUtilisateur(long noAdresse) {
 		return adresseDAO.findEniPlusUtilisateur(noAdresse);
+	}
+
+	@Override
+	public void creerAdresse(Adresse adresse) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

@@ -21,6 +21,7 @@ import fr.eni.encheres.bll.UtilisateurService;
 import fr.eni.encheres.bll.UtilisateurServiceImpl;
 import fr.eni.encheres.bo.Adresse;
 import fr.eni.encheres.bo.Utilisateur;
+import fr.eni.encheres.dal.UtilisateurDAO;
 import fr.eni.encheres.exceptions.BusinessCode;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -161,18 +162,38 @@ public class UtilisateurController {
 	}
 
 	@PostMapping("/profil/modifier/password")
-	public String modifierPassword(@Valid @ModelAttribute("personne") Utilisateur utilisateur, BindingResult bindingResult) {
-		System.out.println("Post utilisateur modifierProfil");
+	public String modifierPassword(@RequestParam(name = "oldMotDePasse", required = true) String oldMotDePasse,
+			@Valid @RequestParam(name = "motDePasse", required = true) String motDePasse, Model model) {
+		System.out.println("Post utilisateur modifierPassword");
 		logger.trace("Post utilisateur modifierProfil");
-		System.out.println(utilisateur);
+		System.out.println(oldMotDePasse);
+		System.out.println(motDePasse);
 		System.out.println("---------------------");
-		if (bindingResult.hasErrors()) {
+		if (false /*bindingResult.hasErrors()*/) {
 			logger.warn("Erreur de saisie ");
-			logger.warn(" " + bindingResult);
-			return "view-profil-modifier";
+//			logger.warn(" " + bindingResult);
+//			System.out.println("Erreur de saisie " + bindingResult);
+//			return "view-password-modifier";
 		} else {
-			logger.trace("modifier utilisateur");
-			utilisateurService.modifierUtilisateur(utilisateur);
+			logger.trace("modifier password");
+			System.out.println("modifier password");
+			Utilisateur membreEnSession = (Utilisateur) model.getAttribute("membreEnSession");
+			String motDePasseActuel = utilisateurService.getMdpParPseudo(membreEnSession.getPseudo());
+			
+			System.out.println("membreEnSession " + membreEnSession);
+			System.out.println("oldMotDePasse clair " + oldMotDePasse);
+			System.out.println("motDePasseActuel " + motDePasseActuel);
+			System.out.println("test => " + PasswordEncoderFactories.createDelegatingPasswordEncoder().matches(oldMotDePasse, motDePasseActuel));
+			
+			if (PasswordEncoderFactories.createDelegatingPasswordEncoder().matches(oldMotDePasse, motDePasseActuel)) {
+				System.out.println("modification du mot de passe possible " + motDePasse);
+				utilisateurService.modifierMdp(membreEnSession.getPseudo(),PasswordEncoderFactories	.createDelegatingPasswordEncoder()
+						.encode(motDePasse));				
+			} else {
+				System.out.println("L'ancien mot de passe est erroné");
+				return "redirect:/profil/modifier/password";
+//				return "view-password-modifier";
+			}
 		}
 		return "redirect:/profil";
 	}

@@ -99,7 +99,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		if (isValidUtilisateur(utilisateur)
 				&& isValidNewEmailUtilisateur(utilisateur)) {
 			System.out.println("BLL utilisateur creerUtilisateur valid");
-			adresseDAO.create(utilisateur.getAdresse());
+			adresseDAO.update(utilisateur.getAdresse());
 			utilisateurDAO.update(utilisateur);
 		} 
 	}
@@ -112,6 +112,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 			Adresse adresse = utilisateur.getAdresse();
 			utilisateurDAO.delete(utilisateur);
 			adresseDAO.delete(adresse);
+			//@TODO : nettoyer article et enchères
 		} 
 	}
 	
@@ -123,6 +124,24 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		return utilisateur;
 	}
 
+	@Override
+	public void modifierMdp(String pseudo, String motDePasse) {
+		System.out.println("BLL utilisateur modifierMdp");
+		if (true) { //@TODO valider correctement le MdP
+			System.out.println("BLL utilisateur modifierMdp valid");
+			utilisateurDAO.updatePassword(pseudo, motDePasse);
+		} 
+		
+		
+		
+	}
+	
+	@Override
+	public String getMdpParPseudo(String pseudo) {
+		System.out.println("BLL utilisateur getMdpParPseudo");
+		return utilisateurDAO.readPasswordByPseudo(pseudo);
+	}
+	
 	@Override
 	public List<Utilisateur> consulterUtilisateurs() {
 		return utilisateurDAO.findAll();

@@ -89,7 +89,7 @@
 			</div>
 		</th:block>
 		<th:block data-th-if="${#strings.contains(action,'creer')}">
-			<div data-th-replace="~{fragments/fragment-password :: frag-password(action)}"></div>
+			<div data-th-replace="~{fragments/fragment-password :: frag-password(${action})}"></div>
 		</th:block>
 		<div class="col-12 col-md-3 py-2 text-center">
 			<button id="bouton-soumettre" class="btn btn-primary" type="submit" data-th-text="#{Profil.btn.__${action}__}"></button>
