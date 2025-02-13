@@ -17,7 +17,6 @@ public class StringToAdresseConverter implements Converter<String, Adresse>{
 
 	@Override
 	public Adresse convert(String noAdresse) {
-		System.out.println("convert " + noAdresse);
 	    Long theNoAdresse = Long.parseLong(noAdresse);
 	    return adresseService.consulterAdresseParNoAdresse(theNoAdresse);
 	    

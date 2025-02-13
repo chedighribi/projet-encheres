@@ -37,7 +37,7 @@
 			            <div class="form-group-label">
 			                <label for="retrait">Retrait (*) :</label>
 			                <select id="retrait" name="retrait" class="retrait" data-th-field="*{adresse}">
-				                	<option data-th-each="adresse : ${AdresseEnSession}" data-th-text="${adresse.rue}" data-th-value="${adresse.noAdresse}">
+				                	<option data-th-each="adresse : ${adresses}" data-th-text="${adresse.rue}" data-th-value="${adresse.noAdresse}">
 				                	</option>
 			                </select>
 			                <th:block data-th-if="${!#strings.isEmpty(action)}">
