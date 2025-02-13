@@ -113,4 +113,9 @@ public class AdresseServiceImpl implements AdresseService {
 		return adresseDAO.findAllEni();
 	}
 	
+	@Override
+	public List<Adresse> consulterAdressesEniPlusUtilisateur(long noAdresse) {
+		return adresseDAO.findEniPlusUtilisateur(noAdresse);
+	}
+	
 }

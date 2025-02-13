@@ -26,7 +26,7 @@ import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/articles")
-@SessionAttributes({ "CategoriesEnSession", "AdresseEnSession", "membreEnSession" })
+@SessionAttributes({ "CategoriesEnSession", "membreEnSession" })
 public class ArticleAVendreController {
 	private ArticleAVendreService articleAVendreService;
 	private AdresseService adresseService;
@@ -89,10 +89,12 @@ public class ArticleAVendreController {
 	}
 
 	@GetMapping("/creer")
-	public String creerArticle(Model model) {
+	public String creerArticle(Model model,@ModelAttribute("membreEnSession") Utilisateur user) {
 		ArticleAVendre article = new ArticleAVendre();
 		article.setDateDebutEncheres(LocalDate.now());
 		article.setDateFinEncheres(LocalDate.now().plusWeeks(1));
+		List<Adresse> adresses = adresseService.consulterAdressesEniPlusUtilisateur(user.getAdresse().getNoAdresse());
+		model.addAttribute("adresses",adresses);
 		model.addAttribute("article", article);
 		return "view-article-creer";
 	}
@@ -119,8 +121,10 @@ public class ArticleAVendreController {
 	}
 
 	@GetMapping("/modifier")
-	public String modifierArticle(@RequestParam(name="idArticle", required=true)long id, Model model) {
+	public String modifierArticle(@RequestParam(name="idArticle", required=true)long id, Model model,@ModelAttribute("membreEnSession") Utilisateur user) {
 		 ArticleAVendre article = articleAVendreService.consulerArticleParId(id);
+		 List<Adresse> adresses = adresseService.consulterAdressesEniPlusUtilisateur(user.getAdresse().getNoAdresse());
+			model.addAttribute("adresses",adresses);
 		 model.addAttribute("article", article);
 		return"view-article-modifier";
 
@@ -160,16 +164,10 @@ public class ArticleAVendreController {
 		return articleAVendreService.consulterCategories();
 	}
 
-	@ModelAttribute("AdresseEnSession")
-	public List<Adresse> chargerAdresses() {
-		return adresseService.consulterAdressesEni();
-	}
-
 	@PostMapping("/enchere")
 	public String encherir(@ModelAttribute("enchere") Enchere enchere) {
 		try {
 			articleAVendreService.creerEnchere(enchere);
-			
 			return "redirect:/";
 		} catch (BusinessException e) {
 			System.err.println(e.getClefsExternalisations());

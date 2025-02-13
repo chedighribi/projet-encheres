@@ -23,13 +23,13 @@
 				data-th-if="${#temporals.format(article.dateFinEncheres, 'yyyy-MM-dd') lt #temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}">
 				<h1>
 					<th:block
-						data-th-if="${membreEnSession.pseudo} != *{encheres.get(0).utilisateur.pseudo}">
-						<a data-th-href="@{/???}"
+						data-th-if="*{encheres.size() > 0}  and ${membreEnSession.pseudo} != *{encheres.get(0).utilisateur.pseudo}">
+						<a data-th-href="@{/profil/view?(utilisateurPseudo=*{encheres.get(0).utilisateur.pseudo})}"
 							data-th-text="*{encheres.get(0).utilisateur.pseudo}"> </a>
 						<span> a</span>
 					</th:block>
 					<th:block
-						data-th-if="${membreEnSession.pseudo} == *{encheres.get(0).utilisateur.pseudo}">
+						data-th-if=" *{encheres.size() > 0} and ${membreEnSession.pseudo} == *{encheres.get(0).utilisateur.pseudo}">
 						<span>Vous avez</span>
 					</th:block>
 					remporté la vente
@@ -97,7 +97,7 @@
 						</th:block>
 					</th:block>
 					<th:block
-						data-th-if="${#temporals.format(article.dateFinEncheres, 'yyyy-MM-dd') lt #temporals.format(#temporals.createNow(), 'yyyy-MM-dd')} and ${membreEnSession.pseudo} == *{encheres.get(0).utilisateur.pseudo}">
+						data-th-if="${#temporals.format(article.dateFinEncheres, 'yyyy-MM-dd') lt #temporals.format(#temporals.createNow(), 'yyyy-MM-dd')} and *{encheres.size() > 0} and ${membreEnSession.pseudo} == *{encheres.get(0).utilisateur.pseudo}">
 						<p>
 							<span class="label">Téléphone :</span> <span
 								data-th-text="*{vendeur.telephone}"></span>

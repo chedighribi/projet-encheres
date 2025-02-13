@@ -3,6 +3,7 @@ package fr.eni.encheres.bll;
 import java.util.List;
 
 import fr.eni.encheres.bo.Adresse;
+import fr.eni.encheres.bo.Utilisateur;
 
 public interface AdresseService {
 	void creerAdresse(Adresse adresse);
@@ -10,4 +11,5 @@ public interface AdresseService {
 	List<Adresse> consulterAdresses();
 	List<Adresse> consulterAdressesEni();
 	public void add(Adresse adresse);
+	List<Adresse> consulterAdressesEniPlusUtilisateur(long noAdresse);
 }

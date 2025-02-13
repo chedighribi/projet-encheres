@@ -1,16 +1,20 @@
 package fr.eni.encheres.dal;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import fr.eni.encheres.bo.Adresse;
 import fr.eni.encheres.bo.Utilisateur;
 import fr.eni.encheres.dal.mapper.UtilisateurRowMapper;
 
@@ -103,7 +107,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 		namedParameters.addValue("email", email);
 		try {
 			return jdbcTemplate.queryForObject(FIND_BY_EMAIL, namedParameters,
-					new BeanPropertyRowMapper<>(Utilisateur.class));
+					new UtilisateurRowMapper());
 		} catch (DataAccessException e) {
 			e.printStackTrace();
 		}
@@ -150,5 +154,25 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 
 		 jdbcTemplate.update(UPDATE_CREDIT, namedParameters);
 ;
+	}
+	
+	class UtilisateurRowMapper implements RowMapper<Utilisateur>{
+
+		@Override
+		public Utilisateur mapRow(ResultSet rs, int rowNum) throws SQLException {
+			Utilisateur u = new Utilisateur();
+			u.setPseudo(rs.getString("pseudo"));
+			u.setNom(rs.getString("nom"));
+			u.setPrenom(rs.getString("prenom"));
+			u.setEmail(rs.getString("email"));
+			u.setTelephone(rs.getString("telephone"));
+			u.setCredit(rs.getInt("credit"));
+			u.setAdministrateur(rs.getBoolean("administrateur"));
+			Adresse a = new Adresse();
+			a.setNoAdresse(rs.getLong("no_adresse"));
+			u.setAdresse(a);
+			return u;
+		}
+		
 	}
 }

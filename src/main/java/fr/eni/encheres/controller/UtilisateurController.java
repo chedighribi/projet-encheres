@@ -152,8 +152,12 @@ public class UtilisateurController {
 		System.out.println(aCharger);
 		if (aCharger != null) {
 			membreEnSession.setPseudo(aCharger.getPseudo());
+			membreEnSession.setNom(aCharger.getNom());
+			membreEnSession.setPrenom(aCharger.getPrenom());
+			membreEnSession.setEmail(aCharger.getEmail());
+			membreEnSession.setTelephone(aCharger.getTelephone());
+			membreEnSession.setAdresse(aCharger.getAdresse());
 			membreEnSession.setCredit(aCharger.getCredit());
-
 		}
 		System.out.println("___________________");
 		System.out.println(membreEnSession);
