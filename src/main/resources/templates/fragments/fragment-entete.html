@@ -26,20 +26,23 @@
 				
 				<li><a href="/logout" data-th-text="#{Menu.logout}"></a></li>
 			</th:block>
+			
+			<li><a href="/profil/view?utilisateurPseudo=pseudo">Test Pseudo</a></li>
+			
 		</ul>
 	</nav>
 	
-		<div class="position-absolute bottom-0 start-50 translate-middle-x badge rounded-pill bg-primary">
+		<div class="position-absolute bottom-0 start-50 translate-middle-x badge rounded-pill bg-primary text-start">
 			<SCRIPT LANGUAGE="JavaScript">
 				var maintenant=new Date();
-				var jour=maintenant.getDate();
-				var mois=maintenant.getMonth()+1;
+				var jour='0' + maintenant.getDate();
+				var mois='0' + (maintenant.getMonth()+1);
 				var an=maintenant.getFullYear();
-				document.write("<span>Date du jour : ",jour,"/",mois,"/",an,"</span>");
+				document.write("<span>Date du jour : ",jour.slice(-2),"/",mois.slice(-2),"/",an,"</span>");
 			</SCRIPT>
 			<br />
 			<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
-				<span data-th-text="'Participant : '+ ${membreEnSession.pseudo}"></span>
+				<span data-th-text="'Participant &nbsp; : '+ ${membreEnSession.pseudo}"></span>
 			</th:block>
 		</div>
 </header>

@@ -1,7 +1,7 @@
 package fr.eni.encheres.controller.converter;
 
 import fr.eni.encheres.bll.AdresseService;
-import fr.eni.encheres.bll.ArticleAVendreService;
+
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
@@ -12,11 +12,12 @@ public class StringToAdresseConverter implements Converter<String, Adresse>{
 	private AdresseService adresseService;
 
 	public StringToAdresseConverter(AdresseService adresseService) {
-		this.adresseService=adresseService;
+		this.adresseService = adresseService;
 	}
 
 	@Override
 	public Adresse convert(String noAdresse) {
+		System.out.println("convert " + noAdresse);
 	    Long theNoAdresse = Long.parseLong(noAdresse);
 	    return adresseService.consulterAdresseParNoAdresse(theNoAdresse);
 	    

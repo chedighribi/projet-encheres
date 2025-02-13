@@ -13,6 +13,8 @@
 			<th:block data-th-if="${#strings.contains(action,'modifier')}">
 				<input type="text" id="inputPseudo" required readonly data-th-field="*{pseudo}"
 					class="form-control-plaintext col-sm-10 form-control" data-th-placeholder="#{Profil.pseudo.req}" />
+					<input type="hidden" id="inputCredit" data-th-field="*{credit}"/>
+					<input type="hidden" id="inputMotDePasse" data-th-field="*{motDePasse}"/>
 			</th:block>
 			<th:block data-th-if="${#strings.contains(action,'creer')}">
 				<input type="text" id="inputPseudo" required data-th-field="*{pseudo}" class="form-control"
@@ -61,6 +63,7 @@
 
 		<div class="col-12 col-md-3 form-inline row justify-content-around py-2">
 			<label for="inputAdresseRue" class="text-center">Adresse (*): </label>
+			<input type="hidden" id="inputAdresseNumero" data-th-field="*{adresse.noAdresse}"/> 
 		</div>
 		<div class="col-12 col-md-3 py-2">
 			<input class="form-control" type="text" id="inputAdresseRue" required data-th-field="*{adresse.rue}"

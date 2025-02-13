@@ -8,7 +8,7 @@
 
 <head>
 <!-- Accueil comme titre de page -->
-<title data-th-text="${utilisateur.pseudo}"></title>
+<title data-th-text="${utilisateur != null}?${utilisateur.pseudo}:'Profil Erreur'"></title>
 
 <th:block id="ressources-css">
 	<link rel="stylesheet" data-th-href="@{/css/profil.css}">
@@ -16,9 +16,12 @@
 </head>
 <body>
 	<main>
-		<section class="entete-profil">
+		<section th:if="${messageErreur}" > 
+			<div class="alert alert-warning fs-3 mx-5 text-center" data-th-text="#{${messageErreur}}"></div>
+		</section>
+		<section th:if="${utilisateur != null}" class="entete-profil text-center"> 
 			<h3 style="text-align: center;" data-th-text="${utilisateur.pseudo}"></h3>
-			<div class="container">
+			<div class="container text-start w-50">
 				<ul>
 					<li>
 						<label data-th-text="#{Profil.prenom}"></label> 
@@ -38,11 +41,16 @@
 					</li>
 				</ul>
 			</div>
-			<div class="btn">
+			<div th:if="${membreEnSession.pseudo == utilisateur.pseudo}" class="btn">
 				<a class="btn btn-primary" data-th-text="#{Profil.btn.modifier}" data-th-href="@{/profil/modifier}"></a>
 			</div>
+			<div th:if="${membreEnSession.pseudo != utilisateur.pseudo}" class="btn">
+				<a id="btnRetour" class="btn btn-primary" data-th-text="#{Profil.btn.retour}" ></a>
+				<script type="text/javascript">
+				window.onload = () => {document.getElementById("btnRetour").addEventListener("click", () => {history.back();});}
+				</script>
 			</div>
-		</section>	
+		</section>
 	</main>
 </body>
 </html>

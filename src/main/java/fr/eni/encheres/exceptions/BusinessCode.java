@@ -47,4 +47,7 @@ public class BusinessCode {
 	
 	public static final String VALIDATION_ENCHERE_AMOUNT = "validation.enchere.amount";
 
+	public static final String MESSAGE_ERREUR_PROFILE_NON_TROUVE = "message.erreur.profil.non.trouve";
+	
+	
 }

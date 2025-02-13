@@ -12,4 +12,7 @@ public interface UtilisateurDAO {
 	List<Utilisateur> findAll();
 	int uniqueEmail(String email);
 	int uniquePseudo(String pseudo);
+	Utilisateur ReadByPseudo(String pseudo);
+	void update(Utilisateur utilisateur);
+	int uniqueNewEmail(String email, String pseudo);
 }

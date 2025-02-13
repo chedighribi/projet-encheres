@@ -28,35 +28,88 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		this.adresseDAO = adresseDAO;
 	}
 
-	@Override
-	@Transactional
-	public void creerUtilisateur(Utilisateur utilisateur) {
+	private boolean isValidUtilisateur(Utilisateur utilisateur) {
 		BusinessException be = new BusinessException();
 		boolean isValid = true;
-//		isValid &= isPseudoDisponible(utilisateur.getPseudo(), be);
 		isValid &= validerUtilisateur(utilisateur, be);
 		isValid &= validerPseudo(utilisateur, be);
 		isValid &= validerNom(utilisateur, be);
 		isValid &= validerPrenom(utilisateur, be);
 		isValid &= validerEmail(utilisateur, be);
 		isValid &= validerTelephone(utilisateur, be);
-		isValid &= validerMotDePasse(utilisateur, be);
-		isValid &= validerUniquePseudo(utilisateur, be);
-		isValid &= validerUniqueEmail(utilisateur, be);
 		if (isValid) {
-			System.out.println("BLL utilisateur creerUtilisateur valid");
-//			adresseService.creerAdresse(utilisateur.getAdresse());
-//			System.out.println("BLL utilisateur creerUtilisateur valid after adresse");
-			adresseDAO.create(utilisateur.getAdresse());
-			utilisateurDAO.create(utilisateur);
+			return true;
 		} else {
 			throw be;
 		}
 	}
+	
+	private boolean isValidPasswordUtilisateur(Utilisateur utilisateur) {
+		BusinessException be = new BusinessException();
+		boolean isValid = true;
+		isValid &= validerMotDePasse(utilisateur, be);
+		if (isValid) {
+			return true;
+		} else {
+			throw be;
+		}
+	}
+	
+	private boolean isValidPseudoEmailUtilisateur(Utilisateur utilisateur) {
+		BusinessException be = new BusinessException();
+		boolean isValid = true;
+		isValid &= isPseudoDisponible(utilisateur.getPseudo(), be);
+		isValid &= validerUniqueEmail(utilisateur, be);
+		if (isValid) {
+			return true;
+		} else {
+			throw be;
+		}
+	}
+	
+	private boolean isValidNewEmailUtilisateur(Utilisateur utilisateur) {
+		BusinessException be = new BusinessException();
+		boolean isValid = true;
+		isValid &= validerNewUniqueEmail(utilisateur, be);
+		if (isValid) {
+			return true;
+		} else {
+			throw be;
+		}
+	}
+	
+	@Override
+	@Transactional
+	public void creerUtilisateur(Utilisateur utilisateur) {
+		System.out.println("BLL utilisateur creerUtilisateur");
+		if (isValidUtilisateur(utilisateur) 
+				&& isValidPseudoEmailUtilisateur(utilisateur)
+				&& isValidPasswordUtilisateur(utilisateur)
+				) {
+			System.out.println("BLL utilisateur creerUtilisateur valid");
+			adresseDAO.create(utilisateur.getAdresse());
+			utilisateurDAO.create(utilisateur);
+		} 
+	}
+	
+	@Override
+	@Transactional
+	public void modifierUtilisateur(Utilisateur utilisateur) {
+		System.out.println("BLL utilisateur creerUtilisateur");
+		if (isValidUtilisateur(utilisateur)
+				&& isValidNewEmailUtilisateur(utilisateur)) {
+			System.out.println("BLL utilisateur creerUtilisateur valid");
+			adresseDAO.create(utilisateur.getAdresse());
+			utilisateurDAO.update(utilisateur);
+		} 
+	}
 
 	@Override
 	public Utilisateur consulterUtilisateurParPseudo(String pseudo) {
-		return utilisateurDAO.findByPseudo(pseudo);
+		Utilisateur utilisateur = utilisateurDAO.ReadByPseudo(pseudo);
+		Adresse adresse = adresseDAO.read(utilisateur.getAdresse().getNoAdresse());
+		utilisateur.setAdresse(adresse);
+		return utilisateur;
 	}
 
 	@Override
@@ -159,6 +212,17 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		}
 		return true;
 	}
+	
+	private boolean validerNewUniqueEmail(Utilisateur utilisateur, BusinessException be) {
+		int count = utilisateurDAO.uniqueNewEmail(utilisateur.getEmail(), utilisateur.getPseudo());
+		if (count == 1) {
+			be.add(BusinessCode.VALIDATION_UTILISATEUR_EMAIL_UNIQUE);
+			return false;
+		}
+		return true;
+	}
+	
+	
 	
 	private boolean validerUniquePseudo(Utilisateur utilisateur, BusinessException be) {
 		int count = utilisateurDAO.uniquePseudo(utilisateur.getPseudo());

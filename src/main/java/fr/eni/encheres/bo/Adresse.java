@@ -126,6 +126,7 @@ public class Adresse implements Serializable {
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append(noAdresse);
+		builder.append(" ");
 		builder.append(rue);
 		builder.append(", ");
 		builder.append(codePostal);
