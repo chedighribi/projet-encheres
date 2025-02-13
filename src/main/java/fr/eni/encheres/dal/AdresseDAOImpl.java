@@ -27,28 +27,45 @@ public class AdresseDAOImpl implements AdresseDAO {
 	private final String FIND_ENI_PLUS_UTILISATEUR = "SELECT * FROM ADRESSES WHERE adresse_eni = 1 OR no_adresse = :no_adresse ORDER BY adresse_eni";
 
 	private final String INSERT = "INSERT INTO ADRESSES (rue, code_postal, ville, adresse_eni) VALUES (:rue, :code_postal, :ville, :adresse_eni)";
-	private final String DELETE = "DELETE adresses WHERE no_adresse = :no_adresse";
+	private final String UPDATE = "UPDATE ADRESSES SET rue = :rue, code_postal = :code_postal, ville = :ville, adresse_eni = :adresse_eni) WHERE no_adresse = :no_adresse AND adresse_eni = 0";
+	private final String DELETE = "DELETE adresses WHERE no_adresse = :no_adresse AND adresse_eni = 0";
 	private final String COUNT_VILLE = "SELECT COUNT(ville) FROM adresses WHERE ville = :ville";
 
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
 
+	private MapSqlParameterSource loadNamedParameters(Adresse adresse) {
+		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+		namedParameters.addValue("rue", adresse.getRue());
+		namedParameters.addValue("code_postal", adresse.getCodePostal());
+		namedParameters.addValue("ville", adresse.getVille());
+		namedParameters.addValue("adresse_eni", 0);
+		return namedParameters;
+	}
+	
 	@Override
 	public void create(Adresse adresse) {
 		logger.trace("DAO adresse create");
 		logger.trace(adresse.toString());
 		System.out.println(adresse);
 		KeyHolder keyHolder = new GeneratedKeyHolder();
-		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-		namedParameters.addValue("rue", adresse.getRue());
-		namedParameters.addValue("code_postal", adresse.getCodePostal());
-		namedParameters.addValue("ville", adresse.getVille());
-		namedParameters.addValue("adresse_eni", 0);
+		MapSqlParameterSource namedParameters = loadNamedParameters(adresse);
 		
 		jdbcTemplate.update(INSERT, namedParameters, keyHolder);
 		
 		System.out.println("------INSERT ADRESSE ID " + keyHolder.getKey() + " -----------");
 		adresse.setNoAdresse(keyHolder.getKey().longValue());
+	}
+	
+	@Override
+	public void update(Adresse adresse) {
+		logger.trace("DAO adresse update");
+		logger.trace(adresse.toString());
+		System.out.println(adresse);
+		
+		MapSqlParameterSource namedParameters = loadNamedParameters(adresse);
+		
+		jdbcTemplate.update(UPDATE, namedParameters);
 	}
 	
 	@Override

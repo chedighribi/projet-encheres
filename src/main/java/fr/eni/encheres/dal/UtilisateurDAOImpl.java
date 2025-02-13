@@ -24,6 +24,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	private final String FIND_BY_PSEUDO = "SELECT pseudo, email, nom, prenom, administrateur, telephone, credit, no_adresse FROM utilisateurs WHERE pseudo = :pseudo";
 	private final String FIND_BY_EMAIL = "SELECT pseudo, email, nom, prenom, administrateur, telephone, credit, no_adresse FROM utilisateurs WHERE email = :email";
 	private final String FIND_ALL = "SELECT pseudo, email, nom, prenom, administrateur, telephone, credit, no_adresse FROM utilisateurs";
+	private final String READ_PASSWORD_BY_PSEUDO = "SELECT mot_de_passe FROM utilisateurs WHERE pseudo = :pseudo";
 	private final String INSERT = "INSERT INTO utilisateurs (pseudo, email, nom, prenom, administrateur, telephone, credit, mot_de_passe, no_adresse) VALUES (:pseudo, :email, :nom, :prenom, :administrateur, :telephone, :credit, :mot_de_passe, :no_adresse)";
 	private final String UPDATE = "UPDATE utilisateurs SET email = :email, nom = :nom, prenom = :prenom, administrateur = :administrateur, telephone = :telephone, credit = :credit, no_adresse = :no_adresse WHERE pseudo = :pseudo";
 	private final String DELETE = "DELETE utilisateurs WHERE pseudo = :pseudo";
@@ -31,6 +32,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	private final String COUNT_EMAIL = "SELECT COUNT(email) FROM utilisateurs WHERE email = :email";
 	private final String COUNT_NEW_EMAIL = "SELECT COUNT(email) FROM utilisateurs WHERE email = :email AND pseudo <> :pseudo";
 	private final String UPDATE_CREDIT = "UPDATE utilisateurs SET credit = :credit WHERE pseudo = :pseudo";
+	private final String UPDATE_PASSWORD = "UPDATE utilisateurs SET mot_de_passe = :mot_de_passe WHERE pseudo = :pseudo";
 
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
@@ -123,9 +125,27 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 			e.printStackTrace();
 		}
 		return null;
-
+	}
+	
+	@Override
+	public String readPasswordByPseudo(String pseudo) {
+		System.out.println("DAO utilisateur readPasswordByPseudo " + pseudo);
+		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+		namedParameters.addValue("pseudo", pseudo);
+		try {
+			String temp =jdbcTemplate.queryForObject(READ_PASSWORD_BY_PSEUDO, namedParameters, String.class); 
+			System.out.println(READ_PASSWORD_BY_PSEUDO);
+			System.out.println(" retour requete : " + temp );
+			return temp;
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
+
+	
+	
 	@Override
 	public List<Utilisateur> findAll() {
 		return jdbcTemplate.query(FIND_ALL, new BeanPropertyRowMapper<>(Utilisateur.class));
@@ -156,7 +176,6 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 		return jdbcTemplate.queryForObject(COUNT_NEW_EMAIL, namedParameters, Integer.class);
 	}
 
-
 	@Override
 	public void updateCredit(String pseudo, int newCredit) {
 	    MapSqlParameterSource namedParameters = new MapSqlParameterSource();
@@ -164,26 +183,15 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	    namedParameters.addValue("credit", newCredit);
 
 		 jdbcTemplate.update(UPDATE_CREDIT, namedParameters);
-;
 	}
 	
-	class UtilisateurRowMapper implements RowMapper<Utilisateur>{
+	@Override
+	public void updatePassword(String pseudo, String newPassword) {
+	    MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+	    namedParameters.addValue("pseudo", pseudo);
+	    namedParameters.addValue("mot_de_passe", newPassword);
 
-		@Override
-		public Utilisateur mapRow(ResultSet rs, int rowNum) throws SQLException {
-			Utilisateur u = new Utilisateur();
-			u.setPseudo(rs.getString("pseudo"));
-			u.setNom(rs.getString("nom"));
-			u.setPrenom(rs.getString("prenom"));
-			u.setEmail(rs.getString("email"));
-			u.setTelephone(rs.getString("telephone"));
-			u.setCredit(rs.getInt("credit"));
-			u.setAdministrateur(rs.getBoolean("administrateur"));
-			Adresse a = new Adresse();
-			a.setNoAdresse(rs.getLong("no_adresse"));
-			u.setAdresse(a);
-			return u;
-		}
-		
+		 jdbcTemplate.update(UPDATE_PASSWORD, namedParameters);
 	}
+	
 }

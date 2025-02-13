@@ -6,13 +6,17 @@ import fr.eni.encheres.bo.Utilisateur;
 
 public interface UtilisateurService {
 	void creerUtilisateur(Utilisateur utilisateur);
-	Utilisateur consulterUtilisateurParPseudo(String pseudo);
-	List<Utilisateur> consulterUtilisateurs();
-	
-	Utilisateur findByEmail(String email);
-	
-	public void add(Utilisateur utilisateur);
-	boolean canAdd(Utilisateur utilisateur);
 	void modifierUtilisateur(Utilisateur utilisateur);
 	void supprimerUtilisateur(Utilisateur utilisateur);
+	public void add(Utilisateur utilisateur);
+
+	void modifierMdp(String pseudo, String motDePasse);
+
+	Utilisateur consulterUtilisateurParPseudo(String pseudo);
+	List<Utilisateur> consulterUtilisateurs();
+	Utilisateur findByEmail(String email);
+	
+	
+	boolean canAdd(Utilisateur utilisateur);
+	String getMdpParPseudo(String pseudo);
 }
