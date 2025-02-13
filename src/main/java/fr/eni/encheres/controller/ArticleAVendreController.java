@@ -26,7 +26,7 @@ import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/articles")
-@SessionAttributes({ "CategoriesEnSession", "membreEnSession" })
+@SessionAttributes({ "CategoriesEnSession","adressesEnSession", "membreEnSession" })
 public class ArticleAVendreController {
 	private ArticleAVendreService articleAVendreService;
 	private AdresseService adresseService;
@@ -94,7 +94,7 @@ public class ArticleAVendreController {
 		article.setDateDebutEncheres(LocalDate.now());
 		article.setDateFinEncheres(LocalDate.now().plusWeeks(1));
 		List<Adresse> adresses = adresseService.consulterAdressesEniPlusUtilisateur(user.getAdresse().getNoAdresse());
-		model.addAttribute("adresses",adresses);
+		model.addAttribute("adressesEnSession",adresses);
 		model.addAttribute("article", article);
 		return "view-article-creer";
 	}
@@ -124,7 +124,7 @@ public class ArticleAVendreController {
 	public String modifierArticle(@RequestParam(name="idArticle", required=true)long id, Model model,@ModelAttribute("membreEnSession") Utilisateur user) {
 		 ArticleAVendre article = articleAVendreService.consulerArticleParId(id);
 		 List<Adresse> adresses = adresseService.consulterAdressesEniPlusUtilisateur(user.getAdresse().getNoAdresse());
-			model.addAttribute("adresses",adresses);
+		 model.addAttribute("adressesEnSession",adresses);
 		 model.addAttribute("article", article);
 		return"view-article-modifier";
 
