@@ -61,7 +61,7 @@
 			</th:block>
 		</div>
 
-		<div class="col-12 col-md-3 form-inline row justify-content-around py-2">
+		<div class="col-12 col-md-3 form-inline row justify-content-around py-2 mx-0">
 			<label for="inputAdresseRue" class="text-center">Adresse (*): </label>
 			<input type="hidden" id="inputAdresseNumero" data-th-field="*{adresse.noAdresse}"/> 
 		</div>
@@ -89,13 +89,28 @@
 			</div>
 		</th:block>
 		<th:block data-th-if="${#strings.contains(action,'creer')}">
-			<div data-th-replace="~{fragments/fragment-password :: frag-password}"></div>
+			<div data-th-replace="~{fragments/fragment-password :: frag-password(action)}"></div>
 		</th:block>
-		<div class="col-12 col-md-5 py-2 text-end">
+		<div class="col-12 col-md-3 py-2 text-center">
 			<button id="bouton-soumettre" class="btn btn-primary" type="submit" data-th-text="#{Profil.btn.__${action}__}"></button>
 		</div>
-		<div class="col-md-5 d-none d-md-block py-2 text-start">
-			<button class="btn btn-secondary" type="submit" data-th-text="#{Profil.btn.annuler}"></button>
+		<th:block data-th-if="${#strings.contains(action,'modifier')}">
+			<div class="col-12 col-md-3 py-2 text-center">
+				<a id="bouton-modifier-password" class="btn btn-primary" type="button" 
+				data-th-text="#{Profil.btn.modifierMotDePasse}" data-th-href="@{/profil/modifier/password}"></a>
+			</div>
+			<div class="col-12 col-md-3 py-2 text-center">
+				<a  data-th-href="@{/profil/supprimer/utilisateur?utilisateurPseudo=__*{pseudo}__}"
+				  	class="btn btn-danger btn-sm py-1 "
+				  	th:data-confirm-delete="|#{Profil.supprimer.monCompte}?|"
+				  	onclick="return confirm(this.getAttribute('data-confirm-delete'))"
+					data-th-text="#{Profil.btn.supprimer}"></a>
+					<!--  onclick="return confirm(this.getAttribute('data-confirm-delete'))"-->				
+					<!--  onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false" -->				
+			</div>
+		</th:block>		
+		<div class="col-md-3 d-none d-md-block py-2 text-center">
+			<button class="btn btn-secondary" type="button" data-th-text="#{Profil.btn.annuler}"></button>
 		</div>
 	</div>
 </form>

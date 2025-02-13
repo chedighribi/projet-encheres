@@ -27,6 +27,7 @@ public class AdresseDAOImpl implements AdresseDAO {
 	private final String FIND_ENI_PLUS_UTILISATEUR = "SELECT * FROM ADRESSES WHERE adresse_eni = 1 OR no_adresse = :no_adresse ORDER BY adresse_eni";
 
 	private final String INSERT = "INSERT INTO ADRESSES (rue, code_postal, ville, adresse_eni) VALUES (:rue, :code_postal, :ville, :adresse_eni)";
+	private final String DELETE = "DELETE adresses WHERE no_adresse = :no_adresse";
 	private final String COUNT_VILLE = "SELECT COUNT(ville) FROM adresses WHERE ville = :ville";
 
 	@Autowired
@@ -48,6 +49,16 @@ public class AdresseDAOImpl implements AdresseDAO {
 		
 		System.out.println("------INSERT ADRESSE ID " + keyHolder.getKey() + " -----------");
 		adresse.setNoAdresse(keyHolder.getKey().longValue());
+	}
+	
+	@Override
+	public void delete(Adresse adresse) {
+		logger.trace("DAO adresse delete");
+		logger.trace(adresse.toString());
+		System.out.println(adresse);
+		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+		namedParameters.addValue("no_adresse", adresse.getNoAdresse());
+		jdbcTemplate.update(DELETE, namedParameters);
 	}
 
 	@Override

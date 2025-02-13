@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import ch.qos.logback.classic.Logger;
 import fr.eni.encheres.bll.UtilisateurService;
+import fr.eni.encheres.bll.UtilisateurServiceImpl;
 import fr.eni.encheres.bo.Adresse;
 import fr.eni.encheres.bo.Utilisateur;
 import fr.eni.encheres.exceptions.BusinessCode;
@@ -145,6 +146,56 @@ public class UtilisateurController {
 		return "redirect:/profil";
 	}
 
+	@GetMapping("/profil/modifier/password")
+	public String modifierPassword(Model model) {
+		System.out.println(" Controller utilisateur modifierPassword");
+		System.out.println(model);
+		System.out.println("---------------------");
+		Utilisateur membreEnSession = (Utilisateur) model.getAttribute("membreEnSession");
+		Utilisateur utilisateur = getMembreEnSessionDetails(membreEnSession.getPseudo());
+		model.addAttribute("personne", utilisateur);
+		model.addAttribute("oldMotDePasse", utilisateur.getMotDePasse());
+		model.addAttribute("newMotDePasse", "");
+		model.addAttribute("confirmation", "");
+		return "view-password-modifier";
+	}
+
+	@PostMapping("/profil/modifier/password")
+	public String modifierPassword(@Valid @ModelAttribute("personne") Utilisateur utilisateur, BindingResult bindingResult) {
+		System.out.println("Post utilisateur modifierProfil");
+		logger.trace("Post utilisateur modifierProfil");
+		System.out.println(utilisateur);
+		System.out.println("---------------------");
+		if (bindingResult.hasErrors()) {
+			logger.warn("Erreur de saisie ");
+			logger.warn(" " + bindingResult);
+			return "view-profil-modifier";
+		} else {
+			logger.trace("modifier utilisateur");
+			utilisateurService.modifierUtilisateur(utilisateur);
+		}
+		return "redirect:/profil";
+	}
+	
+	@GetMapping("/profil/supprimer/utilisateur")
+	public String supprimerProfil(@RequestParam(name = "utilisateurPseudo", required = true) String utilisateurPseudo, Model model) {
+		System.out.println("Controller utilisateur supprimerProfil");
+		System.out.println(model);
+		System.out.println("---------------------");
+		//@TODO : ajouter controle administrateur
+		Utilisateur membreEnSession = (Utilisateur) model.getAttribute("membreEnSession");
+		Utilisateur utilisateur = getMembreEnSessionDetails(membreEnSession.getPseudo());
+		System.out.println(membreEnSession.getPseudo() + " == " + utilisateurPseudo + " => " + (membreEnSession.getPseudo().equals(utilisateurPseudo)));
+		System.out.println("++++++++++++++++++++++++++++");
+		if (membreEnSession.getPseudo().equals(utilisateurPseudo)) {			
+			utilisateurService.supprimerUtilisateur(utilisateur);
+			return "redirect:/logout";
+		} else {
+			return "redirect:/profil/modifier";
+//			return "redirect:/error";
+		}
+	}
+	
 	@GetMapping("/session")
 	public String connexion(@ModelAttribute("membreEnSession") Utilisateur membreEnSession, Principal principal) {
 		Utilisateur aCharger = utilisateurService.findByEmail(principal.getName());

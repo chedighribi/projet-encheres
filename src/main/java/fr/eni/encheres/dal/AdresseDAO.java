@@ -12,5 +12,6 @@ public interface AdresseDAO {
 	List<Adresse> findAllEni();
 
 	List<Adresse> findEniPlusUtilisateur(long noAdresse);
+	void delete(Adresse adresse);
 	
 }

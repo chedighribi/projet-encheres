@@ -26,6 +26,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	private final String FIND_ALL = "SELECT pseudo, email, nom, prenom, administrateur, telephone, credit, no_adresse FROM utilisateurs";
 	private final String INSERT = "INSERT INTO utilisateurs (pseudo, email, nom, prenom, administrateur, telephone, credit, mot_de_passe, no_adresse) VALUES (:pseudo, :email, :nom, :prenom, :administrateur, :telephone, :credit, :mot_de_passe, :no_adresse)";
 	private final String UPDATE = "UPDATE utilisateurs SET email = :email, nom = :nom, prenom = :prenom, administrateur = :administrateur, telephone = :telephone, credit = :credit, no_adresse = :no_adresse WHERE pseudo = :pseudo";
+	private final String DELETE = "DELETE utilisateurs WHERE pseudo = :pseudo";
 	private final String COUNT_PSEUDO = "SELECT COUNT(pseudo) FROM utilisateurs WHERE pseudo = :pseudo";
 	private final String COUNT_EMAIL = "SELECT COUNT(email) FROM utilisateurs WHERE email = :email";
 	private final String COUNT_NEW_EMAIL = "SELECT COUNT(email) FROM utilisateurs WHERE email = :email AND pseudo <> :pseudo";
@@ -67,6 +68,16 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 		MapSqlParameterSource namedParameters = loadNamedParameters(utilisateur);
 
 		jdbcTemplate.update(UPDATE, namedParameters);
+	}
+	
+	@Override
+	public void delete(Utilisateur utilisateur) {
+		System.out.println(" DAO utilisateur delete");
+		System.out.println(utilisateur);
+		
+		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+		namedParameters.addValue("pseudo", utilisateur.getPseudo());
+		jdbcTemplate.update(DELETE, namedParameters);
 	}
 
 	// need to check if we manage the id and add read with pseudo
