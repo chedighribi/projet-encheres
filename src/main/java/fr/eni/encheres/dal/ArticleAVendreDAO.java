@@ -11,5 +11,4 @@ public interface ArticleAVendreDAO {
 	ArticleAVendre find(long id);
 	void updateArticle(ArticleAVendre articleAVendre);
 	void delete(ArticleAVendre articleAVendre);
-	List<ArticleAVendre> findAllByMembre(String pseudoMembre);
 }
