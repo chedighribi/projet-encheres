@@ -3,6 +3,7 @@ package fr.eni.encheres.bll;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,7 +40,7 @@ public class ArticleAVendreServiceImpl implements ArticleAVendreService {
 
 	@Override
 	public List<ArticleAVendre> consulterArticles() {
-		List<ArticleAVendre> articles=ArticleAVendreDAO.findAll();
+		List<ArticleAVendre> articles=ArticleAVendreDAO.findAll().stream().filter(article -> article.getStatut() == 1).toList();
 
 		if (articles != null) {
 			articles.forEach(a -> {
@@ -77,12 +78,6 @@ public class ArticleAVendreServiceImpl implements ArticleAVendreService {
 	}
 
 	@Override
-	public List<ArticleAVendre> consulterArticlesParCategorie(long idCategorie) {
-		return ArticleAVendreDAO.findAll().stream().filter(article -> article.getCategorie().getId() == idCategorie).toList();
-
-	}
-
-	@Override
 	public List<Categorie> consulterCategories() {
 		return CategorieDAO.findAll();
 	}
@@ -91,17 +86,37 @@ public class ArticleAVendreServiceImpl implements ArticleAVendreService {
 	public Categorie consulterCategorieParId(long id) {
 		return CategorieDAO.findById(id);
 	}
-
+	
 	@Override
-	public List<ArticleAVendre> consulterArticleParNom(String nomArticle) {
-		return ArticleAVendreDAO.findAll().stream().filter(article -> article.getNom().contains(nomArticle)).toList();
+	public List<ArticleAVendre> consulterArticlesParFiltres(String nomArticle, Long idCategorie, String idVente, String idAchat, String pseudoMembre) {
+	    List<ArticleAVendre> articles = ArticleAVendreDAO.findAll();
+	    System.out.println(articles);
+	    if (nomArticle != null && !nomArticle.isBlank()) {
+	        articles = articles.stream()
+	            .filter(article -> article.getNom().toUpperCase().contains(nomArticle.toUpperCase()))
+	            .collect(Collectors.toList());
+	    }
+
+	    if (idCategorie != null && idCategorie != 0) {
+	        articles = articles.stream()
+	            .filter(article -> article.getCategorie().getId() == idCategorie)
+	            .collect(Collectors.toList());
+	    }
+	    if (pseudoMembre != null) {
+	        if (idVente != null) {
+	            Long theIdStatut = Long.parseLong(idVente);
+	            articles = articles.stream()
+	            		.filter(article -> article.getVendeur().getPseudo().equals(pseudoMembre) && article.getStatut() == theIdStatut)
+	                .collect(Collectors.toList());
+	        }
+	        if (idAchat != null) {
+	            //TODO filtre sur les enchères
+	        }
+	    }
+
+	    return articles;
 	}
 
-	@Override
-	public List<ArticleAVendre> consulterArticleParStatutVente(String idStatut, String pseudoMembre) {
-		Long theIdSatut = Long.parseLong(idStatut);
-		return ArticleAVendreDAO.findAllByMembre(pseudoMembre).stream().filter(article -> article.getStatut() == theIdSatut).toList();
-	}
 	
 	@Override
 	@Transactional
