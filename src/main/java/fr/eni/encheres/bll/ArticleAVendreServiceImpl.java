@@ -39,7 +39,7 @@ public class ArticleAVendreServiceImpl implements ArticleAVendreService {
 
 	@Override
 	public List<ArticleAVendre> consulterArticles() {
-		List<ArticleAVendre> articles=ArticleAVendreDAO.findAll().stream().filter(article -> article.getStatut() == 1).toList();
+		List<ArticleAVendre> articles=ArticleAVendreDAO.findAll();
 
 		if (articles != null) {
 			articles.forEach(a -> {
