@@ -90,6 +90,8 @@ public class ArticleAVendreServiceImpl implements ArticleAVendreService {
 	@Override
 	public List<ArticleAVendre> consulterArticlesParFiltres(String nomArticle, Long idCategorie, String idVente, String idAchat, String pseudoMembre) {
 	    List<ArticleAVendre> articles = ArticleAVendreDAO.findAll();
+	    System.out.println("we are here");
+
 	    System.out.println(articles);
 	    if (nomArticle != null && !nomArticle.isBlank()) {
 	        articles = articles.stream()
@@ -110,14 +112,36 @@ public class ArticleAVendreServiceImpl implements ArticleAVendreService {
 	                .collect(Collectors.toList());
 	        }
 	        if (idAchat != null) {
-	            //TODO filtre sur les enchères
+	        	System.out.println("-----!----!-------");
+	        	System.out.println(idAchat);
+	            Long theIdStatut = Long.parseLong(idAchat);
+	        	System.out.println(idAchat);
+	            articles = articles.stream()
+	            		.filter(article -> article.getVendeur().getPseudo().equals(pseudoMembre) && article.getStatut() == theIdStatut)
+	                .collect(Collectors.toList());
 	        }
 	    }
 
 	    return articles;
 	}
-
 	
+//	public List<ArticleAVendre> consulterArticleParNom(String nomArticle) {
+//		return ArticleAVendreDAO.findAll().stream().filter(article -> article.getNom().toLowerCase().contains(nomArticle.toLowerCase())).toList();
+//	}
+//
+//	@Override
+//	public List<ArticleAVendre> consulterArticleParStatutVente(long idStatut, String pseudoMembre) {
+//		return ArticleAVendreDAO.findAllByMembre(pseudoMembre).stream().filter(article -> article.getStatut() == idStatut).toList();
+//	}
+//	
+//	@Override
+//	public List<ArticleAVendre> consulterArticleParStatutAchat(long idStatut, String pseudoMembre) {
+//		if(idStatut == 0) {
+//			return ArticleAVendreDAO.findAll().stream().filter(article -> article.getStatut() == idStatut).toList();
+//		}
+//		return ArticleAVendreDAO.findAllByMembre(pseudoMembre).stream().filter(article -> article.getStatut() == idStatut).toList();
+//	}
+//
 	@Override
 	@Transactional
 	public void creerArticle(ArticleAVendre article) {
