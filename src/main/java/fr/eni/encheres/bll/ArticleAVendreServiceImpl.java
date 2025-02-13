@@ -136,15 +136,19 @@ public class ArticleAVendreServiceImpl implements ArticleAVendreService {
 		ArticleAVendreDAO.delete(articleAVendre);
 	}
 
+	//use of two different ways
 	@Override
 	public void creerEnchere(Enchere e) {
 		BusinessException be = new BusinessException();
 		Utilisateur utilisateur = utilisateurDAO.findByPseudo(e.getUtilisateur().getPseudo());
+		ArticleAVendre article = ArticleAVendreDAO.find(e.getArticleAVendre().getId());
+		article.setPrixVente(e.getMontant());
 		boolean isValid = true;
 		isValid &= validerSolde(e, be, utilisateur.getCredit());
 		if (isValid) {
 	        int newCredit = utilisateur.getCredit() - e.getMontant();
 	        utilisateurDAO.updateCredit(utilisateur.getPseudo(), newCredit );
+	        ArticleAVendreDAO.updateArticle(article);
 			enchereDAO.create(e);
 		} else {
 			throw be;
