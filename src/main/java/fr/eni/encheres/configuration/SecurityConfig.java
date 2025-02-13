@@ -39,13 +39,13 @@ public class SecurityConfig {
 			.requestMatchers("/js/*").permitAll()
 			.requestMatchers("/images/*").permitAll()
 			.requestMatchers("/encheres").permitAll()
-			.requestMatchers("/profil/modifier").permitAll()
 			.requestMatchers("/profil/creer").permitAll()
 			.requestMatchers("/articles/*").permitAll()
 			.requestMatchers("/profil/session").permitAll()
 			.requestMatchers("/encheres/*").permitAll()
 			
 			.requestMatchers("/profil").authenticated()
+//			.requestMatchers("/profil/modifier").permitAll()
 			.requestMatchers("/profil/view*").authenticated()
 	        .anyRequest().authenticated();
 		});
