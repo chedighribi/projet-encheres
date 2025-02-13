@@ -42,9 +42,8 @@
 					var jour='0' + maintenant.getDate();
 					var mois='0' + (maintenant.getMonth()+1);
 					var an=maintenant.getFullYear();
-					spanTxt = document.getElementById('dateDuJour').textContent;
-					spanTxt = spanTxt + " un test";
-// 					spanTxt = spanTxt + jour.slice(-2) + "/" + mois.slice(-2) + "/" + an;
+					spanTxt = document.getElementById('dateDuJour');
+					spanTxt.textContent = spanTxt.textContent + " " + jour.slice(-2) + "/" + mois.slice(-2) + "/" + an;
 				}
 			</SCRIPT>
 			<br />
