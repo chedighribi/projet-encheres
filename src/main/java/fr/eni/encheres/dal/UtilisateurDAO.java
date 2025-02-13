@@ -15,4 +15,5 @@ public interface UtilisateurDAO {
 	Utilisateur ReadByPseudo(String pseudo);
 	void update(Utilisateur utilisateur);
 	int uniqueNewEmail(String email, String pseudo);
+	void delete(Utilisateur utilisateur);
 }

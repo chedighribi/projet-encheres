@@ -105,6 +105,17 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	}
 
 	@Override
+	public void supprimerUtilisateur(Utilisateur utilisateur) {
+		System.out.println("BLL utilisateur supprimerUtilisateur");
+		if (isValidUtilisateur(utilisateur)) {
+			System.out.println("BLL utilisateur supprimerUtilisateur accepted");
+			Adresse adresse = utilisateur.getAdresse();
+			utilisateurDAO.delete(utilisateur);
+			adresseDAO.delete(adresse);
+		} 
+	}
+	
+	@Override
 	public Utilisateur consulterUtilisateurParPseudo(String pseudo) {
 		Utilisateur utilisateur = utilisateurDAO.ReadByPseudo(pseudo);
 		Adresse adresse = adresseDAO.read(utilisateur.getAdresse().getNoAdresse());
