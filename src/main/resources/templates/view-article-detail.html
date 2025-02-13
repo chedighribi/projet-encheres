@@ -24,7 +24,7 @@
 				<h1>
 					<th:block
 						data-th-if="*{encheres.size() > 0}  and ${membreEnSession.pseudo} != *{encheres.get(0).utilisateur.pseudo}">
-						<a data-th-href="@{/???}"
+						<a data-th-href="@{/profil/view?(utilisateurPseudo=*{encheres.get(0).utilisateur.pseudo})}"
 							data-th-text="*{encheres.get(0).utilisateur.pseudo}"> </a>
 						<span> a</span>
 					</th:block>
