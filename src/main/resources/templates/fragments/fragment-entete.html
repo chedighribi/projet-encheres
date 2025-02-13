@@ -33,16 +33,23 @@
 	</nav>
 	
 		<div class="position-absolute bottom-0 start-50 translate-middle-x badge rounded-pill bg-primary text-start">
+			<span id="dateDuJour" data-th-text="#{Menu.badge.date}"></span>
 			<SCRIPT LANGUAGE="JavaScript">
-				var maintenant=new Date();
-				var jour='0' + maintenant.getDate();
-				var mois='0' + (maintenant.getMonth()+1);
-				var an=maintenant.getFullYear();
-				document.write("<span>Date du jour : ",jour.slice(-2),"/",mois.slice(-2),"/",an,"</span>");
+				
+// 				document.write("<span> date du jour ", jour.slice(-2), "/", mois.slice(-2), "/", an, "</span>");
+				window.onload = () => {
+					var maintenant=new Date();
+					var jour='0' + maintenant.getDate();
+					var mois='0' + (maintenant.getMonth()+1);
+					var an=maintenant.getFullYear();
+					spanTxt = document.getElementById('dateDuJour').textContent;
+					spanTxt = spanTxt + " un test";
+// 					spanTxt = spanTxt + jour.slice(-2) + "/" + mois.slice(-2) + "/" + an;
+				}
 			</SCRIPT>
 			<br />
 			<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
-				<span data-th-text="'Participant &nbsp; : '+ ${membreEnSession.pseudo}"></span>
+				<span data-th-text="#{Menu.badge.utilisateur} + ${membreEnSession.pseudo}"></span>
 			</th:block>
 		</div>
 </header>

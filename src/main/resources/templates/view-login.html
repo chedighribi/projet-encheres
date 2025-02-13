@@ -12,22 +12,27 @@
 </th:block>
 </head>
 <body>
-	<main class="center-main">
-		<form th:action="@{/login}" method="post">
-			<ul class="flex-outer">
-				<li><label for="username"> Identifiant :</label> <input id="username"
-					type="text" name="username" /></li>
-				<li><label for="password">Mot de passe :</label> <input id="password"
-					name="password" type="password"/></li>
-				<li>
-					<button type="submit">Connexion</button>
-					<a href="/tofigureout">Mot de passe oublié</a>
-				</li>
-				<li>
-					<a href="/profil/creer" class="create-account">Créer un compte</a>
-				</li>
-			</ul>
-		</form>
+	<main>
+		<div class = "login-panel w-75 mx-auto my-auto">
+			<form th:action="@{/login}" method="post">
+				<ul class="flex-outer">
+					<li>
+						<label for="username" data-th-text="#{Login.identifiant}"> Identifiant :</label> 
+						<input id="username" type="text" name="username" class="login-input" placeholder=""/></li>
+					
+					<li>
+						<label for="password">Mot de passe :</label> 
+						<input id="password" name="password" type="password" class="login-input"/></li>
+					
+					<li class="d-inline-block">
+						<button type="submit">Connexion</button>
+						<a href="/tofigureout" class="ps-4">Mot de passe oublié</a></li>
+					
+					<li>
+						<a href="/profil/creer" class="create-account">Créer un compte</a></li>
+				</ul>
+			</form>
+		</div>
 	</main>
 </body>
 </html>

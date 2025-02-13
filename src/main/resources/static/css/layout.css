@@ -2,7 +2,7 @@ body {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	height: 100vh;
+	min-height: 75vh;
 	font-family: Arial, Helvetica, sans-serif;
 	margin: 0;
 }
@@ -27,4 +27,8 @@ footer {
 
 nav li {	
 	font-size: 1.5em;
+}
+
+.login-input {
+	width : 20vw;
 }
