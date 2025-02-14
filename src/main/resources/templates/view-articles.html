@@ -72,15 +72,15 @@
 						</div>
 						<div class="col-md-8">
 							<div class="card-body">
-								<th:block data-th-unless="${membreEnSession.pseudo == article.vendeur.pseudo and article.dateDebutEncheres.isAfter(T(java.time.LocalDate).now())}">
+							
+								<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
 									<a data-th-href="@{/articles/detail(id=${article.id})}" style="color: inherit;">
 										<h5 class="card-title" data-th-text="${article.nom}">Titre Article</h5>
 									</a>
 								</th:block>
-								<th:block data-th-if="${membreEnSession.pseudo == article.vendeur.pseudo and article.dateDebutEncheres.isAfter(T(java.time.LocalDate).now())}">
-								<a data-th-href="@{/articles/modifier(idArticle=${article.id})}" style="color: #5bc0de;">
+								
+								<th:block data-th-unless="${#authorization.expression('isAuthenticated()')}">
                               		<h5 class="card-title" data-th-text="${article.nom}">Titre Article</h5>
-                        		</a>
 								</th:block>
 								
 								<th:block th:if="${article.prixVente == 0}">
