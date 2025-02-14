@@ -31,7 +31,9 @@
 				</thead>
 				<tbody>
 				<tr th:each="utilisateur: ${listeUtilisateurs}">
-				    <td th:text="${utilisateur.pseudo}" />
+				    <td>
+				    	<a class="nav-link btn btn-light shadow" th:text="${utilisateur.pseudo}" 
+				    	th:href="@{/profil/view?utilisateurPseudo=__${utilisateur.pseudo}__}"></a></td>
 				    <td th:text="${utilisateur.prenom}" />
 				    <td th:text="${utilisateur.nom}" />
 				    <td th:text="${utilisateur.email}" />

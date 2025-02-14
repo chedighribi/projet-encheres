@@ -11,30 +11,41 @@
 			<a href="/?language=en"><img alt="English" src="/images/English.webp"></a>
 		</div>
 	</section>
-	<nav>
-		<ul>
-			<li><a href="/articles" data-th-text="#{Menu.accueil}"></a></li>
-			
-			<th:block data-th-if="${!#authorization.expression('isAuthenticated()')}">
-				<li><a href="/login" data-th-text="#{Menu.login}"></a></li>
-			</th:block>
-			
-			<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
-				<li><a href="/articles/creer" data-th-text="#{Menu.vendreArticle}"></a></li>
-				
-				<li><a href="/profil" data-th-text="#{Menu.profil}"></a></li>
-				
-				<li><a href="/logout" data-th-text="#{Menu.logout}"></a></li>
-				<th:block data-th-if="${#authorization.expression('hasRole(''ADMIN'')')}">
-					<li><a href="/voirListeUtilisateurs" data-th-text="#{Menu.listeUtilisateurs}"></a></li>
-				</th:block>
-			</th:block>
-			
-			
-			<li><a href="/profil/view?utilisateurPseudo=pseudo">Test Pseudo</a></li>
-			
-		</ul>
-	</nav>
+	<div class="col col-8 p-0 d-block d-md-none py-3">
+                <div class="navbar text-end">
+                    <button class="navbar-toggler bg-primary-subtle position-absolute end-0 translate-middle-x" type="button" data-bs-toggle="collapse" data-bs-target="#monMenu" aria-controls="monMenu" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+            </div>    
+            <div class="col col-12 p-0">
+                <nav  class="navbar navbar-expand-md">
+					<div class="container-fluid">
+						<div class="collapse navbar-collapse justify-content-center" id="monMenu">
+                            <ul class="navbar-nav mt-2 mb-2 mb-lg-0">
+								<li class="nav-item"><a class="nav-link shadow" href="/articles" data-th-text="#{Menu.accueil}"></a></li>
+								
+								<th:block data-th-if="${!#authorization.expression('isAuthenticated()')}">
+									<li class="nav-item"><a class="nav-link btn btn-light shadow" href="/login" data-th-text="#{Menu.login}"></a></li>
+								</th:block>
+								
+								<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
+									<li class="nav-item"><a class="nav-link btn btn-light shadow" href="/articles/creer" data-th-text="#{Menu.vendreArticle}"></a></li>
+									
+									<li class="nav-item"><a class="nav-link btn btn-light shadow" href="/profil" data-th-text="#{Menu.profil}"></a></li>
+									
+									<li class="nav-item"><a class="nav-link btn btn-light shadow" href="/logout" data-th-text="#{Menu.logout}"></a></li>
+									
+									<th:block data-th-if="${#authorization.expression('hasRole(''ADMIN'')')}">
+										<li><a class="nav-link btn btn-light shadow" href="/voirListeUtilisateurs" data-th-text="#{Menu.listeUtilisateurs}"></a></li>
+									</th:block>
+								</th:block>
+							</ul>
+						</div>
+					</div>
+				</nav>
+            </div>
+	
 	
 		<div class="position-absolute bottom-0 start-50 translate-middle-x badge rounded-pill bg-primary text-start">
 			<span id="dateDuJour" data-th-text="#{Menu.badge.date}"></span>
