@@ -27,7 +27,7 @@
 					<th data-th-text="#{Profil.adresse}"></th>
 					<th data-th-text="#{Profil.credit}"></th>
 					<th data-th-text="#{Profil.administrateur}"></th>
-					<th data-th-text="#{Admin.action}" colspan="2"></th>
+					<th data-th-text="#{Admin.action}" colspan="3"></th>
 				</thead>
 				<tbody>
 				<tr th:each="utilisateur: ${listeUtilisateurs}">
@@ -41,12 +41,17 @@
 				    <td th:text="${utilisateur.adresse}" />
 				    <td th:text="${utilisateur.credit}" />
 				    <td th:text="${utilisateur.isAdministrateur}" />
+				    <td><a  data-th-href="@{/profil/anonymiser/utilisateur?utilisateurPseudo=__${utilisateur.pseudo}__}"
+					  	class="btn btn-warning btn-sm py-1 "
+					  	th:data-confirm-delete="|#{Profil.anonymiser.utilisateur('__${utilisateur.pseudo}__')}?|"
+					  	onclick="return confirm(this.getAttribute('data-confirm-delete'))"
+						data-th-text="#{Admin.btn.anonymiser}"></a></td>
 				    <td><a  data-th-href="@{/profil/desactiver/utilisateur?utilisateurPseudo=__${utilisateur.pseudo}__}"
 					  	class="btn btn-warning btn-sm py-1 "
-					  	th:data-confirm-delete="|#{Admin.btn.desactiver}?|"
+					  	th:data-confirm-delete="|#{Profil.desactiver.utilisateur('__${utilisateur.pseudo}__')}?|"
 					  	onclick="return confirm(this.getAttribute('data-confirm-delete'))"
 						data-th-text="#{Admin.btn.desactiver}"></a></td>
-						<td><a  data-th-href="@{/profil/supprimer/utilisateur?utilisateurPseudo=__${utilisateur.pseudo}__}"
+					<td><a  data-th-href="@{/profil/supprimer/utilisateur?utilisateurPseudo=__${utilisateur.pseudo}__}"
 					  	class="btn btn-danger btn-sm py-1 "
 					  	th:data-confirm-delete="|#{Profil.supprimer.utilisateur('__${utilisateur.pseudo}__')}?|"
 					  	onclick="return confirm(this.getAttribute('data-confirm-delete'))"

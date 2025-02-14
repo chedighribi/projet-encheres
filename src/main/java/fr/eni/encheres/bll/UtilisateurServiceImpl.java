@@ -173,10 +173,11 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	}
 
 	private boolean validerTelephone(Utilisateur utilisateur, BusinessException be) {
-		if (utilisateur	.getTelephone()
-						.length() > 15) {
-			be.add(BusinessCode.VALIDATION_UTILISATEUR_PHONE_SIZE);
-			return false;
+		if (utilisateur.getTelephone() != null) {
+			if( utilisateur.getTelephone().length() > 15) {
+				be.add(BusinessCode.VALIDATION_UTILISATEUR_PHONE_SIZE);
+				return false;
+			}
 		}
 		return true;
 	}

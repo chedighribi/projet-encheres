@@ -44,10 +44,12 @@ public class SecurityConfig {
 			.requestMatchers("/profil/session").permitAll()
 			.requestMatchers("/encheres/*").permitAll()
 			.requestMatchers("/error").permitAll()
+			
 			.requestMatchers("/voirListeUtilisateurs").hasAnyRole("ADMIN")
+			.requestMatchers("/profil/desactiver/utilisateur").hasAnyRole("ADMIN")
+			.requestMatchers("/profil/anonymiser/utilisateur").hasAnyRole("ADMIN")
 			
 			.requestMatchers("/profil").authenticated()
-//			.requestMatchers("/profil/modifier").permitAll()
 			.requestMatchers("/profil/view*").authenticated()
 	        .anyRequest().authenticated();
 		});

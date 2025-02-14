@@ -49,22 +49,22 @@ public class UtilisateurController {
 
 	@GetMapping("/")
 	public String index(@ModelAttribute("membreEnSession") Utilisateur membreEnSession, Model model) {
-		System.out.println("lancement index");
-		System.out.println("---------------------");
-		System.out.println(model);
+		logger.trace("lancement index");
+		logger.trace("---------------------");
+		logger.trace(model.toString());
 		return "redirect:/articles";
 	}
 
 	private Utilisateur getMembreDetails(String pseudo) {
-		System.out.println("getMembreDetails : " + pseudo);
+		logger.trace("getMembreDetails : " + pseudo);
 		Utilisateur utilisateur = utilisateurService.consulterUtilisateurParPseudo(pseudo);
-		System.out.println("---------------------");
-		System.out.println(utilisateur);
+		logger.trace("---------------------");
+		logger.trace(utilisateur.toString());
 		return utilisateur;
 	}
 
 	private Utilisateur getMembreEnSessionDetails(String pseudo) {
-		System.out.println("getMembreEnSessionDetails : " + pseudo);
+		logger.trace("getMembreEnSessionDetails : " + pseudo);
 		return getMembreDetails(pseudo);
 	}
 
@@ -72,7 +72,7 @@ public class UtilisateurController {
 	String afficherProfil(@ModelAttribute("membreEnSession") Utilisateur membreEnSession, Model model) {
 		logger.trace("Controller utilisateur afficherProfil");
 		logger.trace(membreEnSession.getPseudo());
-		System.out.println(membreEnSession.getPseudo());
+		logger.trace(membreEnSession.getPseudo());
 		model.addAttribute(getMembreEnSessionDetails(membreEnSession.getPseudo()));
 		return "view-profil";
 	}
@@ -80,9 +80,9 @@ public class UtilisateurController {
 	@GetMapping("/profil/view")
 	String afficherProfil(@RequestParam(name = "utilisateurPseudo", required = true) String utilisateurPseudo, Model model) {
 		logger.trace("Controller utilisateur afficherProfil");
-		System.out.println("Controller utilisateur afficherProfil");
+		logger.trace("Controller utilisateur afficherProfil");
 		logger.trace(utilisateurPseudo);
-		System.out.println(utilisateurPseudo);
+		logger.trace(utilisateurPseudo);
 		try {
 			model.addAttribute(getMembreDetails(utilisateurPseudo));
 			return "view-profil";
@@ -94,7 +94,7 @@ public class UtilisateurController {
 
 	@GetMapping("/creer")
 	public String creerProfil(Model model) {
-		System.out.println("view-profil-creer");
+		logger.trace("view-profil-creer");
 		Utilisateur personne = new Utilisateur();
 		model.addAttribute("personne", personne);
 		return "view-profil-creer";
@@ -113,7 +113,7 @@ public class UtilisateurController {
 			utilisateur.setMotDePasse(PasswordEncoderFactories	.createDelegatingPasswordEncoder()
 																.encode(utilisateur.getMotDePasse()));
 			utilisateurService.creerUtilisateur(utilisateur);
-			System.out.println(utilisateur.getPseudo() + " -- " + utilisateur.getMotDePasse());
+			logger.trace(utilisateur.getPseudo() + " -- " + utilisateur.getMotDePasse());
 			try {
 				request.login(utilisateur.getEmail(), motDePasseClair);
 			} catch (ServletException e) {
@@ -126,9 +126,9 @@ public class UtilisateurController {
 
 	@GetMapping("/modifier")
 	public String modifierProfil(Model model) {
-		System.out.println("view-profil-modifier");
-		System.out.println(model);
-		System.out.println("---------------------");
+		logger.trace("view-profil-modifier");
+		logger.trace(model.toString());
+		logger.trace("---------------------");
 		Utilisateur membreEnSession = (Utilisateur) model.getAttribute("membreEnSession");
 		model.addAttribute("personne", getMembreEnSessionDetails(membreEnSession.getPseudo()));
 		return "view-profil-modifier";
@@ -136,10 +136,10 @@ public class UtilisateurController {
 
 	@PostMapping("/modifier")
 	public String modifierProfil(@Valid @ModelAttribute("personne") Utilisateur utilisateur, BindingResult bindingResult) {
-		System.out.println("Post utilisateur modifierProfil");
 		logger.trace("Post utilisateur modifierProfil");
-		System.out.println(utilisateur);
-		System.out.println("---------------------");
+		logger.trace("Post utilisateur modifierProfil");
+		logger.trace(utilisateur.toString());
+		logger.trace("---------------------");
 		if (bindingResult.hasErrors()) {
 			logger.warn("Erreur de saisie ");
 			logger.warn(" " + bindingResult);
@@ -153,9 +153,9 @@ public class UtilisateurController {
 
 	@GetMapping("/profil/modifier/password")
 	public String modifierPassword(Model model) {
-		System.out.println(" Controller utilisateur modifierPassword");
-		System.out.println(model);
-		System.out.println("---------------------");
+		logger.trace(" Controller utilisateur modifierPassword");
+		logger.trace(model.toString());
+		logger.trace("---------------------");
 		Utilisateur membreEnSession = (Utilisateur) model.getAttribute("membreEnSession");
 		Utilisateur utilisateur = getMembreEnSessionDetails(membreEnSession.getPseudo());
 		model.addAttribute("personne", utilisateur);
@@ -168,33 +168,33 @@ public class UtilisateurController {
 	@PostMapping("/profil/modifier/password")
 	public String modifierPassword(@RequestParam(name = "oldMotDePasse", required = true) String oldMotDePasse,
 			@Valid @RequestParam(name = "motDePasse", required = true) String motDePasse, Model model) {
-		System.out.println("Post utilisateur modifierPassword");
+		logger.trace("Post utilisateur modifierPassword");
 		logger.trace("Post utilisateur modifierProfil");
-		System.out.println(oldMotDePasse);
-		System.out.println(motDePasse);
-		System.out.println("---------------------");
+		logger.trace(oldMotDePasse);
+		logger.trace(motDePasse);
+		logger.trace("---------------------");
 		if (false /*bindingResult.hasErrors()*/) {
 			logger.warn("Erreur de saisie ");
 //			logger.warn(" " + bindingResult);
-//			System.out.println("Erreur de saisie " + bindingResult);
+//			logger.trace("Erreur de saisie " + bindingResult);
 //			return "view-password-modifier";
 		} else {
 			logger.trace("modifier password");
-			System.out.println("modifier password");
+			logger.trace("modifier password");
 			Utilisateur membreEnSession = (Utilisateur) model.getAttribute("membreEnSession");
 			String motDePasseActuel = utilisateurService.getMdpParPseudo(membreEnSession.getPseudo());
 			
-			System.out.println("membreEnSession " + membreEnSession);
-			System.out.println("oldMotDePasse clair " + oldMotDePasse);
-			System.out.println("motDePasseActuel " + motDePasseActuel);
-			System.out.println("test => " + PasswordEncoderFactories.createDelegatingPasswordEncoder().matches(oldMotDePasse, motDePasseActuel));
+			logger.trace("membreEnSession " + membreEnSession);
+			logger.trace("oldMotDePasse clair " + oldMotDePasse);
+			logger.trace("motDePasseActuel " + motDePasseActuel);
+			logger.trace("test => " + PasswordEncoderFactories.createDelegatingPasswordEncoder().matches(oldMotDePasse, motDePasseActuel));
 			
 			if (PasswordEncoderFactories.createDelegatingPasswordEncoder().matches(oldMotDePasse, motDePasseActuel)) {
-				System.out.println("modification du mot de passe possible " + motDePasse);
+				logger.trace("modification du mot de passe possible " + motDePasse);
 				utilisateurService.modifierMdp(membreEnSession.getPseudo(),PasswordEncoderFactories	.createDelegatingPasswordEncoder()
 						.encode(motDePasse));				
 			} else {
-				System.out.println("L'ancien mot de passe est erroné");
+				logger.trace("L'ancien mot de passe est erroné");
 				return "redirect:/profil/modifier/password";
 //				return "view-password-modifier";
 			}
@@ -203,7 +203,7 @@ public class UtilisateurController {
 	}
 	
 	private boolean hasRole(String role) {
-		System.out.println("controller utilisateur hasRole");  
+		logger.trace("controller utilisateur hasRole");  
 		Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>)
 		  SecurityContextHolder.getContext().getAuthentication().getAuthorities();
 		  boolean hasRole = false;
@@ -218,15 +218,15 @@ public class UtilisateurController {
 	
 	@GetMapping("/profil/supprimer/utilisateur")
 	public String supprimerProfil(@RequestParam(name = "utilisateurPseudo", required = true) String utilisateurPseudo, Model model, Authentication authentication) {
-		System.out.println("Controller utilisateur supprimerProfil");
-		System.out.println(model);
-		System.out.println(utilisateurPseudo);
-		System.out.println("---------------------");
-		//@TODO : ajouter controle administrateur
+		logger.trace("Controller utilisateur supprimerProfil");
+		logger.trace(model.toString());
+		logger.trace(utilisateurPseudo);
+		logger.trace("---------------------");
+		
 		Utilisateur membreEnSession = (Utilisateur) model.getAttribute("membreEnSession");
 		Utilisateur utilisateur = getMembreEnSessionDetails(membreEnSession.getPseudo());
 		if (utilisateur.getPseudo().equals("coach_admin")) {
-			System.out.println("a le role Admin");
+			logger.trace("a le role Admin");
 			Utilisateur utilisateurASupprimer = utilisateurService.consulterUtilisateurParPseudo(utilisateurPseudo);
 			utilisateurService.supprimerUtilisateur(utilisateurASupprimer);
 			return "redirect:/voirListeUtilisateurs";
@@ -239,11 +239,27 @@ public class UtilisateurController {
 		}
 	}
 	
+	@GetMapping("/profil/desactiver/utilisateur")
+	public String desactiverProfil(@RequestParam(name = "utilisateurPseudo", required = true) String utilisateurPseudo, Model model, Authentication authentication) {
+		logger.trace("Controller utilisateur desactiverProfil");
+		logger.trace("----- NOT IMPLEMENTED YET  -----");
+		//@TODO : implémenter la déconnexion
+		return "redirect:/voirListeUtilisateurs";
+	}
+	
+	@GetMapping("/profil/anonymiser/utilisateur")
+	public String anonymiseProfil(@RequestParam(name = "utilisateurPseudo", required = true) String utilisateurPseudo, Model model, Authentication authentication) {
+		logger.trace("Controller utilisateur anonymiseProfil");
+		logger.trace("----- NOT IMPLEMENTED YET  -----");
+		//@TODO : implémenter la Anonymisation
+		return "redirect:/voirListeUtilisateurs";
+	}
+	
 	@GetMapping("/voirListeUtilisateurs")
 	public String voirListeUtilisateurs(Model model) {
-		System.out.println("controller utilisateur voirListeUtilisateurs");
+		logger.trace("controller utilisateur voirListeUtilisateurs");
 		List<Utilisateur> listeUtilisateurs = utilisateurService.consulterUtilisateurs();
-		System.out.println(listeUtilisateurs);
+		logger.trace(listeUtilisateurs.toString());
 		model.addAttribute("listeUtilisateurs", listeUtilisateurs);
 		return "view-liste-utilisateurs";
 	}
@@ -251,8 +267,8 @@ public class UtilisateurController {
 	@GetMapping("/session")
 	public String connexion(@ModelAttribute("membreEnSession") Utilisateur membreEnSession, Principal principal) {
 		Utilisateur aCharger = utilisateurService.consulterUtilisateurParPseudo(principal.getName());
-		System.out.println("---------------------");
-		System.out.println(aCharger);
+		logger.trace("---------------------");
+		logger.trace(aCharger.toString());
 		if (aCharger != null) {
 			membreEnSession.setPseudo(aCharger.getPseudo());
 			membreEnSession.setNom(aCharger.getNom());
@@ -262,8 +278,8 @@ public class UtilisateurController {
 			membreEnSession.setAdresse(aCharger.getAdresse());
 			membreEnSession.setCredit(aCharger.getCredit());
 		}
-		System.out.println("___________________");
-		System.out.println(membreEnSession);
+		logger.trace("___________________");
+		logger.trace(membreEnSession.toString());
 		return "redirect:/";
 	}
 

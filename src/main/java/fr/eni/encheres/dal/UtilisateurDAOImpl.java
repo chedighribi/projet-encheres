@@ -27,7 +27,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	private final String READ_PASSWORD_BY_PSEUDO = "SELECT mot_de_passe FROM utilisateurs WHERE pseudo = :pseudo";
 	private final String INSERT = "INSERT INTO utilisateurs (pseudo, email, nom, prenom, administrateur, telephone, credit, mot_de_passe, no_adresse) VALUES (:pseudo, :email, :nom, :prenom, :administrateur, :telephone, :credit, :mot_de_passe, :no_adresse)";
 	private final String UPDATE = "UPDATE utilisateurs SET email = :email, nom = :nom, prenom = :prenom, administrateur = :administrateur, telephone = :telephone, credit = :credit, no_adresse = :no_adresse WHERE pseudo = :pseudo";
-	private final String DELETE = "DELETE utilisateurs WHERE pseudo = :pseudo";
+	private final String DELETE = "DELETE utilisateurs WHERE pseudo = :pseudo AND administrateur = 0";
 	private final String COUNT_PSEUDO = "SELECT COUNT(pseudo) FROM utilisateurs WHERE pseudo = :pseudo";
 	private final String COUNT_EMAIL = "SELECT COUNT(email) FROM utilisateurs WHERE email = :email";
 	private final String COUNT_NEW_EMAIL = "SELECT COUNT(email) FROM utilisateurs WHERE email = :email AND pseudo <> :pseudo";
