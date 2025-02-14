@@ -119,10 +119,16 @@ public class ArticleAVendreServiceImpl implements ArticleAVendreService {
 	        	    .collect(Collectors.toSet());
 	            Long theIdStatut = Long.parseLong(idAchat);
 	        	System.out.println(idAchat);
+	        	if (theIdStatut == 0) {
+		            articles = articles.stream()
+		            		.filter(article -> !article.getVendeur().getPseudo().equals(pseudoMembre) && article.getStatut() == theIdStatut)
+		                .collect(Collectors.toList());
+	        	} else {
 	            articles = articles.stream()
 	            		.peek(article -> System.out.println("Article : " + article))
-	            		.filter(article -> articlesIdsUtilisateur.contains(article.getId()) && article.getStatut() == theIdStatut)
+	            		.filter(article -> articlesIdsUtilisateur.contains(article.getId()) && !article.getVendeur().getPseudo().equals(pseudoMembre) && article.getStatut() == theIdStatut)
 	                .collect(Collectors.toList());
+	        	}
 	        }
 	    }
 
