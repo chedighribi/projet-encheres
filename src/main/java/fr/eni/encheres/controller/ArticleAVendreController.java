@@ -64,45 +64,6 @@ public class ArticleAVendreController {
 	    return "view-articles";
 	}
 
-	//modif 
-	
-//	@GetMapping("/filtrer")
-//	public String afficherArticlesByCategorie(@RequestParam(name = "nomArticle", required = false) String nomArticle,
-//			@RequestParam(name = "idCategorie", required = false) long idCategorie,
-//			@RequestParam(name = "idVente", required = false) String idVenteStr,
-//			@RequestParam(name = "typeAchat", required = false) String idAchatStr,
-//			@ModelAttribute("membreEnSession") Utilisateur membreEnSession,
-//			Model model){
-//		System.out.println("filtre: " + idCategorie);
-//		Set<ArticleAVendre> articles = new HashSet<>();
-//		if(!nomArticle.isBlank()) {
-//		    articles.addAll(articleAVendreService.consulterArticleParNom(nomArticle));
-//		    System.out.println(articles);
-//		}
-//		if(idCategorie != 0) {
-//		    articles.addAll(articleAVendreService.consulterArticlesParCategorie(idCategorie));
-//		}		
-//		if (idVenteStr != null) {
-//		    Long idVente = Long.parseLong(idVenteStr);
-//			if(idVenteStr != null && idVente != 0) {
-//			    articles.addAll(articleAVendreService.consulterArticleParStatutVente(idVente, membreEnSession.getPseudo()));
-//			}
-//		}
-//		if (idAchatStr != null) {
-//		    Long idAchat = Long.parseLong(idAchatStr);
-//			if(idAchatStr != null && idAchat != 0) {
-//			    articles.addAll(articleAVendreService.consulterArticleParStatutAchat(idAchat, membreEnSession.getPseudo()));
-//			}
-//
-//		}
-//		
-//		if (articles.isEmpty()) {
-//		    articles.addAll(articleAVendreService.consulterArticles());
-//		}
-//
-//	    return "view-articles";
-//	}
-
 
 	@GetMapping("/detail")
 	public String detailVente(@RequestParam(name = "id", required = true) long id, @ModelAttribute("membreEnSession") Utilisateur utilisateur, Model model) {
