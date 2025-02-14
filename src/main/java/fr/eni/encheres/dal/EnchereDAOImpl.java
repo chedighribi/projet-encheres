@@ -24,6 +24,8 @@ public class EnchereDAOImpl implements EnchereDAO {
 	private final String DELETE = "DELETE encheres WHERE id_utilisateur = :id_utilisateur";
 	private final String FIND_BY_ARTICLE= "SELECT date_enchere, montant_enchere, id_utilisateur, no_article FROM ENCHERES WHERE no_article = :id";
 	private final String FIND_BY_USER = "SELECT date_enchere, montant_enchere, id_utilisateur, no_article FROM ENCHERES WHERE id_utilisateur = :pseudo";
+	private final String FIND_HIGHEST = "SELECT TOP 1 * FROM encheres WHERE no_article = :articleId ORDER BY montant_enchere DESC";
+
 	
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
@@ -73,8 +75,9 @@ public class EnchereDAOImpl implements EnchereDAO {
 
 	@Override
 	public Enchere readHighestEnchere(long articleId) {
-		// TODO Auto-generated method stub
-		return null;
+	    MapSqlParameterSource namedParameter = new MapSqlParameterSource();
+	    namedParameter.addValue("articleId", articleId);
+        return jdbcTemplate.queryForObject(FIND_HIGHEST, namedParameter, new EnchereRowMapper());
 	}
 
 	@Override

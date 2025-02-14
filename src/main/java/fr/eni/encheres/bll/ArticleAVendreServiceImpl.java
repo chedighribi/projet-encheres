@@ -179,7 +179,6 @@ public class ArticleAVendreServiceImpl implements ArticleAVendreService {
 		ArticleAVendreDAO.delete(articleAVendre);
 	}
 
-	//use of two different ways
 	@Override
 	@Transactional
 	public void creerEnchere(Enchere e) {
@@ -190,7 +189,6 @@ public class ArticleAVendreServiceImpl implements ArticleAVendreService {
 		Enchere derniereEnchere = enchereDAO.readHighestEnchere(article.getId());
 		if (derniereEnchere != null) {
 			Utilisateur dernierEnchereur = utilisateurDAO.findByPseudo(derniereEnchere.getUtilisateur().getPseudo());
-			// fix getMontant
 			int newRefundCredit = dernierEnchereur.getCredit() + derniereEnchere.getMontant();
 			utilisateurDAO.updateCredit(dernierEnchereur.getPseudo(), newRefundCredit);
 			
