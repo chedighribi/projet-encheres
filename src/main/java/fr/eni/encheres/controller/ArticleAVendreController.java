@@ -45,7 +45,6 @@ public class ArticleAVendreController {
 		return "view-articles";
 	}
 
- // valentin
 	@RequestMapping("/filtrer")
 	public String afficherArticlesByCategorie(
 	        @RequestParam(name = "nomArticle", required = false) String nomArticle,
