@@ -23,6 +23,8 @@ public class EnchereDAOImpl implements EnchereDAO {
 	private final String INSERT = "INSERT INTO ENCHERES (date_enchere, montant_enchere, id_utilisateur, no_article) VALUES(:date_enchere, :montant_enchere, :id_utilisateur, :no_article)";
 	private final String FIND_BY_ARTICLE= "SELECT date_enchere, montant_enchere, id_utilisateur, no_article FROM ENCHERES WHERE no_article = :id";
 	private final String FIND_BY_USER = "SELECT date_enchere, montant_enchere, id_utilisateur, no_article FROM ENCHERES WHERE id_utilisateur = :pseudo";
+	private final String FIND_HIGHEST = "SELECT TOP 1 * FROM encheres WHERE no_article = :articleId ORDER BY montant_enchere DESC";
+
 	
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
@@ -51,6 +53,13 @@ public class EnchereDAOImpl implements EnchereDAO {
 	    namedParameter.addValue("pseudo", pseudo);
 	    return jdbcTemplate.query(FIND_BY_USER, namedParameter, new EnchereRowMapper());
 	}
+	
+	@Override
+	public Enchere readHighestEnchere(long articleId) {
+	    MapSqlParameterSource namedParameter = new MapSqlParameterSource();
+	    namedParameter.addValue("articleId", articleId);
+        return jdbcTemplate.queryForObject(FIND_HIGHEST, namedParameter, new EnchereRowMapper());
+	}
 
 	class EnchereRowMapper implements RowMapper<Enchere> {
 
@@ -69,5 +78,12 @@ public class EnchereDAOImpl implements EnchereDAO {
 		}
 		
 	}
+
+	@Override
+	public void deleteEnchere(String pseudo) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }
