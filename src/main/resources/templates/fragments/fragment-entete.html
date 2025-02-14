@@ -12,43 +12,40 @@
 		</div>
 	</section>
 	
-<nav class="navbar navbar-expand-lg">
-  <div class="container-fluid">
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-			<li><a href="/articles" data-th-text="#{Menu.accueil}"></a></li>
-			
-			<th:block data-th-if="${!#authorization.expression('isAuthenticated()')}">
-				<li><a href="/login" data-th-text="#{Menu.login}"></a></li>
-			</th:block>
-			
-			<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
-			
-				<li><a href="/articles/creer" data-th-text="#{Menu.vendreArticle}"></a></li>
+	<nav class="navbar navbar-expand-lg">
+	  <div class="container-fluid">
+	    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+	      <span class="navbar-toggler-icon"></span>
+	    </button>
+	    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+	      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+				<li><a href="/articles" data-th-text="#{Menu.accueil}"></a></li>
 				
-				<li><a href="/profil" data-th-text="#{Menu.profil}"></a></li>
-				
-				<li><a href="/logout" data-th-text="#{Menu.logout}"></a></li>
-				<th:block data-th-if="${#authorization.expression('hasRole(''ADMIN'')')}">
-					<li><a href="/voirListeUtilisateurs" data-th-text="#{Menu.listeUtilisateurs}"></a></li>
+				<th:block data-th-if="${!#authorization.expression('isAuthenticated()')}">
+					<li><a href="/login" data-th-text="#{Menu.login}"></a></li>
 				</th:block>
-			</th:block>
-			
-			<li><a href="/profil/view?utilisateurPseudo=pseudo">Test Pseudo</a></li>
-			
-		</ul>
-		    </div>
-  </div>
-</nav>
-	
-		<div class="position-absolute bottom-0 start-50 translate-middle-x badge rounded-pill bg-primary text-start">
-			<span id="dateDuJour" data-th-text="#{Menu.badge.date}"></span>
-			<br />
-			<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
-				<span data-th-text="#{Menu.badge.utilisateur} + ${membreEnSession.pseudo}"></span>
-			</th:block>
-		</div>
+				
+				<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
+				
+					<li><a href="/articles/creer" data-th-text="#{Menu.vendreArticle}"></a></li>
+					
+					<li><a href="/profil" data-th-text="#{Menu.profil}"></a></li>
+					
+					<li><a href="/logout" data-th-text="#{Menu.logout}"></a></li>
+					<th:block data-th-if="${#authorization.expression('hasRole(''ADMIN'')')}">
+						<li><a href="/voirListeUtilisateurs" data-th-text="#{Menu.listeUtilisateurs}"></a></li>
+					</th:block>
+				</th:block>
+				
+			</ul>
+	    </div>
+	  </div>
+	</nav>
+	<div class="position-absolute bottom-0 start-50 translate-middle-x badge rounded-pill bg-primary text-start">
+		<span id="dateDuJour" data-th-text="#{Menu.badge.date}"></span>
+		<br />
+		<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
+			<span data-th-text="#{Menu.badge.utilisateur} + ${membreEnSession.pseudo}"></span>
+		</th:block>
+	</div>
 </header>

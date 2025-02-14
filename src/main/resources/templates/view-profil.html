@@ -46,9 +46,6 @@
 			</div>
 			<div th:if="${membreEnSession.pseudo != utilisateur.pseudo}" class="btn">
 				<a id="btnRetour" class="btn btn-primary" data-th-text="#{Profil.btn.retour}" ></a>
-				<script type="text/javascript">
-				window.onload = () => {document.getElementById("btnRetour").addEventListener("click", () => {history.back();});}
-				</script>
 			</div>
 		</section>
 	</main>

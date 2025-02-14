@@ -43,6 +43,7 @@ public class SecurityConfig {
 			.requestMatchers("/articles/*").permitAll()
 			.requestMatchers("/profil/session").permitAll()
 			.requestMatchers("/encheres/*").permitAll()
+			.requestMatchers("/error").permitAll()
 			.requestMatchers("/voirListeUtilisateurs").hasAnyRole("ADMIN")
 			
 			.requestMatchers("/profil").authenticated()
