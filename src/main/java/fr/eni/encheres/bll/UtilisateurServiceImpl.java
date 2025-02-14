@@ -119,8 +119,12 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	@Override
 	public Utilisateur consulterUtilisateurParPseudo(String pseudo) {
 		Utilisateur utilisateur = utilisateurDAO.ReadByPseudo(pseudo);
-		Adresse adresse = adresseDAO.read(utilisateur.getAdresse().getNoAdresse());
-		utilisateur.setAdresse(adresse);
+		try {
+			Adresse adresse = adresseDAO.read(utilisateur.getAdresse().getNoAdresse());
+			utilisateur.setAdresse(adresse);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return utilisateur;
 	}
 

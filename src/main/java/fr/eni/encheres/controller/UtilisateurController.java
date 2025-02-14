@@ -1,10 +1,14 @@
 package fr.eni.encheres.controller;
 
 import java.security.Principal;
+import java.util.Collection;
 import java.util.List;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -198,23 +202,50 @@ public class UtilisateurController {
 		return "redirect:/profil";
 	}
 	
+	private boolean hasRole(String role) {
+		System.out.println("controller utilisateur hasRole");  
+		Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>)
+		  SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+		  boolean hasRole = false;
+		  for (GrantedAuthority authority : authorities) {
+		     hasRole = authority.getAuthority().equals(role);
+		     if (hasRole) {
+			  break;
+		     }
+		  }
+		  return hasRole;
+		}  
+	
 	@GetMapping("/profil/supprimer/utilisateur")
-	public String supprimerProfil(@RequestParam(name = "utilisateurPseudo", required = true) String utilisateurPseudo, Model model) {
+	public String supprimerProfil(@RequestParam(name = "utilisateurPseudo", required = true) String utilisateurPseudo, Model model, Authentication authentication) {
 		System.out.println("Controller utilisateur supprimerProfil");
 		System.out.println(model);
+		System.out.println(utilisateurPseudo);
 		System.out.println("---------------------");
 		//@TODO : ajouter controle administrateur
 		Utilisateur membreEnSession = (Utilisateur) model.getAttribute("membreEnSession");
 		Utilisateur utilisateur = getMembreEnSessionDetails(membreEnSession.getPseudo());
-		System.out.println(membreEnSession.getPseudo() + " == " + utilisateurPseudo + " => " + (membreEnSession.getPseudo().equals(utilisateurPseudo)));
-		System.out.println("++++++++++++++++++++++++++++");
-		if (membreEnSession.getPseudo().equals(utilisateurPseudo)) {			
+		if (utilisateur.getPseudo().equals("coach_admin")) {
+			System.out.println("a le role Admin");
+			Utilisateur utilisateurASupprimer = utilisateurService.consulterUtilisateurParPseudo(utilisateurPseudo);
+			utilisateurService.supprimerUtilisateur(utilisateurASupprimer);
+			return "redirect:/voirListeUtilisateurs";
+		} else if (membreEnSession.getPseudo().equals(utilisateurPseudo)) {			
 			utilisateurService.supprimerUtilisateur(utilisateur);
 			return "redirect:/logout";
 		} else {
 			return "redirect:/profil/modifier";
 //			return "redirect:/error";
 		}
+	}
+	
+	@GetMapping("/voirListeUtilisateurs")
+	public String voirListeUtilisateurs(Model model) {
+		System.out.println("controller utilisateur voirListeUtilisateurs");
+		List<Utilisateur> listeUtilisateurs = utilisateurService.consulterUtilisateurs();
+		System.out.println(listeUtilisateurs);
+		model.addAttribute("listeUtilisateurs", listeUtilisateurs);
+		return "view-liste-utilisateurs";
 	}
 	
 	@GetMapping("/session")

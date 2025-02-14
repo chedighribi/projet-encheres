@@ -25,7 +25,11 @@
 				<li><a href="/profil" data-th-text="#{Menu.profil}"></a></li>
 				
 				<li><a href="/logout" data-th-text="#{Menu.logout}"></a></li>
+				<th:block data-th-if="${#authorization.expression('hasRole(''ADMIN'')')}">
+					<li><a href="/voirListeUtilisateurs" data-th-text="#{Menu.listeUtilisateurs}"></a></li>
+				</th:block>
 			</th:block>
+			
 			
 			<li><a href="/profil/view?utilisateurPseudo=pseudo">Test Pseudo</a></li>
 			
@@ -34,18 +38,6 @@
 	
 		<div class="position-absolute bottom-0 start-50 translate-middle-x badge rounded-pill bg-primary text-start">
 			<span id="dateDuJour" data-th-text="#{Menu.badge.date}"></span>
-			<SCRIPT LANGUAGE="JavaScript">
-				
-// 				document.write("<span> date du jour ", jour.slice(-2), "/", mois.slice(-2), "/", an, "</span>");
-				window.onload = () => {
-					var maintenant=new Date();
-					var jour='0' + maintenant.getDate();
-					var mois='0' + (maintenant.getMonth()+1);
-					var an=maintenant.getFullYear();
-					spanTxt = document.getElementById('dateDuJour');
-					spanTxt.textContent = spanTxt.textContent + " " + jour.slice(-2) + "/" + mois.slice(-2) + "/" + an;
-				}
-			</SCRIPT>
 			<br />
 			<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
 				<span data-th-text="#{Menu.badge.utilisateur} + ${membreEnSession.pseudo}"></span>

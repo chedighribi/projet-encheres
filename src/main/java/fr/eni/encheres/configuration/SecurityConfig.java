@@ -24,7 +24,7 @@ public class SecurityConfig {
 //		jdbcUserDetailsManager.setUsersByUsernameQuery("SELECT email, mot_de_passe, 1 FROM utilisateurs WHERE email=?");
 		jdbcUserDetailsManager.setUsersByUsernameQuery("SELECT pseudo, mot_de_passe, 1 FROM utilisateurs WHERE pseudo=?");
 		jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
-				"SELECT u.pseudo, r.role ,r.is_admin FROM utilisateurs u INNER JOIN roles r ON r.is_admin = u.administrateur WHERE u.pseudo = ?");
+				"SELECT u.pseudo, r.role FROM utilisateurs u INNER JOIN roles r ON r.is_admin = u.administrateur WHERE u.pseudo = ?");
 	/*"SELECT u.email, r.IS_ADMIN FROM utilisateurs u INNER JOIN roles r ON r.IS_ADMIN = u.administrateur WHERE u.email=?");*/
 		return jdbcUserDetailsManager;
 	}
@@ -43,6 +43,7 @@ public class SecurityConfig {
 			.requestMatchers("/articles/*").permitAll()
 			.requestMatchers("/profil/session").permitAll()
 			.requestMatchers("/encheres/*").permitAll()
+			.requestMatchers("/voirListeUtilisateurs").hasAnyRole("ADMIN")
 			
 			.requestMatchers("/profil").authenticated()
 //			.requestMatchers("/profil/modifier").permitAll()
