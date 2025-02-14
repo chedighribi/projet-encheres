@@ -86,7 +86,7 @@
 							<th:block
 								data-th-if="${#authorization.expression('isAuthenticated()')}">
 								<th:block
-									data-th-if="${membreEnSession.pseudo == article.vendeur.pseudo and article.dateDebutEncheres.isAfter(T(java.time.LocalDate).now())}">
+									data-th-if="${membreEnSession.pseudo == article.vendeur.pseudo and #temporals.format(article.dateFinEncheres, 'yyyy-MM-dd') gt #temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}">
 									<a
 										data-th-href="@{/articles/modifier(idArticle=${article.id})}"
 										style="color: inherit;">
@@ -95,7 +95,7 @@
 									</a>
 								</th:block>
 								<th:block
-									data-th-unless="${membreEnSession.pseudo == article.vendeur.pseudo and article.dateDebutEncheres.isAfter(T(java.time.LocalDate).now())}">
+									data-th-unless="${membreEnSession.pseudo == article.vendeur.pseudo and #temporals.format(article.dateFinEncheres, 'yyyy-MM-dd') gt #temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}">
 									<a data-th-href="@{/articles/detail(id=${article.id})}"
 										style="color: inherit;">
 										<h5 class="card-title" data-th-text="${article.nom}">Titre Article</h5>
