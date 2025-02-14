@@ -45,7 +45,7 @@
 		<span id="dateDuJour" data-th-text="#{Menu.badge.date}"></span>
 		<br />
 		<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
-			<span data-th-text="#{Menu.badge.utilisateur} + ${membreEnSession.pseudo}"></span>
+			<span data-th-text="#{Menu.badge.utilisateur} + ${membreEnSession?.pseudo}"></span>
 		</th:block>
 	</div>
 </header>

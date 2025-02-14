@@ -3,3 +3,31 @@
 2025-02-10 11:45:51,854 WARN [http-nio-8080-exec-5] f.e.e.dev [UtilisateurController.java:55] attention
 2025-02-10 11:45:51,854 ERROR [http-nio-8080-exec-5] f.e.e.dev [UtilisateurController.java:56] error error
 2025-02-10 11:45:51,854 INFO [http-nio-8080-exec-5] f.e.e.dev [UtilisateurController.java:57] FYI on test
+2025-02-14 14:16:22,532 TRACE [http-nio-8080-exec-2] f.e.e.dev [UtilisateurController.java:81] Controller utilisateur afficherProfil
+2025-02-14 14:16:22,533 TRACE [http-nio-8080-exec-2] f.e.e.dev [UtilisateurController.java:82] null
+2025-02-14 14:16:22,534 TRACE [http-nio-8080-exec-2] f.e.e.dev [UtilisateurController.java:67] getMembreEnSessionDetails : null
+2025-02-14 14:16:22,534 TRACE [http-nio-8080-exec-2] f.e.e.dev [UtilisateurController.java:59] getMembreDetails : null
+2025-02-14 14:16:22,929 TRACE [http-nio-8080-exec-2] f.e.e.dev [UtilisateurController.java:61] ---------------------
+2025-02-14 14:16:26,836 TRACE [http-nio-8080-exec-5] f.e.e.dev [UtilisateurController.java:81] Controller utilisateur afficherProfil
+2025-02-14 14:16:26,836 TRACE [http-nio-8080-exec-5] f.e.e.dev [UtilisateurController.java:82] null
+2025-02-14 14:16:26,836 TRACE [http-nio-8080-exec-5] f.e.e.dev [UtilisateurController.java:67] getMembreEnSessionDetails : null
+2025-02-14 14:16:26,837 TRACE [http-nio-8080-exec-5] f.e.e.dev [UtilisateurController.java:59] getMembreDetails : null
+2025-02-14 14:16:26,846 TRACE [http-nio-8080-exec-5] f.e.e.dev [UtilisateurController.java:61] ---------------------
+2025-02-14 14:16:28,596 TRACE [http-nio-8080-exec-3] f.e.e.dev [UtilisateurController.java:52] lancement index
+2025-02-14 14:16:28,597 TRACE [http-nio-8080-exec-3] f.e.e.dev [UtilisateurController.java:53] ---------------------
+2025-02-14 14:16:28,598 TRACE [http-nio-8080-exec-3] f.e.e.dev [UtilisateurController.java:54] {membreEnSession=Utilisateur [pseudo=null, nom=null, prenom=null, email=null, telephone=null, motDePasse=null, credit=0, administrateur=0]Adresse => null, org.springframework.validation.BindingResult.membreEnSession=org.springframework.validation.BeanPropertyBindingResult: 0 errors}
+2025-02-14 14:16:35,257 TRACE [http-nio-8080-exec-8] f.e.e.dev [UtilisateurController.java:277] ---------------------
+2025-02-14 14:16:35,257 TRACE [http-nio-8080-exec-8] f.e.e.dev [UtilisateurController.java:278] Utilisateur [pseudo=coach_admin, nom=COACH, prenom=Eni, email=coach@campus-eni.fr, telephone=null, motDePasse=P@s123456, credit=10, administrateur=1]Adresse => 1 2B RUE BENJAMIN FRANKLIN, 44800 - SAINT HERBLAIN
+2025-02-14 14:16:35,258 TRACE [http-nio-8080-exec-8] f.e.e.dev [UtilisateurController.java:288] ___________________
+2025-02-14 14:16:35,258 TRACE [http-nio-8080-exec-8] f.e.e.dev [UtilisateurController.java:289] Utilisateur [pseudo=coach_admin, nom=COACH, prenom=Eni, email=coach@campus-eni.fr, telephone=null, motDePasse=null, credit=10, administrateur=0]Adresse => 1 2B RUE BENJAMIN FRANKLIN, 44800 - SAINT HERBLAIN
+2025-02-14 14:16:35,267 TRACE [http-nio-8080-exec-5] f.e.e.dev [UtilisateurController.java:52] lancement index
+2025-02-14 14:16:35,268 TRACE [http-nio-8080-exec-5] f.e.e.dev [UtilisateurController.java:53] ---------------------
+2025-02-14 14:16:35,268 TRACE [http-nio-8080-exec-5] f.e.e.dev [UtilisateurController.java:54] {membreEnSession=Utilisateur [pseudo=coach_admin, nom=COACH, prenom=Eni, email=coach@campus-eni.fr, telephone=null, motDePasse=null, credit=10, administrateur=0]Adresse => 1 2B RUE BENJAMIN FRANKLIN, 44800 - SAINT HERBLAIN, org.springframework.validation.BindingResult.membreEnSession=org.springframework.validation.BeanPropertyBindingResult: 0 errors}
+2025-02-14 14:16:37,636 TRACE [http-nio-8080-exec-6] f.e.e.dev [UtilisateurController.java:81] Controller utilisateur afficherProfil
+2025-02-14 14:16:37,636 TRACE [http-nio-8080-exec-6] f.e.e.dev [UtilisateurController.java:82] coach_admin
+2025-02-14 14:16:37,636 TRACE [http-nio-8080-exec-6] f.e.e.dev [UtilisateurController.java:67] getMembreEnSessionDetails : coach_admin
+2025-02-14 14:16:37,637 TRACE [http-nio-8080-exec-6] f.e.e.dev [UtilisateurController.java:59] getMembreDetails : coach_admin
+2025-02-14 14:16:37,642 TRACE [http-nio-8080-exec-6] f.e.e.dev [UtilisateurController.java:61] ---------------------
+2025-02-14 14:16:37,642 TRACE [http-nio-8080-exec-6] f.e.e.dev [UtilisateurController.java:62] Utilisateur [pseudo=coach_admin, nom=COACH, prenom=Eni, email=coach@campus-eni.fr, telephone=null, motDePasse=P@s123456, credit=10, administrateur=1]Adresse => 1 2B RUE BENJAMIN FRANKLIN, 44800 - SAINT HERBLAIN
+2025-02-14 14:16:39,446 TRACE [http-nio-8080-exec-7] f.e.e.dev [UtilisateurController.java:267] controller utilisateur voirListeUtilisateurs
+2025-02-14 14:16:39,456 TRACE [http-nio-8080-exec-7] f.e.e.dev [UtilisateurController.java:269] [Utilisateur [pseudo=coach_admin, nom=COACH, prenom=Eni, email=coach@campus-eni.fr, telephone=null, motDePasse=null, credit=10, administrateur=1]Adresse => null, Utilisateur [pseudo=coach_tata, nom=Tata, prenom=Eni, email=tata@campus-eni.fr, telephone=null, motDePasse=null, credit=7, administrateur=0]Adresse => null, Utilisateur [pseudo=coach_titi, nom=Titi, prenom=Eni, email=titi@campus-eni.fr, telephone=null, motDePasse=null, credit=6, administrateur=0]Adresse => null, Utilisateur [pseudo=coach_toto, nom=Toto, prenom=Eni, email=toto@campus-eni.fr, telephone=null, motDePasse=null, credit=12, administrateur=0]Adresse => null, Utilisateur [pseudo=cool, nom=nom, prenom=prenom, email=cool@campus-eni.fr, telephone=0132456789, motDePasse=null, credit=10, administrateur=0]Adresse => null, Utilisateur [pseudo=password, nom=nom, prenom=preprenom, email=password@test.fr, telephone=12374, motDePasse=null, credit=10, administrateur=0]Adresse => null, Utilisateur [pseudo=pseudo, nom=nom, prenom=prenom, email=pseudo@campus-eni.Fr, telephone=0123456789, motDePasse=null, credit=10, administrateur=0]Adresse => null]

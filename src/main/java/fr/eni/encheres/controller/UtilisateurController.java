@@ -68,10 +68,17 @@ public class UtilisateurController {
 		return getMembreDetails(pseudo);
 	}
 
+	@GetMapping("/error")
+	String afficherErreur(@ModelAttribute("membreEnSession") Utilisateur membreEnSession, Model model) {
+		logger.trace("Controller utilisateur afficherErreur");
+		logger.trace(membreEnSession.getPseudo());
+		model.addAttribute(getMembreEnSessionDetails(membreEnSession.getPseudo()));
+		return "error";
+	}
+	
 	@GetMapping("/profil")
 	String afficherProfil(@ModelAttribute("membreEnSession") Utilisateur membreEnSession, Model model) {
 		logger.trace("Controller utilisateur afficherProfil");
-		logger.trace(membreEnSession.getPseudo());
 		logger.trace(membreEnSession.getPseudo());
 		model.addAttribute(getMembreEnSessionDetails(membreEnSession.getPseudo()));
 		return "view-profil";
@@ -244,7 +251,8 @@ public class UtilisateurController {
 		logger.trace("Controller utilisateur desactiverProfil");
 		logger.trace("----- NOT IMPLEMENTED YET  -----");
 		//@TODO : implémenter la déconnexion
-		return "redirect:/voirListeUtilisateurs";
+		model.addAttribute("customError", "La fonction n'est pas encore implémenté");
+		return "error";
 	}
 	
 	@GetMapping("/profil/anonymiser/utilisateur")
@@ -252,7 +260,8 @@ public class UtilisateurController {
 		logger.trace("Controller utilisateur anonymiseProfil");
 		logger.trace("----- NOT IMPLEMENTED YET  -----");
 		//@TODO : implémenter la Anonymisation
-		return "redirect:/voirListeUtilisateurs";
+		model.addAttribute("customError", "La fonction n'est pas encore implémenté");
+		return "error";
 	}
 	
 	@GetMapping("/voirListeUtilisateurs")
