@@ -78,7 +78,7 @@
 					<th:block
 						data-th-if="${#temporals.format(article.dateFinEncheres, 'yyyy-MM-dd') gt #temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}">
 						<th:block
-							data-th-if="${membreEnSession.pseudo} != *{vendeur.pseudo}">
+							data-th-if="${membreEnSession.pseudo} != *{vendeur.pseudo} and ( *{encheres.size() > 0} ? ${membreEnSession.pseudo} != *{encheres.get(0).utilisateur.pseudo} : true)">
 							<form data-th-action="@{/articles/enchere}" method="post"
 								th:object="${enchere}">
 
@@ -88,10 +88,12 @@
 									data-th-value="${membreEnSession.pseudo}" /> <label
 									for="inputEnchere"> <span class="label">Mon
 										enchère: </span></label> <input type="number" id="inputEnchere"
-									onkeydown="return false;" data-th-field="*{montant}"
+									onkeydown="return false;"
+									name="montant"
 									data-th-min="${article.prixVente + 1}"
 									data-th-max="${membreEnSession.credit}"
-									data-th-value="${article.prixVente + 1}" />
+									data-th-value="${article.prixVente + 1}"
+									 />
 								<button type="submit" class="validation-button-sm">Enchérir</button>
 							</form>
 						</th:block>

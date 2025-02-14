@@ -8,4 +8,6 @@ public interface EnchereDAO {
 	void create(Enchere enchere);
 	List<Enchere> readByArticle(long id);
 	List<Enchere> readByUser(String pseudo);
+	Enchere readHighestEnchere(long articleId);
+	void deleteEnchere(String pseudo);
 }
