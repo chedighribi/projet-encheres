@@ -198,11 +198,22 @@ public class ArticleAVendreServiceImpl implements ArticleAVendreService {
 
 	//use of two different ways
 	@Override
+	@Transactional
 	public void creerEnchere(Enchere e) {
 		BusinessException be = new BusinessException();
 		Utilisateur utilisateur = utilisateurDAO.findByPseudo(e.getUtilisateur().getPseudo());
 		ArticleAVendre article = ArticleAVendreDAO.find(e.getArticleAVendre().getId());
+		
+		Enchere derniereEnchere = enchereDAO.readHighestEnchere(article.getId());
+		if (derniereEnchere != null) {
+			Utilisateur dernierEnchereur = utilisateurDAO.findByPseudo(derniereEnchere.getUtilisateur().getPseudo());
+			// fix getMontant
+			int newRefundCredit = dernierEnchereur.getCredit() + derniereEnchere.getMontant();
+			utilisateurDAO.updateCredit(dernierEnchereur.getPseudo(), newRefundCredit);
+			
+		}
 		article.setPrixVente(e.getMontant());
+		article.setStatut(1);
 		boolean isValid = true;
 		isValid &= validerSolde(e, be, utilisateur.getCredit());
 		if (isValid) {
