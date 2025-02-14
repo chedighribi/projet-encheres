@@ -92,7 +92,7 @@
 										data-th-text="#{articles.prix} + ' ' + ${article.prixVente} + ' point(s)'">Prix</p>
 								</th:block>
 								<p class="card-text" data-th-text="#{articles.dateFin} + ' ' + ${article.dateFinEncheres}">Fin de l'enchère</p>
-								<p class="card-text" data-th-text="#{articles.vendeur} + ' ' + ${article.vendeur.pseudo}">Vendeur</p>
+								<a class="card-text" data-th-href="@{/profil/view?utilisateurPseudo=__${article.vendeur.pseudo}__}" data-th-text="#{articles.vendeur} + ' ' + ${article.vendeur.pseudo}">Vendeur</a>
 								
 							</div>
 						</div>

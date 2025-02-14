@@ -18,7 +18,6 @@
 				data-th-if="${#temporals.format(article.dateFinEncheres, 'yyyy-MM-dd') gt #temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}">
 				<h1>Détail d'une vente</h1>
 			</th:block>
-			<!-- Add link to buyer profile -->
 			<th:block
 				data-th-if="${#temporals.format(article.dateFinEncheres, 'yyyy-MM-dd') lt #temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}">
 				<h1>
