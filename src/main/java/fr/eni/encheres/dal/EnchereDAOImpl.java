@@ -22,6 +22,7 @@ public class EnchereDAOImpl implements EnchereDAO {
 
 	private final String INSERT = "INSERT INTO ENCHERES (date_enchere, montant_enchere, id_utilisateur, no_article) VALUES(:date_enchere, :montant_enchere, :id_utilisateur, :no_article)";
 	private final String FIND_BY_ARTICLE= "SELECT date_enchere, montant_enchere, id_utilisateur, no_article FROM ENCHERES WHERE no_article = :id";
+	private final String FIND_BY_USER = "SELECT date_enchere, montant_enchere, id_utilisateur, no_article FROM ENCHERES WHERE id_utilisateur = :pseudo";
 	
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
@@ -46,8 +47,9 @@ public class EnchereDAOImpl implements EnchereDAO {
 
 	@Override
 	public List<Enchere> readByUser(String pseudo) {
-		// TODO Auto-generated method stub
-		return null;
+	    MapSqlParameterSource namedParameter = new MapSqlParameterSource();
+	    namedParameter.addValue("pseudo", pseudo);
+	    return jdbcTemplate.query(FIND_BY_USER, namedParameter, new EnchereRowMapper());
 	}
 
 	class EnchereRowMapper implements RowMapper<Enchere> {

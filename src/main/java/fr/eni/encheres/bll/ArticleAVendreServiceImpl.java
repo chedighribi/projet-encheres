@@ -3,6 +3,7 @@ package fr.eni.encheres.bll;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -112,12 +113,15 @@ public class ArticleAVendreServiceImpl implements ArticleAVendreService {
 	                .collect(Collectors.toList());
 	        }
 	        if (idAchat != null) {
-	        	System.out.println("-----!----!-------");
-	        	System.out.println(idAchat);
+	        	List<Enchere> encheresUtilisateur = enchereDAO.readByUser(pseudoMembre);
+	        	Set<Long> articlesIdsUtilisateur = encheresUtilisateur.stream()
+	        	    .map(enchere -> enchere.getArticleAVendre().getId())
+	        	    .collect(Collectors.toSet());
 	            Long theIdStatut = Long.parseLong(idAchat);
 	        	System.out.println(idAchat);
 	            articles = articles.stream()
-	            		.filter(article -> article.getVendeur().getPseudo().equals(pseudoMembre) && article.getStatut() == theIdStatut)
+	            		.peek(article -> System.out.println("Article : " + article))
+	            		.filter(article -> articlesIdsUtilisateur.contains(article.getId()) && article.getStatut() == theIdStatut)
 	                .collect(Collectors.toList());
 	        }
 	    }
